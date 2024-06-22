@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Union, List, Iterator
 
 from phi.document import Document
-from phi.document.reader.pdf import PDFReader, PDFUrlReader, PDFImageReader, PDFUrlImageReader
+from phi.document.pdf import PDFReader, PDFUrlReader, PDFImageReader, PDFUrlImageReader
 from phi.knowledge.base import AssistantKnowledge
 
 

@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Union, List, Iterator
 
 from phi.document import Document
-from phi.document.reader.docx import DocxReader
+from phi.document.docx import DocxReader
 from phi.knowledge.base import AssistantKnowledge
 
 

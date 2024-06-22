@@ -3,7 +3,7 @@ from typing import List, Optional, Iterator, Dict, Any
 from pydantic import BaseModel, ConfigDict
 
 from phi.document import Document
-from phi.document.reader.base import Reader
+from phi.document.reader import Reader
 from phi.vectordb import VectorDb
 from phi.utils.log import logger
 
