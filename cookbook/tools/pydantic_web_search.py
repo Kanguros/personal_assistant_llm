@@ -1,23 +1,22 @@
-from typing import List, Optional
+from pydantic import BaseModel, Field
+from rich.pretty import pprint
 
 from phi.assistant import Assistant
 from phi.tools.duckduckgo import DuckDuckGo
-from pydantic import BaseModel, Field
-from rich.pretty import pprint
 
 
 class NewsItem(BaseModel):
     position: int = Field(..., description="Rank of this news item.")
-    title: Optional[str] = Field(None, description="Title of the news item.")
-    link: Optional[str] = Field(None, description="Link to the news item.")
-    snippet: Optional[str] = Field(None, description="Snippet of the news item.")
-    source: Optional[str] = Field(None, description="Source of the news item.")
-    date: Optional[str] = Field(None, description="Date of the news item.")
-    thumbnail: Optional[str] = Field(None, description="Thumbnail of the news item.")
+    title: str | None = Field(None, description="Title of the news item.")
+    link: str | None = Field(None, description="Link to the news item.")
+    snippet: str | None = Field(None, description="Snippet of the news item.")
+    source: str | None = Field(None, description="Source of the news item.")
+    date: str | None = Field(None, description="Date of the news item.")
+    thumbnail: str | None = Field(None, description="Thumbnail of the news item.")
 
 
 class NewsItems(BaseModel):
-    items: List[NewsItem] = Field(..., description="List of news items.")
+    items: list[NewsItem] = Field(..., description="List of news items.")
 
 
 news_assistant = Assistant(

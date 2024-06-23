@@ -1,11 +1,8 @@
-from typing import List
-
 import streamlit as st
-from phi.assistant import Assistant
-from phi.utils.log import logger
-
 from assistant import get_sql_assistant
 
+from phi.assistant import Assistant
+from phi.utils.log import logger
 
 st.set_page_config(
     page_title="SQL Assistant",
@@ -124,7 +121,7 @@ def main() -> None:
         sql_assistant.auto_rename_run()
 
     if sql_assistant.storage:
-        sql_assistant_run_ids: List[str] = sql_assistant.storage.get_all_run_ids()
+        sql_assistant_run_ids: list[str] = sql_assistant.storage.get_all_run_ids()
         new_sql_assistant_run_id = st.sidebar.selectbox(
             "Run ID", options=sql_assistant_run_ids
         )

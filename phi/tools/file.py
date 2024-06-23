@@ -1,6 +1,5 @@
 import json
 from pathlib import Path
-from typing import Optional
 
 from phi.tools import Toolkit
 from phi.utils.log import logger
@@ -9,7 +8,7 @@ from phi.utils.log import logger
 class FileTools(Toolkit):
     def __init__(
         self,
-        base_dir: Optional[Path] = None,
+        base_dir: Path | None = None,
         save_files: bool = True,
         read_files: bool = True,
         list_files: bool = True,

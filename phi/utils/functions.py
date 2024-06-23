@@ -1,5 +1,5 @@
 import json
-from typing import Optional, Dict, Any
+from typing import Any
 
 from phi.tools.function import Function, FunctionCall
 from phi.utils.log import logger
@@ -7,15 +7,15 @@ from phi.utils.log import logger
 
 def get_function_call(
     name: str,
-    arguments: Optional[str] = None,
-    call_id: Optional[str] = None,
-    functions: Optional[Dict[str, Function]] = None,
-) -> Optional[FunctionCall]:
+    arguments: str | None = None,
+    call_id: str | None = None,
+    functions: dict[str, Function] | None = None,
+) -> FunctionCall | None:
     logger.debug(f"Getting function {name}")
     if functions is None:
         return None
 
-    function_to_call: Optional[Function] = None
+    function_to_call: Function | None = None
     if name in functions:
         function_to_call = functions[name]
     if function_to_call is None:
@@ -48,7 +48,7 @@ def get_function_call(
             return function_call
 
         try:
-            clean_arguments: Dict[str, Any] = {}
+            clean_arguments: dict[str, Any] = {}
             for k, v in _arguments.items():
                 if isinstance(v, str):
                     _v = v.strip().lower()

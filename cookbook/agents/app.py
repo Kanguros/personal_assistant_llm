@@ -1,14 +1,12 @@
-from typing import List
-
 import nest_asyncio
 import streamlit as st
+from agent import get_agent  # type: ignore
+
 from phi.assistant import Assistant
 from phi.document import Document
 from phi.document.reader.pdf import PDFReader
 from phi.document.reader.website import WebsiteReader
 from phi.utils.log import logger
-
-from agent import get_agent  # type: ignore
 
 nest_asyncio.apply()
 
@@ -243,7 +241,7 @@ def main() -> None:
                 alert = st.sidebar.info("Processing URLs...", icon="ℹ️")
                 if f"{input_url}_scraped" not in st.session_state:
                     scraper = WebsiteReader(max_links=2, max_depth=1)
-                    web_documents: List[Document] = scraper.read(input_url)
+                    web_documents: list[Document] = scraper.read(input_url)
                     if web_documents:
                         agent.knowledge_base.load_documents(web_documents, upsert=True)
                     else:
@@ -265,7 +263,7 @@ def main() -> None:
             auto_rag_name = uploaded_file.name.split(".")[0]
             if f"{auto_rag_name}_uploaded" not in st.session_state:
                 reader = PDFReader()
-                auto_rag_documents: List[Document] = reader.read(uploaded_file)
+                auto_rag_documents: list[Document] = reader.read(uploaded_file)
                 if auto_rag_documents:
                     agent.knowledge_base.load_documents(auto_rag_documents, upsert=True)
                 else:
@@ -292,7 +290,7 @@ def main() -> None:
                         )
 
     if agent.storage:
-        agent_run_ids: List[str] = agent.storage.get_all_run_ids()
+        agent_run_ids: list[str] = agent.storage.get_all_run_ids()
         new_agent_run_id = st.sidebar.selectbox("Run ID", options=agent_run_ids)
         if st.session_state["agent_run_id"] != new_agent_run_id:
             logger.info(f"---*--- Loading {llm_id} run: {new_agent_run_id} ---*---")

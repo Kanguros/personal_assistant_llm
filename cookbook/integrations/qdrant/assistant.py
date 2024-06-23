@@ -1,6 +1,6 @@
 import os
+
 import typer
-from typing import Optional
 from rich.prompt import Prompt
 
 from phi.assistant import Assistant
@@ -27,7 +27,7 @@ knowledge_base.load(recreate=True, upsert=True)
 
 
 def qdrant_assistant(user: str = "user"):
-    run_id: Optional[str] = None
+    run_id: str | None = None
 
     assistant = Assistant(
         run_id=run_id,

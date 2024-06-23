@@ -1,11 +1,10 @@
 from os import getenv
-from typing import Optional
 
 import vertexai
 from vertexai.generative_models import GenerativeModel, Part
 
 
-def multimodal_example(project: Optional[str], location: Optional[str]) -> str:
+def multimodal_example(project: str | None, location: str | None) -> str:
     # Initialize Vertex AI
     vertexai.init(project=project, location=location)
     # Load the model

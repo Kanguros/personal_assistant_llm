@@ -1,8 +1,8 @@
-from textwrap import dedent
-from typing import List
 from pathlib import Path
+from textwrap import dedent
 
 from pydantic import BaseModel, Field
+
 from phi.assistant.team import Assistant
 from phi.tools.arxiv_toolkit import ArxivToolkit
 from phi.tools.duckduckgo import DuckDuckGo
@@ -16,7 +16,7 @@ arxiv_toolkit = ArxivToolkit(
 
 
 class SearchTerms(BaseModel):
-    terms: List[str] = Field(
+    terms: list[str] = Field(
         ..., description="List of 2 search terms related to a topic."
     )
 
@@ -26,7 +26,7 @@ class ArxivSearchResult(BaseModel):
     id: str = Field(..., description="The ID of the article.")
     summary: str = Field(..., description="Summary from the article.")
     pdf_url: str = Field(..., description="Url of the PDF from the article.")
-    links: List[str] = Field(..., description="Links for the article.")
+    links: list[str] = Field(..., description="Links for the article.")
     reasoning: str = Field(
         ...,
         description="Clear description of why you chose this article from the results.",
@@ -34,7 +34,7 @@ class ArxivSearchResult(BaseModel):
 
 
 class ArxivSearchResults(BaseModel):
-    results: List[ArxivSearchResult] = Field(
+    results: list[ArxivSearchResult] = Field(
         ..., description="List of top search results."
     )
 
@@ -42,7 +42,7 @@ class ArxivSearchResults(BaseModel):
 class WebSearchResult(BaseModel):
     title: str = Field(..., description="Title of the article.")
     summary: str = Field(..., description="Summary from the article.")
-    links: List[str] = Field(..., description="Links for the article.")
+    links: list[str] = Field(..., description="Links for the article.")
     reasoning: str = Field(
         ...,
         description="Clear description of why you chose this article from the results.",
@@ -50,7 +50,7 @@ class WebSearchResult(BaseModel):
 
 
 class WebSearchResults(BaseModel):
-    results: List[WebSearchResult] = Field(
+    results: list[WebSearchResult] = Field(
         ..., description="List of top search results."
     )
 

@@ -1,13 +1,13 @@
 from enum import Enum
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
 from phi.llm.base import Message, References
-from phi.memory.db import MemoryDb
-from phi.memory.memory import Memory
-from phi.memory.manager import MemoryManager
 from phi.memory.classifier import MemoryClassifier
+from phi.memory.db import MemoryDb
+from phi.memory.manager import MemoryManager
+from phi.memory.memory import Memory
 from phi.utils.log import logger
 
 
@@ -20,25 +20,25 @@ class MemoryRetrieval(str, Enum):
 class AssistantMemory(BaseModel):
     # Messages between the user and the Assistant.
     # Note: the llm prompts are stored in the llm_messages
-    chat_history: List[Message] = []
+    chat_history: list[Message] = []
     # Prompts sent to the LLM and the LLM responses.
-    llm_messages: List[Message] = []
+    llm_messages: list[Message] = []
     # References from the vector database.
-    references: List[References] = []
+    references: list[References] = []
 
     # Create personalized memories for this user
-    db: Optional[MemoryDb] = None
-    user_id: Optional[str] = None
+    db: MemoryDb | None = None
+    user_id: str | None = None
     retrieval: MemoryRetrieval = MemoryRetrieval.last_n
-    memories: Optional[List[Memory]] = None
-    num_memories: Optional[int] = None
-    classifier: Optional[MemoryClassifier] = None
-    manager: Optional[MemoryManager] = None
+    memories: list[Memory] | None = None
+    num_memories: int | None = None
+    classifier: MemoryClassifier | None = None
+    manager: MemoryManager | None = None
     updating: bool = False
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         _memory_dict = self.model_dump(
             exclude_none=True,
             exclude={"db", "updating", "memories", "classifier", "manager"},
@@ -55,11 +55,11 @@ class AssistantMemory(BaseModel):
         """Adds a Message to the llm_messages."""
         self.llm_messages.append(message)
 
-    def add_chat_messages(self, messages: List[Message]) -> None:
+    def add_chat_messages(self, messages: list[Message]) -> None:
         """Adds a list of messages to the chat_history."""
         self.chat_history.extend(messages)
 
-    def add_llm_messages(self, messages: List[Message]) -> None:
+    def add_llm_messages(self, messages: list[Message]) -> None:
         """Adds a list of messages to the llm_messages."""
         self.llm_messages.extend(messages)
 
@@ -67,14 +67,14 @@ class AssistantMemory(BaseModel):
         """Adds references to the references list."""
         self.references.append(references)
 
-    def get_chat_history(self) -> List[Dict[str, Any]]:
+    def get_chat_history(self) -> list[dict[str, Any]]:
         """Returns the chat_history as a list of dictionaries.
 
         :return: A list of dictionaries representing the chat_history.
         """
         return [message.model_dump(exclude_none=True) for message in self.chat_history]
 
-    def get_last_n_messages(self, last_n: Optional[int] = None) -> List[Message]:
+    def get_last_n_messages(self, last_n: int | None = None) -> list[Message]:
         """Returns the last n messages in the chat_history.
 
         :param last_n: The number of messages to return from the end of the conversation.
@@ -83,11 +83,11 @@ class AssistantMemory(BaseModel):
         """
         return self.chat_history[-last_n:] if last_n else self.chat_history
 
-    def get_llm_messages(self) -> List[Dict[str, Any]]:
+    def get_llm_messages(self) -> list[dict[str, Any]]:
         """Returns the llm_messages as a list of dictionaries."""
         return [message.model_dump(exclude_none=True) for message in self.llm_messages]
 
-    def get_formatted_chat_history(self, num_messages: Optional[int] = None) -> str:
+    def get_formatted_chat_history(self, num_messages: int | None = None) -> str:
         """Returns the chat_history as a formatted string."""
 
         messages = self.get_last_n_messages(num_messages)
@@ -101,11 +101,11 @@ class AssistantMemory(BaseModel):
             history += f"{message.role.upper()}: {message.content}\n"
         return history
 
-    def get_chats(self) -> List[Tuple[Message, Message]]:
+    def get_chats(self) -> list[tuple[Message, Message]]:
         """Returns a list of tuples of user messages and LLM responses."""
 
-        all_chats: List[Tuple[Message, Message]] = []
-        current_chat: List[Message] = []
+        all_chats: list[tuple[Message, Message]] = []
+        current_chat: list[Message] = []
 
         # Make a copy of the chat_history and remove all system messages from the beginning.
         chat_history = self.chat_history.copy()
@@ -128,7 +128,7 @@ class AssistantMemory(BaseModel):
             all_chats.append((current_chat[0], current_chat[1]))
         return all_chats
 
-    def get_tool_calls(self, num_calls: Optional[int] = None) -> List[Dict[str, Any]]:
+    def get_tool_calls(self, num_calls: int | None = None) -> list[dict[str, Any]]:
         """Returns a list of tool calls from the llm_messages."""
 
         tool_calls = []
@@ -212,7 +212,7 @@ class AssistantMemory(BaseModel):
         self.load_memory()
         return response
 
-    def get_memories_for_system_prompt(self) -> Optional[str]:
+    def get_memories_for_system_prompt(self) -> str | None:
         if self.memories is None or len(self.memories) == 0:
             return None
         memory_str = "<memory_from_previous_interactions>\n"

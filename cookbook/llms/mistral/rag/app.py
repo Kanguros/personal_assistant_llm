@@ -1,14 +1,12 @@
-from typing import List
-
 import streamlit as st
+from assistant import get_mistral_assistant  # type: ignore
+
 from phi.assistant import Assistant
 from phi.document import Document
 from phi.document.reader.pdf import PDFReader
 from phi.document.reader.website import WebsiteReader
 from phi.tools.streamlit.components import reload_button_sidebar
 from phi.utils.log import logger
-
-from assistant import get_mistral_assistant  # type: ignore
 
 st.set_page_config(
     page_title="Mistral RAG",
@@ -123,7 +121,7 @@ def main() -> None:
                 alert = st.sidebar.info("Processing URLs...", icon="ℹ️")
                 if f"{input_url}_scraped" not in st.session_state:
                     scraper = WebsiteReader(max_links=10, max_depth=2)
-                    web_documents: List[Document] = scraper.read(input_url)
+                    web_documents: list[Document] = scraper.read(input_url)
                     if web_documents:
                         mistral_assistant.knowledge_base.load_documents(
                             web_documents, upsert=True
@@ -147,7 +145,7 @@ def main() -> None:
             mistral_rag_name = uploaded_file.name.split(".")[0]
             if f"{mistral_rag_name}_uploaded" not in st.session_state:
                 reader = PDFReader()
-                mistral_rag_documents: List[Document] = reader.read(uploaded_file)
+                mistral_rag_documents: list[Document] = reader.read(uploaded_file)
                 if mistral_rag_documents:
                     mistral_assistant.knowledge_base.load_documents(
                         mistral_rag_documents, upsert=True
@@ -164,7 +162,7 @@ def main() -> None:
             st.sidebar.success("Knowledge base cleared")
 
     if mistral_assistant.storage:
-        mistral_assistant_run_ids: List[str] = (
+        mistral_assistant_run_ids: list[str] = (
             mistral_assistant.storage.get_all_run_ids()
         )
         new_mistral_assistant_run_id = st.sidebar.selectbox(

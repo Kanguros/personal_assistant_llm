@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any
 
 from pydantic import BaseModel
 
@@ -8,9 +8,9 @@ from phi.document.base import Document
 class Reader(BaseModel):
     chunk: bool = True
     chunk_size: int = 3000
-    separators: List[str] = ["\n", "\n\n", "\r", "\r\n", "\n\r", "\t", " ", "  "]
+    separators: list[str] = ["\n", "\n\n", "\r", "\r\n", "\n\r", "\t", " ", "  "]
 
-    def read(self, obj: Any) -> List[Document]:
+    def read(self, obj: Any) -> list[Document]:
         raise NotImplementedError
 
     def clean_text(self, text: str) -> str:
@@ -32,12 +32,12 @@ class Reader(BaseModel):
 
         return cleaned_text
 
-    def chunk_document(self, document: Document) -> List[Document]:
+    def chunk_document(self, document: Document) -> list[Document]:
         """Chunk the document content into smaller documents"""
         content = document.content
         cleaned_content = self.clean_text(content)
         content_length = len(cleaned_content)
-        chunked_documents: List[Document] = []
+        chunked_documents: list[Document] = []
         chunk_number = 1
         chunk_meta_data = document.meta_data
 

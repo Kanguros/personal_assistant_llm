@@ -1,4 +1,3 @@
-from typing import Optional
 from time import perf_counter
 
 
@@ -6,9 +5,9 @@ class Timer:
     """Timer class for timing code execution"""
 
     def __init__(self):
-        self.start_time: Optional[float] = None
-        self.end_time: Optional[float] = None
-        self.elapsed_time: Optional[float] = None
+        self.start_time: float | None = None
+        self.end_time: float | None = None
+        self.elapsed_time: float | None = None
 
     @property
     def elapsed(self) -> float:

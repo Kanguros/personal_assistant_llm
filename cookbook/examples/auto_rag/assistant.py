@@ -1,20 +1,18 @@
-from typing import Optional
-
 from phi.assistant import Assistant
+from phi.embedder.openai import OpenAIEmbedder
 from phi.knowledge import AssistantKnowledge
 from phi.llm.openai import OpenAIChat
-from phi.tools.duckduckgo import DuckDuckGo
-from phi.embedder.openai import OpenAIEmbedder
-from phi.vectordb.pgvector import PgVector2
 from phi.storage.assistant.postgres import PgAssistantStorage
+from phi.tools.duckduckgo import DuckDuckGo
+from phi.vectordb.pgvector import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 
 
 def get_auto_rag_assistant(
     llm_model: str = "gpt-4-turbo",
-    user_id: Optional[str] = None,
-    run_id: Optional[str] = None,
+    user_id: str | None = None,
+    run_id: str | None = None,
     debug_mode: bool = True,
 ) -> Assistant:
     """Get an Auto RAG Assistant."""

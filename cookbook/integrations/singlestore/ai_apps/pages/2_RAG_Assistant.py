@@ -1,14 +1,12 @@
-from typing import List
-
 import streamlit as st
+from assistants import get_rag_assistant  # type: ignore
+
 from phi.assistant import Assistant
 from phi.document import Document
 from phi.document.reader.pdf import PDFReader
 from phi.document.reader.website import WebsiteReader
 from phi.tools.streamlit.components import reload_button_sidebar
 from phi.utils.log import logger
-
-from assistants import get_rag_assistant  # type: ignore
 
 st.set_page_config(
     page_title="RAG Assistant",
@@ -149,7 +147,7 @@ def main() -> None:
                     scraper = WebsiteReader(
                         chunk_size=chunk_size, max_links=5, max_depth=1
                     )
-                    web_documents: List[Document] = scraper.read(input_url)
+                    web_documents: list[Document] = scraper.read(input_url)
                     if web_documents:
                         rag_assistant.knowledge_base.load_documents(
                             web_documents, upsert=True
@@ -173,7 +171,7 @@ def main() -> None:
             pdf_name = uploaded_file.name.split(".")[0]
             if f"{pdf_name}_uploaded" not in st.session_state:
                 reader = PDFReader(chunk_size=chunk_size)
-                pdf_documents: List[Document] = reader.read(uploaded_file)
+                pdf_documents: list[Document] = reader.read(uploaded_file)
                 if pdf_documents:
                     rag_assistant.knowledge_base.load_documents(
                         documents=pdf_documents, upsert=True
@@ -187,7 +185,7 @@ def main() -> None:
             )
 
     if rag_assistant.storage:
-        assistant_run_ids: List[str] = rag_assistant.storage.get_all_run_ids()
+        assistant_run_ids: list[str] = rag_assistant.storage.get_all_run_ids()
         new_assistant_run_id = st.sidebar.selectbox("Run ID", options=assistant_run_ids)
         if (
             new_assistant_run_id is not None

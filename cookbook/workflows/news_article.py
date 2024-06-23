@@ -3,17 +3,16 @@ Please install dependencies using:
 pip install openai duckduckgo-search newspaper4k lxml_html_clean phidata
 """
 
-from shutil import rmtree
 from pathlib import Path
+from shutil import rmtree
 from textwrap import dedent
-from typing import Optional
 
 from pydantic import BaseModel, Field
+
 from phi.assistant import Assistant
-from phi.workflow import Workflow, Task
 from phi.tools.duckduckgo import DuckDuckGo
 from phi.tools.newspaper4k import Newspaper4k
-
+from phi.workflow import Task, Workflow
 
 articles_dir = Path(__file__).parent.parent.parent.joinpath("wip", "articles")
 if articles_dir.exists():
@@ -24,9 +23,7 @@ articles_dir.mkdir(parents=True, exist_ok=True)
 class NewsArticle(BaseModel):
     title: str = Field(..., description="Title of the article.")
     url: str = Field(..., description="Link to the article.")
-    summary: Optional[str] = Field(
-        ..., description="Summary of the article if available."
-    )
+    summary: str | None = Field(..., description="Summary of the article if available.")
 
 
 researcher = Assistant(

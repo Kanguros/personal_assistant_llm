@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Union, IO, Any
+from typing import IO, Any
 
 from phi.document.base import Document
 from phi.document.reader import Reader
@@ -9,12 +9,12 @@ from phi.utils.log import logger
 class PDFReader(Reader):
     """Reader for PDF files"""
 
-    def read(self, pdf: Union[str, Path, IO[Any]]) -> List[Document]:
+    def read(self, pdf: str | Path | IO[Any]) -> list[Document]:
         if not pdf:
             raise ValueError("No pdf provided")
 
         try:
-            from pypdf import PdfReader as DocumentReader  # noqa: F401
+            from pypdf import PdfReader as DocumentReader
         except ImportError:
             raise ImportError("`pypdf` not installed")
 
@@ -50,13 +50,13 @@ class PDFReader(Reader):
 class PDFImageReader(Reader):
     """Reader for PDF files with text and images extraction"""
 
-    def read(self, pdf: Union[str, Path, IO[Any]]) -> List[Document]:
+    def read(self, pdf: str | Path | IO[Any]) -> list[Document]:
         if not pdf:
             raise ValueError("No pdf provided")
 
         try:
             import rapidocr_onnxruntime as rapidocr
-            from pypdf import PdfReader as DocumentReader  # noqa: F401
+            from pypdf import PdfReader as DocumentReader
         except ImportError:
             raise ImportError("`pypdf` or `rapidocr_onnxruntime` not installed")
 
@@ -78,7 +78,7 @@ class PDFImageReader(Reader):
         documents = []
         for page_number, page in enumerate(doc_reader.pages, start=1):
             page_text = page.extract_text() or ""
-            images_text_list: List = []
+            images_text_list: list = []
 
             for image_object in page.images:
                 image_data = image_object.data

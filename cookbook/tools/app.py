@@ -1,10 +1,11 @@
 from textwrap import dedent
-from typing import Any, List
+from typing import Any
 
 import streamlit as st
+
 from phi.assistant import Assistant
-from phi.tools.exa import ExaTools
 from phi.tools.duckduckgo import DuckDuckGo
+from phi.tools.exa import ExaTools
 from phi.tools.yfinance import YFinanceTools
 from phi.utils.log import logger
 
@@ -51,7 +52,7 @@ def create_assistant(
         "Prefer to use bullet points for lists and tables for tabular data.",
     ]
 
-    tools: List[Any] = []
+    tools: list[Any] = []
     if web_search:
         tools.append(DuckDuckGo())
     if exa_search:

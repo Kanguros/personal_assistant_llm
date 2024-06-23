@@ -6,7 +6,6 @@ The function takes a query and returns a list of references from the knowledge b
 """
 
 import json
-from typing import List, Optional
 
 from phi.assistant import Assistant
 from phi.document import Document
@@ -23,10 +22,10 @@ knowledge_base = PDFUrlKnowledgeBase(
 # knowledge_base.load(recreate=False)
 
 
-def custom_references_function(query: str, **kwargs) -> Optional[str]:
+def custom_references_function(query: str, **kwargs) -> str | None:
     """Return a list of references from the knowledge base"""
     print(f"-*- Searching for references for query: {query}")
-    relevant_docs: List[Document] = knowledge_base.search(query=query, num_documents=5)
+    relevant_docs: list[Document] = knowledge_base.search(query=query, num_documents=5)
     if len(relevant_docs) == 0:
         return None
 

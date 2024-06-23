@@ -1,5 +1,3 @@
-from typing import Optional, Dict, List, Tuple
-
 from pydantic import BaseModel, ConfigDict
 
 
@@ -10,8 +8,8 @@ class Embedder(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def get_embedding(self, text: str) -> List[float]:
+    def get_embedding(self, text: str) -> list[float]:
         raise NotImplementedError
 
-    def get_embedding_and_usage(self, text: str) -> Tuple[List[float], Optional[Dict]]:
+    def get_embedding_and_usage(self, text: str) -> tuple[list[float], dict | None]:
         raise NotImplementedError

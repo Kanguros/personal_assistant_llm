@@ -1,14 +1,15 @@
 import json
+from collections.abc import Iterator, Mapping
 from textwrap import dedent
-from typing import Optional, List, Iterator, Dict, Any, Mapping, Union
+from typing import Any
 
 from phi.llm.base import LLM, Message
 from phi.tools.function import FunctionCall
 from phi.utils.log import logger
 from phi.utils.timer import Timer
 from phi.utils.tools import (
-    get_function_call_for_tool_call,
     extract_tool_call_from_string,
+    get_function_call_for_tool_call,
     remove_tool_calls_from_string,
 )
 
@@ -22,13 +23,13 @@ except ImportError:
 class Hermes(LLM):
     name: str = "Hermes2Pro"
     model: str = "adrienbrault/nous-hermes2pro:Q8_0"
-    host: Optional[str] = None
-    timeout: Optional[Any] = None
-    format: Optional[str] = None
-    options: Optional[Any] = None
-    keep_alive: Optional[Union[float, str]] = None
-    client_kwargs: Optional[Dict[str, Any]] = None
-    ollama_client: Optional[OllamaClient] = None
+    host: str | None = None
+    timeout: Any | None = None
+    format: str | None = None
+    options: Any | None = None
+    keep_alive: float | str | None = None
+    client_kwargs: dict[str, Any] | None = None
+    ollama_client: OllamaClient | None = None
     # Maximum number of function calls allowed across all iterations.
     function_call_limit: int = 5
     # After a tool call is run, add the user message as a reminder to the LLM
@@ -39,7 +40,7 @@ class Hermes(LLM):
         if self.ollama_client:
             return self.ollama_client
 
-        _ollama_params: Dict[str, Any] = {}
+        _ollama_params: dict[str, Any] = {}
         if self.host:
             _ollama_params["host"] = self.host
         if self.timeout:
@@ -49,8 +50,8 @@ class Hermes(LLM):
         return OllamaClient(**_ollama_params)
 
     @property
-    def api_kwargs(self) -> Dict[str, Any]:
-        kwargs: Dict[str, Any] = {}
+    def api_kwargs(self) -> dict[str, Any]:
+        kwargs: dict[str, Any] = {}
         if self.format is not None:
             kwargs["format"] = self.format
         elif self.response_format is not None:
@@ -64,7 +65,7 @@ class Hermes(LLM):
             kwargs["keep_alive"] = self.keep_alive
         return kwargs
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         _dict = super().to_dict()
         if self.host:
             _dict["host"] = self.host
@@ -76,7 +77,7 @@ class Hermes(LLM):
             _dict["response_format"] = self.response_format
         return _dict
 
-    def to_llm_message(self, message: Message) -> Dict[str, Any]:
+    def to_llm_message(self, message: Message) -> dict[str, Any]:
         msg = {
             "role": message.role,
             "content": message.content,
@@ -85,14 +86,14 @@ class Hermes(LLM):
             msg["images"] = message.model_extra.get("images")
         return msg
 
-    def invoke(self, messages: List[Message]) -> Mapping[str, Any]:
+    def invoke(self, messages: list[Message]) -> Mapping[str, Any]:
         return self.client.chat(
             model=self.model,
             messages=[self.to_llm_message(m) for m in messages],
             **self.api_kwargs,
         )
 
-    def invoke_stream(self, messages: List[Message]) -> Iterator[Mapping[str, Any]]:
+    def invoke_stream(self, messages: list[Message]) -> Iterator[Mapping[str, Any]]:
         yield from self.client.chat(
             model=self.model,
             messages=[self.to_llm_message(m) for m in messages],
@@ -105,7 +106,7 @@ class Hermes(LLM):
         # This is triggered when the function call limit is reached.
         self.format = ""
 
-    def response(self, messages: List[Message]) -> str:
+    def response(self, messages: list[Message]) -> str:
         logger.debug("---------- Hermes Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -122,7 +123,7 @@ class Hermes(LLM):
         # -*- Parse response
         response_message: Mapping[str, Any] = response.get("message")  # type: ignore
         response_role = response_message.get("role")
-        response_content: Optional[str] = response_message.get("content")
+        response_content: str | None = response_message.get("content")
 
         # -*- Create assistant message
         assistant_message = Message(
@@ -137,7 +138,7 @@ class Hermes(LLM):
                     and "</tool_call>" in response_content
                 ):
                     # List of tool calls added to the assistant message
-                    tool_calls: List[Dict[str, Any]] = []
+                    tool_calls: list[dict[str, Any]] = []
                     # Break the response into tool calls
                     tool_call_responses = response_content.split("</tool_call>")
                     for tool_call_response in tool_call_responses:
@@ -198,7 +199,7 @@ class Hermes(LLM):
             final_response = remove_tool_calls_from_string(
                 assistant_message.get_content_string()
             )
-            function_calls_to_run: List[FunctionCall] = []
+            function_calls_to_run: list[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
                 _function_call = get_function_call_for_tool_call(
                     tool_call, self.functions
@@ -271,7 +272,7 @@ class Hermes(LLM):
             return assistant_message.get_content_string()
         return "Something went wrong, please try again."
 
-    def response_stream(self, messages: List[Message]) -> Iterator[str]:
+    def response_stream(self, messages: list[Message]) -> Iterator[str]:
         logger.debug("---------- Hermes Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -290,7 +291,7 @@ class Hermes(LLM):
             # -*- Parse response
             # logger.info(f"Ollama partial response: {response}")
             # logger.info(f"Ollama partial response type: {type(response)}")
-            response_message: Optional[dict] = response.get("message")
+            response_message: dict | None = response.get("message")
             response_content = (
                 response_message.get("content") if response_message else None
             )
@@ -348,7 +349,7 @@ class Hermes(LLM):
                 and "</tool_call>" in assistant_message_content
             ):
                 # List of tool calls added to the assistant message
-                tool_calls: List[Dict[str, Any]] = []
+                tool_calls: list[dict[str, Any]] = []
                 # Break the response into tool calls
                 tool_call_responses = assistant_message_content.split("</tool_call>")
                 for tool_call_response in tool_call_responses:
@@ -407,7 +408,7 @@ class Hermes(LLM):
 
         # -*- Parse and run function call
         if assistant_message.tool_calls is not None and self.run_tools:
-            function_calls_to_run: List[FunctionCall] = []
+            function_calls_to_run: list[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
                 _function_call = get_function_call_for_tool_call(
                     tool_call, self.functions
@@ -461,7 +462,7 @@ class Hermes(LLM):
             yield from self.response_stream(messages=messages)
         logger.debug("---------- Hermes Response End ----------")
 
-    def add_original_user_message(self, messages: List[Message]) -> List[Message]:
+    def add_original_user_message(self, messages: list[Message]) -> list[Message]:
         # Add the original user message to the messages to remind the LLM of the original task
         original_user_message_content = None
         for m in messages:
@@ -477,7 +478,7 @@ class Hermes(LLM):
 
         return messages
 
-    def get_instructions_to_generate_tool_calls(self) -> List[str]:
+    def get_instructions_to_generate_tool_calls(self) -> list[str]:
         if self.functions is not None:
             return [
                 "At the very first turn you don't have <tool_results> so you shouldn't not make up the results.",
@@ -487,7 +488,7 @@ class Hermes(LLM):
             ]
         return []
 
-    def get_tool_call_prompt(self) -> Optional[str]:
+    def get_tool_call_prompt(self) -> str | None:
         if self.functions is not None and len(self.functions) > 0:
             tool_call_prompt = dedent(
                 """\
@@ -505,7 +506,7 @@ class Hermes(LLM):
             )
             tool_call_prompt += "\nHere are the available tools:"
             tool_call_prompt += "\n<tools>\n"
-            tool_definitions: List[str] = []
+            tool_definitions: list[str] = []
             for _f_name, _function in self.functions.items():
                 _function_def = _function.get_definition_for_prompt()
                 if _function_def:
@@ -524,8 +525,8 @@ class Hermes(LLM):
             return tool_call_prompt
         return None
 
-    def get_system_prompt_from_llm(self) -> Optional[str]:
+    def get_system_prompt_from_llm(self) -> str | None:
         return self.get_tool_call_prompt()
 
-    def get_instructions_from_llm(self) -> Optional[List[str]]:
+    def get_instructions_from_llm(self) -> list[str] | None:
         return self.get_instructions_to_generate_tool_calls()

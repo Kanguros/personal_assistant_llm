@@ -1,15 +1,13 @@
-from typing import List
-
 import nest_asyncio
 import streamlit as st
+from assistant import get_personalized_assistant  # type: ignore
+
 from phi.assistant import Assistant
 from phi.document import Document
 from phi.document.reader.pdf import PDFReader
 from phi.document.reader.website import WebsiteReader
 from phi.tools.streamlit.components import get_username_sidebar
 from phi.utils.log import logger
-
-from assistant import get_personalized_assistant  # type: ignore
 
 nest_asyncio.apply()
 st.set_page_config(
@@ -227,7 +225,7 @@ def main() -> None:
                 alert = st.sidebar.info("Processing URLs...", icon="ℹ️")
                 if f"{input_url}_scraped" not in st.session_state:
                     scraper = WebsiteReader(max_links=2, max_depth=1)
-                    web_documents: List[Document] = scraper.read(input_url)
+                    web_documents: list[Document] = scraper.read(input_url)
                     if web_documents:
                         personalized_assistant.knowledge_base.load_documents(
                             web_documents, upsert=True
@@ -251,7 +249,7 @@ def main() -> None:
             file_name = uploaded_file.name.split(".")[0]
             if f"{file_name}_uploaded" not in st.session_state:
                 reader = PDFReader()
-                file_documents: List[Document] = reader.read(uploaded_file)
+                file_documents: list[Document] = reader.read(uploaded_file)
                 if file_documents:
                     personalized_assistant.knowledge_base.load_documents(
                         file_documents, upsert=True
@@ -270,7 +268,7 @@ def main() -> None:
             st.sidebar.success("Knowledge base cleared")
 
     if personalized_assistant.storage:
-        assistant_run_ids: List[str] = personalized_assistant.storage.get_all_run_ids(
+        assistant_run_ids: list[str] = personalized_assistant.storage.get_all_run_ids(
             user_id=user_id
         )
         new_assistant_run_id = st.sidebar.selectbox("Run ID", options=assistant_run_ids)

@@ -1,7 +1,8 @@
 import asyncio
-from typing import List
+
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
+
 from phi.assistant import Assistant
 
 
@@ -18,7 +19,7 @@ class MovieScript(BaseModel):
         description="Genre of the movie. If not available, select action, thriller or romantic comedy.",
     )
     name: str = Field(..., description="Give a name to this movie")
-    characters: List[str] = Field(..., description="Name of characters for this movie.")
+    characters: list[str] = Field(..., description="Name of characters for this movie.")
     storyline: str = Field(
         ..., description="3 sentence storyline for the movie. Make it exciting!"
     )

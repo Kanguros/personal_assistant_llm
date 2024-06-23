@@ -1,5 +1,3 @@
-from typing import Optional
-
 from phi.tools import Toolkit
 from phi.utils.log import logger
 
@@ -14,16 +12,16 @@ except ImportError:
 class EmailTools(Toolkit):
     def __init__(
         self,
-        receiver_email: Optional[str] = None,
-        sender_name: Optional[str] = None,
-        sender_email: Optional[str] = None,
-        sender_passkey: Optional[str] = None,
+        receiver_email: str | None = None,
+        sender_name: str | None = None,
+        sender_email: str | None = None,
+        sender_passkey: str | None = None,
     ):
         super().__init__(name="email_tools")
-        self.receiver_email: Optional[str] = receiver_email
-        self.sender_name: Optional[str] = sender_name
-        self.sender_email: Optional[str] = sender_email
-        self.sender_passkey: Optional[str] = sender_passkey
+        self.receiver_email: str | None = receiver_email
+        self.sender_name: str | None = sender_name
+        self.sender_email: str | None = sender_email
+        self.sender_passkey: str | None = sender_passkey
         self.register(self.email_user)
 
     def email_user(self, subject: str, body: str) -> str:

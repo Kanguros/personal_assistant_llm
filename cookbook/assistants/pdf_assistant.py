@@ -1,8 +1,8 @@
 import typer
-from typing import Optional, List
+
 from phi.assistant import Assistant
-from phi.storage.assistant.postgres import PgAssistantStorage
 from phi.knowledge.pdf import PDFUrlKnowledgeBase
+from phi.storage.assistant.postgres import PgAssistantStorage
 from phi.vectordb.pgvector import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
@@ -18,10 +18,10 @@ storage = PgAssistantStorage(table_name="pdf_assistant", db_url=db_url)
 
 
 def pdf_assistant(new: bool = False, user: str = "user"):
-    run_id: Optional[str] = None
+    run_id: str | None = None
 
     if not new:
-        existing_run_ids: List[str] = storage.get_all_run_ids(user)
+        existing_run_ids: list[str] = storage.get_all_run_ids(user)
         if len(existing_run_ids) > 0:
             run_id = existing_run_ids[0]
 

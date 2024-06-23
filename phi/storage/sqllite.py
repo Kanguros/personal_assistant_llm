@@ -1,12 +1,12 @@
 from sqlite3 import OperationalError
-from typing import Optional, Any, List
+from typing import Any
 
 from sqlalchemy.dialects import sqlite
-from sqlalchemy.engine import create_engine, Engine
+from sqlalchemy.engine import Engine, create_engine
 from sqlalchemy.engine.row import Row
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy.schema import MetaData, Table, Column
+from sqlalchemy.schema import Column, MetaData, Table
 from sqlalchemy.sql.expression import select
 from sqlalchemy.types import String
 
@@ -20,9 +20,9 @@ class SqlAssistantStorage(AssistantStorage):
     def __init__(
         self,
         table_name: str,
-        db_url: Optional[str] = None,
-        db_file: Optional[str] = None,
-        db_engine: Optional[Engine] = None,
+        db_url: str | None = None,
+        db_file: str | None = None,
+        db_engine: Engine | None = None,
     ):
         """
         This class provides assistant storage using a sqlite database.
@@ -38,7 +38,7 @@ class SqlAssistantStorage(AssistantStorage):
         :param db_file: The database file to connect to.
         :param db_engine: The database engine to use.
         """
-        _engine: Optional[Engine] = db_engine
+        _engine: Engine | None = db_engine
         if _engine is None and db_url is not None:
             _engine = create_engine(db_url)
         elif _engine is None and db_file is not None:
@@ -51,7 +51,7 @@ class SqlAssistantStorage(AssistantStorage):
 
         # Database attributes
         self.table_name: str = table_name
-        self.db_url: Optional[str] = db_url
+        self.db_url: str | None = db_url
         self.db_engine: Engine = _engine
         self.metadata: MetaData = MetaData()
 
@@ -106,7 +106,7 @@ class SqlAssistantStorage(AssistantStorage):
             logger.debug(f"Creating table: {self.table.name}")
             self.table.create(self.db_engine)
 
-    def _read(self, session: Session, run_id: str) -> Optional[Row[Any]]:
+    def _read(self, session: Session, run_id: str) -> Row[Any] | None:
         stmt = select(self.table).where(self.table.c.run_id == run_id)
         try:
             return session.execute(stmt).first()
@@ -117,17 +117,17 @@ class SqlAssistantStorage(AssistantStorage):
             logger.warning(e)
         return None
 
-    def read(self, run_id: str) -> Optional[AssistantRun]:
+    def read(self, run_id: str) -> AssistantRun | None:
         with self.Session() as sess:
-            existing_row: Optional[Row[Any]] = self._read(session=sess, run_id=run_id)
+            existing_row: Row[Any] | None = self._read(session=sess, run_id=run_id)
             return (
                 AssistantRun.model_validate(existing_row)
                 if existing_row is not None
                 else None
             )
 
-    def get_all_run_ids(self, user_id: Optional[str] = None) -> List[str]:
-        run_ids: List[str] = []
+    def get_all_run_ids(self, user_id: str | None = None) -> list[str]:
+        run_ids: list[str] = []
         try:
             with self.Session() as sess:
                 # get all run_ids for this user
@@ -146,8 +146,8 @@ class SqlAssistantStorage(AssistantStorage):
             pass
         return run_ids
 
-    def get_all_runs(self, user_id: Optional[str] = None) -> List[AssistantRun]:
-        conversations: List[AssistantRun] = []
+    def get_all_runs(self, user_id: str | None = None) -> list[AssistantRun]:
+        conversations: list[AssistantRun] = []
         try:
             with self.Session() as sess:
                 # get all runs for this user
@@ -166,7 +166,7 @@ class SqlAssistantStorage(AssistantStorage):
             pass
         return conversations
 
-    def upsert(self, row: AssistantRun) -> Optional[AssistantRun]:
+    def upsert(self, row: AssistantRun) -> AssistantRun | None:
         """
         Create a new assistant run if it does not exist, otherwise update the existing conversation.
         """

@@ -1,13 +1,12 @@
 import importlib.util
 from pathlib import Path
-from typing import List
 
 import pytest
 
 import phi
 
 
-def get_package_python_files() -> List[Path]:
+def get_package_python_files() -> list[Path]:
     python_files = Path(phi.__file__).parent.rglob("**/*.py")
     return [file for file in python_files if file.is_file()]
 

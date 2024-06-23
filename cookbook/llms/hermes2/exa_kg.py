@@ -1,7 +1,7 @@
 from phi.assistant import Assistant
+from phi.llm.ollama import Hermes
 from phi.tools.exa import ExaTools
 from phi.tools.website import WebsiteTools
-from phi.llm.ollama import Hermes
 
 assistant = Assistant(
     llm=Hermes(model="adrienbrault/nous-hermes2pro:Q8_0"),

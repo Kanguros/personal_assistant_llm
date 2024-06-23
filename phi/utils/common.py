@@ -1,7 +1,7 @@
-from typing import Any, List, Optional, Type
+from typing import Any
 
 
-def isinstanceany(obj: Any, class_list: List[Type]) -> bool:
+def isinstanceany(obj: Any, class_list: list[type]) -> bool:
     """Returns True if obj is an instance of the classes in class_list"""
     for cls in class_list:
         if isinstance(obj, cls):
@@ -9,7 +9,7 @@ def isinstanceany(obj: Any, class_list: List[Type]) -> bool:
     return False
 
 
-def str_to_int(inp: Optional[str]) -> Optional[int]:
+def str_to_int(inp: str | None) -> int | None:
     """
     Safely converts a string value to integer.
     Args:

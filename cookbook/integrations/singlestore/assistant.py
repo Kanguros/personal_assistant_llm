@@ -1,7 +1,6 @@
-import typer
-from typing import Optional
 from os import getenv
 
+import typer
 from sqlalchemy.engine import create_engine
 
 from phi.assistant import Assistant
@@ -37,7 +36,7 @@ knowledge_base.load(recreate=False)
 
 
 def pdf_assistant(user: str = "user"):
-    run_id: Optional[str] = None
+    run_id: str | None = None
 
     assistant = Assistant(
         run_id=run_id,

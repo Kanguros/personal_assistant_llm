@@ -1,39 +1,39 @@
-from typing import Optional, List, Dict, Any
 from pathlib import Path
+from textwrap import dedent
+from typing import Any
 
 from pydantic import model_validator
-from textwrap import dedent
 
 from phi.assistant import Assistant
-from phi.utils.file import File
 from phi.tools.python import PythonTools
+from phi.utils.file import File
 from phi.utils.log import logger
 
 
 class PythonAssistant(Assistant):
     name: str = "PythonAssistant"
 
-    files: Optional[List[File]] = None
-    file_information: Optional[str] = None
+    files: list[File] | None = None
+    file_information: str | None = None
 
     add_chat_history_to_messages: bool = True
     num_history_messages: int = 6
 
-    charting_libraries: Optional[List[str]] = ["plotly", "matplotlib", "seaborn"]
+    charting_libraries: list[str] | None = ["plotly", "matplotlib", "seaborn"]
     followups: bool = False
     read_tool_call_history: bool = True
 
-    base_dir: Optional[Path] = None
+    base_dir: Path | None = None
     save_and_run: bool = True
     pip_install: bool = False
     run_code: bool = False
     list_files: bool = False
     run_files: bool = False
     read_files: bool = False
-    safe_globals: Optional[dict] = None
-    safe_locals: Optional[dict] = None
+    safe_globals: dict | None = None
+    safe_locals: dict | None = None
 
-    _python_tools: Optional[PythonTools] = None
+    _python_tools: PythonTools | None = None
 
     @model_validator(mode="after")
     def add_assistant_tools(self) -> "PythonAssistant":
@@ -72,7 +72,7 @@ class PythonAssistant(Assistant):
 
         import json
 
-        _files: Dict[str, Any] = {}
+        _files: dict[str, Any] = {}
         for f in self.files:
             if f.type in _files:
                 _files[f.type] += [f.get_metadata()]
@@ -80,7 +80,7 @@ class PythonAssistant(Assistant):
 
         return json.dumps(_files, indent=2)
 
-    def get_default_instructions(self) -> List[str]:
+    def get_default_instructions(self) -> list[str]:
         _instructions = []
 
         # Add instructions specifically from the LLM
@@ -158,7 +158,7 @@ class PythonAssistant(Assistant):
 
         return _instructions
 
-    def get_system_prompt(self, **kwargs) -> Optional[str]:
+    def get_system_prompt(self, **kwargs) -> str | None:
         """Return the system prompt for the python assistant"""
 
         logger.debug("Building the system prompt for the PythonAssistant.")

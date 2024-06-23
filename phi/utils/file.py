@@ -1,13 +1,15 @@
-from typing import List, Optional, Any
-from phi.utils.log import logger
+from typing import Any
+
 from pydantic import BaseModel
+
+from phi.utils.log import logger
 
 
 class File(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    columns: Optional[List[str]] = None
-    path: Optional[str] = None
+    name: str | None = None
+    description: str | None = None
+    columns: list[str] | None = None
+    path: str | None = None
     type: str = "FILE"
 
     def get_metadata(self) -> dict[str, Any]:

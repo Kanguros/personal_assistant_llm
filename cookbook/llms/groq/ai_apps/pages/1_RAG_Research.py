@@ -1,15 +1,14 @@
 import json
-from typing import List
 
 import streamlit as st
+from assistants import get_rag_research_assistant  # type: ignore
+
 from phi.assistant import Assistant
 from phi.document import Document
-from phi.tools.tavily import TavilyTools
 from phi.document.reader.pdf import PDFReader
 from phi.document.reader.website import WebsiteReader
+from phi.tools.tavily import TavilyTools
 from phi.utils.log import logger
-
-from assistants import get_rag_research_assistant  # type: ignore
 
 st.set_page_config(
     page_title="RAG Research Assistant",
@@ -98,7 +97,7 @@ def main() -> None:
                 alert = st.sidebar.info("Processing URLs...", icon="ℹ️")
                 if f"{input_url}_scraped" not in st.session_state:
                     scraper = WebsiteReader(chunk_size=3000, max_links=5, max_depth=1)
-                    web_documents: List[Document] = scraper.read(input_url)
+                    web_documents: list[Document] = scraper.read(input_url)
                     if web_documents:
                         research_assistant.knowledge_base.load_documents(
                             web_documents, upsert=True
@@ -122,7 +121,7 @@ def main() -> None:
             pdf_name = uploaded_file.name.split(".")[0]
             if f"{pdf_name}_uploaded" not in st.session_state:
                 reader = PDFReader(chunk_size=3000)
-                pdf_documents: List[Document] = reader.read(uploaded_file)
+                pdf_documents: list[Document] = reader.read(uploaded_file)
                 if pdf_documents:
                     research_assistant.knowledge_base.load_documents(
                         documents=pdf_documents, upsert=True
@@ -154,7 +153,7 @@ def main() -> None:
             with st.status("Searching Knowledge", expanded=True) as status:
                 with st.container():
                     kb_container = st.empty()
-                    kb_search_docs: List[Document] = (
+                    kb_search_docs: list[Document] = (
                         research_assistant.knowledge_base.search(
                             query=input_topic,
                             num_documents=num_documents,  # type: ignore

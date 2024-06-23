@@ -1,22 +1,20 @@
 import json
 from pathlib import Path
-from typing import Optional
 from textwrap import dedent
-from typing import List
 
 from phi.assistant import Assistant
-from phi.tools import Toolkit
-from phi.tools.exa import ExaTools
-from phi.tools.calculator import Calculator
-from phi.tools.duckduckgo import DuckDuckGo
-from phi.tools.yfinance import YFinanceTools
-from phi.tools.file import FileTools
-from phi.llm.openai import OpenAIChat
-from phi.knowledge import AssistantKnowledge
-from phi.embedder.openai import OpenAIEmbedder
 from phi.assistant.duckdb import DuckDbAssistant
 from phi.assistant.python import PythonAssistant
+from phi.embedder.openai import OpenAIEmbedder
+from phi.knowledge import AssistantKnowledge
+from phi.llm.openai import OpenAIChat
 from phi.storage.assistant.postgres import PgAssistantStorage
+from phi.tools import Toolkit
+from phi.tools.calculator import Calculator
+from phi.tools.duckduckgo import DuckDuckGo
+from phi.tools.exa import ExaTools
+from phi.tools.file import FileTools
+from phi.tools.yfinance import YFinanceTools
 from phi.utils.log import logger
 from phi.vectordb.pgvector import PgVector2
 
@@ -37,15 +35,15 @@ def get_agent(
     python_assistant: bool = False,
     research_assistant: bool = False,
     investment_assistant: bool = False,
-    user_id: Optional[str] = None,
-    run_id: Optional[str] = None,
+    user_id: str | None = None,
+    run_id: str | None = None,
     debug_mode: bool = True,
 ) -> Assistant:
     logger.info(f"-*- Creating {llm_id} Agent -*-")
 
     # Add tools available to the Agent
-    tools: List[Toolkit] = []
-    extra_instructions: List[str] = []
+    tools: list[Toolkit] = []
+    extra_instructions: list[str] = []
     if calculator:
         tools.append(
             Calculator(
@@ -77,7 +75,7 @@ def get_agent(
         )
 
     # Add team members available to the Agent
-    team: List[Assistant] = []
+    team: list[Assistant] = []
     if data_analyst:
         _data_analyst = DuckDbAssistant(
             name="Data Analyst",

@@ -1,13 +1,13 @@
 import json
-from typing import List, Optional, Dict, Any
+from typing import Any
 
 from phi.tools import Toolkit
 from phi.utils.log import logger
 
 try:
-    from sqlalchemy import create_engine, Engine
-    from sqlalchemy.orm import Session, sessionmaker
+    from sqlalchemy import Engine, create_engine
     from sqlalchemy.inspection import inspect
+    from sqlalchemy.orm import Session, sessionmaker
     from sqlalchemy.sql.expression import text
 except ImportError:
     raise ImportError("`sqlalchemy` not installed")
@@ -16,15 +16,15 @@ except ImportError:
 class SQLTools(Toolkit):
     def __init__(
         self,
-        db_url: Optional[str] = None,
-        db_engine: Optional[Engine] = None,
-        user: Optional[str] = None,
-        password: Optional[str] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        schema: Optional[str] = None,
-        dialect: Optional[str] = None,
-        tables: Optional[Dict[str, Any]] = None,
+        db_url: str | None = None,
+        db_engine: Engine | None = None,
+        user: str | None = None,
+        password: str | None = None,
+        host: str | None = None,
+        port: int | None = None,
+        schema: str | None = None,
+        dialect: str | None = None,
+        tables: dict[str, Any] | None = None,
         list_tables: bool = True,
         describe_table: bool = True,
         run_sql_query: bool = True,
@@ -32,7 +32,7 @@ class SQLTools(Toolkit):
         super().__init__(name="sql_tools")
 
         # Get the database engine
-        _engine: Optional[Engine] = db_engine
+        _engine: Engine | None = db_engine
         if _engine is None and db_url is not None:
             _engine = create_engine(db_url)
         elif user and password and host and port and dialect:
@@ -51,7 +51,7 @@ class SQLTools(Toolkit):
         self.Session: sessionmaker[Session] = sessionmaker(bind=self.db_engine)
 
         # Tables this toolkit can access
-        self.tables: Optional[Dict[str, Any]] = tables
+        self.tables: dict[str, Any] | None = tables
 
         # Register functions in the toolkit
         if list_tables:
@@ -96,7 +96,7 @@ class SQLTools(Toolkit):
             logger.error(f"Error getting table schema: {e}")
             return f"Error getting table schema: {e}"
 
-    def run_sql_query(self, query: str, limit: Optional[int] = 10) -> str:
+    def run_sql_query(self, query: str, limit: int | None = 10) -> str:
         """Use this function to run a SQL query and return the result.
 
         Args:
@@ -114,7 +114,7 @@ class SQLTools(Toolkit):
             logger.error(f"Error running query: {e}")
             return f"Error running query: {e}"
 
-    def run_sql(self, sql: str, limit: Optional[int] = None) -> List[dict]:
+    def run_sql(self, sql: str, limit: int | None = None) -> list[dict]:
         """Internal function to run a sql query.
 
         Args:

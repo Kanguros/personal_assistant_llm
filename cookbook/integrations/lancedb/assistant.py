@@ -1,6 +1,5 @@
 import typer
 from rich.prompt import Prompt
-from typing import Optional
 
 from phi.assistant import Assistant
 from phi.knowledge.pdf import PDFUrlKnowledgeBase
@@ -19,7 +18,7 @@ knowledge_base.load(recreate=False)
 
 
 def pdf_assistant(user: str = "user"):
-    run_id: Optional[str] = None
+    run_id: str | None = None
 
     assistant = Assistant(
         run_id=run_id,

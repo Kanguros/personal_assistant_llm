@@ -1,25 +1,25 @@
-from typing import List, Any, Optional, cast
+from typing import Any, cast
 
 from pydantic import BaseModel, ConfigDict
 
 from phi.llm.base import LLM, Message
-from phi.memory.memory import Memory
 from phi.memory.db import MemoryDb
+from phi.memory.memory import Memory
 from phi.memory.row import MemoryRow
 from phi.utils.log import logger
 
 
 class MemoryManager(BaseModel):
-    llm: Optional[LLM] = None
-    user_id: Optional[str] = None
+    llm: LLM | None = None
+    user_id: str | None = None
 
     # Provide the system prompt for the manager as a string
-    system_prompt: Optional[str] = None
+    system_prompt: str | None = None
     # Memory Database
-    db: Optional[MemoryDb] = None
+    db: MemoryDb | None = None
 
     # Do not set the input message here, it will be set by the run method
-    input_message: Optional[str] = None
+    input_message: str | None = None
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -29,7 +29,7 @@ class MemoryManager(BaseModel):
         self.llm.add_tool(self.delete_memory)
         self.llm.add_tool(self.clear_memory)
 
-    def get_existing_memories(self) -> Optional[List[MemoryRow]]:
+    def get_existing_memories(self) -> list[MemoryRow] | None:
         if self.db is None:
             return None
 
@@ -110,7 +110,7 @@ class MemoryManager(BaseModel):
             logger.warning(f"Error clearing memory in db: {e}")
             return f"Error clearing memory: {e}"
 
-    def get_system_prompt(self) -> Optional[str]:
+    def get_system_prompt(self) -> str | None:
         # If the system_prompt is provided, use it
         if self.system_prompt is not None:
             return self.system_prompt
@@ -146,7 +146,7 @@ class MemoryManager(BaseModel):
 
     def run(
         self,
-        message: Optional[str] = None,
+        message: str | None = None,
         **kwargs: Any,
     ) -> str:
         logger.debug("*********** MemoryManager Start ***********")
@@ -155,7 +155,7 @@ class MemoryManager(BaseModel):
         self.update_llm()
 
         # -*- Prepare the List of messages sent to the LLM
-        llm_messages: List[Message] = []
+        llm_messages: list[Message] = []
 
         # Create the system prompt message
         system_prompt_message = Message(role="system", content=self.get_system_prompt())

@@ -1,35 +1,36 @@
-from typing import List, Optional, Iterator, Dict, Any
+from collections.abc import Iterator
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
 from phi.document import Document
 from phi.document.reader import Reader
-from phi.vectordb import VectorDb
 from phi.utils.log import logger
+from phi.vectordb import VectorDb
 
 
 class AssistantKnowledge(BaseModel):
     """Base class for LLM knowledge base"""
 
     # Reader to read the documents
-    reader: Optional[Reader] = None
+    reader: Reader | None = None
     # Vector db to store the knowledge base
-    vector_db: Optional[VectorDb] = None
+    vector_db: VectorDb | None = None
     # Number of relevant documents to return on search
     num_documents: int = 2
     # Number of documents to optimize the vector db on
-    optimize_on: Optional[int] = 1000
+    optimize_on: int | None = 1000
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     @property
-    def document_lists(self) -> Iterator[List[Document]]:
+    def document_lists(self) -> Iterator[list[Document]]:
         """Iterator that yields lists of documents in the knowledge base
         Each object yielded by the iterator is a list of documents.
         """
         raise NotImplementedError
 
-    def search(self, query: str, num_documents: Optional[int] = None) -> List[Document]:
+    def search(self, query: str, num_documents: int | None = None) -> list[Document]:
         """Returns relevant documents matching the query"""
         try:
             if self.vector_db is None:
@@ -93,7 +94,7 @@ class AssistantKnowledge(BaseModel):
 
     def load_documents(
         self,
-        documents: List[Document],
+        documents: list[Document],
         upsert: bool = False,
         skip_existing: bool = True,
     ) -> None:
@@ -152,7 +153,7 @@ class AssistantKnowledge(BaseModel):
         )
 
     def load_dict(
-        self, document: Dict[str, Any], upsert: bool = False, skip_existing: bool = True
+        self, document: dict[str, Any], upsert: bool = False, skip_existing: bool = True
     ) -> None:
         """Load a dictionary representation of a document to the knowledge base
 

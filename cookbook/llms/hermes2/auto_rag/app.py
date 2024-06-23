@@ -1,17 +1,16 @@
-from typing import List
+from logging import getLogger
 
 import streamlit as st
+from assistant import get_hermes_assistant  # type: ignore
+
 from phi.assistant import Assistant
 from phi.document import Document
 from phi.document.reader.pdf import PDFReader
 from phi.tools.streamlit.components import (
     check_password,
-    reload_button_sidebar,
     get_username_sidebar,
+    reload_button_sidebar,
 )
-
-from assistant import get_hermes_assistant  # type: ignore
-from logging import getLogger
 
 logger = getLogger(__name__)
 
@@ -124,7 +123,7 @@ def main() -> None:
             auto_rag_name = uploaded_file.name.split(".")[0]
             if f"{auto_rag_name}_uploaded" not in st.session_state:
                 reader = PDFReader()
-                auto_rag_documents: List[Document] = reader.read(uploaded_file)
+                auto_rag_documents: list[Document] = reader.read(uploaded_file)
                 if auto_rag_documents:
                     assistant.knowledge_base.load_documents(
                         auto_rag_documents, upsert=True
@@ -135,7 +134,7 @@ def main() -> None:
             alert.empty()
 
     if assistant.storage:
-        assistant_run_ids: List[str] = assistant.storage.get_all_run_ids(
+        assistant_run_ids: list[str] = assistant.storage.get_all_run_ids(
             user_id=username
         )
         new_assistant_run_id = st.sidebar.selectbox("Run ID", options=assistant_run_ids)

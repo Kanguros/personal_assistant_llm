@@ -1,13 +1,12 @@
-import runpy
 import functools
+import runpy
 from pathlib import Path
-from typing import Optional
 
 from phi.tools import Toolkit
 from phi.utils.log import logger
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def warn() -> None:
     logger.warning(
         "PythonTools can run arbitrary code, please provide human supervision."
@@ -17,15 +16,15 @@ def warn() -> None:
 class PythonTools(Toolkit):
     def __init__(
         self,
-        base_dir: Optional[Path] = None,
+        base_dir: Path | None = None,
         save_and_run: bool = True,
         pip_install: bool = False,
         run_code: bool = False,
         list_files: bool = False,
         run_files: bool = False,
         read_files: bool = False,
-        safe_globals: Optional[dict] = None,
-        safe_locals: Optional[dict] = None,
+        safe_globals: dict | None = None,
+        safe_locals: dict | None = None,
     ):
         super().__init__(name="python_tools")
 
@@ -52,7 +51,7 @@ class PythonTools(Toolkit):
         self,
         file_name: str,
         code: str,
-        variable_to_return: Optional[str] = None,
+        variable_to_return: str | None = None,
         overwrite: bool = True,
     ) -> str:
         """This function saves Python code to a file called `file_name` and then runs it.
@@ -89,13 +88,13 @@ class PythonTools(Toolkit):
                 logger.debug(f"Variable {variable_to_return} value: {variable_value}")
                 return str(variable_value)
             else:
-                return f"successfully ran {str(file_path)}"
+                return f"successfully ran {file_path!s}"
         except Exception as e:
             logger.error(f"Error saving and running code: {e}")
             return f"Error saving and running code: {e}"
 
     def run_python_file_return_variable(
-        self, file_name: str, variable_to_return: Optional[str] = None
+        self, file_name: str, variable_to_return: str | None = None
     ) -> str:
         """This function runs code in a Python file.
         If successful, returns the value of `variable_to_return` if provided otherwise returns a success message.
@@ -120,7 +119,7 @@ class PythonTools(Toolkit):
                 logger.debug(f"Variable {variable_to_return} value: {variable_value}")
                 return str(variable_value)
             else:
-                return f"successfully ran {str(file_path)}"
+                return f"successfully ran {file_path!s}"
         except Exception as e:
             logger.error(f"Error running file: {e}")
             return f"Error running file: {e}"
@@ -153,9 +152,7 @@ class PythonTools(Toolkit):
             logger.error(f"Error reading files: {e}")
             return f"Error reading files: {e}"
 
-    def run_python_code(
-        self, code: str, variable_to_return: Optional[str] = None
-    ) -> str:
+    def run_python_code(self, code: str, variable_to_return: str | None = None) -> str:
         """This function to runs Python code in the current environment.
         If successful, returns the value of `variable_to_return` if provided otherwise returns a success message.
         If failed, returns an error message.
@@ -196,8 +193,8 @@ class PythonTools(Toolkit):
             warn()
 
             logger.debug(f"Installing package {package_name}")
-            import sys
             import subprocess
+            import sys
 
             subprocess.check_call(
                 [sys.executable, "-m", "pip", "install", package_name]

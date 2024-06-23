@@ -1,16 +1,18 @@
+from collections.abc import Iterator
+from typing import Any
+
 import httpx
-from typing import Optional, List, Iterator, Dict, Any, Union, Tuple
 
 from phi.llm.base import LLM, Message
 from phi.tools.function import FunctionCall
+from phi.utils.functions import get_function_call
 from phi.utils.log import logger
 from phi.utils.timer import Timer
-from phi.utils.functions import get_function_call
 from phi.utils.tools import get_function_call_for_tool_call
 
 try:
-    from openai import OpenAI as OpenAIClient, AsyncOpenAI as AsyncOpenAIClient
-    from openai.types.completion_usage import CompletionUsage
+    from openai import AsyncOpenAI as AsyncOpenAIClient
+    from openai import OpenAI as OpenAIClient
     from openai.types.chat.chat_completion import ChatCompletion
     from openai.types.chat.chat_completion_chunk import (
         ChatCompletionChunk,
@@ -20,11 +22,14 @@ try:
     )
     from openai.types.chat.chat_completion_message import (
         ChatCompletionMessage,
+    )
+    from openai.types.chat.chat_completion_message import (
         FunctionCall as ChatCompletionFunctionCall,
     )
     from openai.types.chat.chat_completion_message_tool_call import (
         ChatCompletionMessageToolCall,
     )
+    from openai.types.completion_usage import CompletionUsage
 except ImportError:
     logger.error("`openai` not installed")
     raise
@@ -34,36 +39,36 @@ class OpenAIChat(LLM):
     name: str = "OpenAIChat"
     model: str = "gpt-4o"
     # -*- Request parameters
-    frequency_penalty: Optional[float] = None
-    logit_bias: Optional[Any] = None
-    logprobs: Optional[bool] = None
-    max_tokens: Optional[int] = None
-    presence_penalty: Optional[float] = None
-    response_format: Optional[Dict[str, Any]] = None
-    seed: Optional[int] = None
-    stop: Optional[Union[str, List[str]]] = None
-    temperature: Optional[float] = None
-    top_logprobs: Optional[int] = None
-    user: Optional[str] = None
-    top_p: Optional[float] = None
-    extra_headers: Optional[Any] = None
-    extra_query: Optional[Any] = None
-    request_params: Optional[Dict[str, Any]] = None
+    frequency_penalty: float | None = None
+    logit_bias: Any | None = None
+    logprobs: bool | None = None
+    max_tokens: int | None = None
+    presence_penalty: float | None = None
+    response_format: dict[str, Any] | None = None
+    seed: int | None = None
+    stop: str | list[str] | None = None
+    temperature: float | None = None
+    top_logprobs: int | None = None
+    user: str | None = None
+    top_p: float | None = None
+    extra_headers: Any | None = None
+    extra_query: Any | None = None
+    request_params: dict[str, Any] | None = None
     # -*- Client parameters
-    api_key: Optional[str] = None
-    organization: Optional[str] = None
-    base_url: Optional[Union[str, httpx.URL]] = None
-    timeout: Optional[float] = None
-    max_retries: Optional[int] = None
-    default_headers: Optional[Any] = None
-    default_query: Optional[Any] = None
-    http_client: Optional[httpx.Client] = None
-    client_params: Optional[Dict[str, Any]] = None
+    api_key: str | None = None
+    organization: str | None = None
+    base_url: str | httpx.URL | None = None
+    timeout: float | None = None
+    max_retries: int | None = None
+    default_headers: Any | None = None
+    default_query: Any | None = None
+    http_client: httpx.Client | None = None
+    client_params: dict[str, Any] | None = None
     # -*- Provide the OpenAI client manually
-    client: Optional[OpenAIClient] = None
-    async_client: Optional[AsyncOpenAIClient] = None
+    client: OpenAIClient | None = None
+    async_client: AsyncOpenAIClient | None = None
     # Deprecated: will be removed in v3
-    openai_client: Optional[OpenAIClient] = None
+    openai_client: OpenAIClient | None = None
 
     def get_client(self) -> OpenAIClient:
         if self.client:
@@ -72,7 +77,7 @@ class OpenAIChat(LLM):
         if self.openai_client:
             return self.openai_client
 
-        _client_params: Dict[str, Any] = {}
+        _client_params: dict[str, Any] = {}
         if self.api_key:
             _client_params["api_key"] = self.api_key
         if self.organization:
@@ -97,7 +102,7 @@ class OpenAIChat(LLM):
         if self.async_client:
             return self.async_client
 
-        _client_params: Dict[str, Any] = {}
+        _client_params: dict[str, Any] = {}
         if self.api_key:
             _client_params["api_key"] = self.api_key
         if self.organization:
@@ -123,8 +128,8 @@ class OpenAIChat(LLM):
         return AsyncOpenAIClient(**_client_params)
 
     @property
-    def api_kwargs(self) -> Dict[str, Any]:
-        _request_params: Dict[str, Any] = {}
+    def api_kwargs(self) -> dict[str, Any]:
+        _request_params: dict[str, Any] = {}
         if self.frequency_penalty:
             _request_params["frequency_penalty"] = self.frequency_penalty
         if self.logit_bias:
@@ -163,7 +168,7 @@ class OpenAIChat(LLM):
             _request_params.update(self.request_params)
         return _request_params
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         _dict = super().to_dict()
         if self.frequency_penalty:
             _dict["frequency_penalty"] = self.frequency_penalty
@@ -201,21 +206,21 @@ class OpenAIChat(LLM):
                 _dict["tool_choice"] = self.tool_choice
         return _dict
 
-    def invoke(self, messages: List[Message]) -> ChatCompletion:
+    def invoke(self, messages: list[Message]) -> ChatCompletion:
         return self.get_client().chat.completions.create(
             model=self.model,
             messages=[m.to_dict() for m in messages],  # type: ignore
             **self.api_kwargs,
         )
 
-    async def ainvoke(self, messages: List[Message]) -> Any:
+    async def ainvoke(self, messages: list[Message]) -> Any:
         return await self.get_async_client().chat.completions.create(
             model=self.model,
             messages=[m.to_dict() for m in messages],  # type: ignore
             **self.api_kwargs,
         )
 
-    def invoke_stream(self, messages: List[Message]) -> Iterator[ChatCompletionChunk]:
+    def invoke_stream(self, messages: list[Message]) -> Iterator[ChatCompletionChunk]:
         yield from self.get_client().chat.completions.create(
             model=self.model,
             messages=[m.to_dict() for m in messages],  # type: ignore
@@ -223,7 +228,7 @@ class OpenAIChat(LLM):
             **self.api_kwargs,
         )  # type: ignore
 
-    async def ainvoke_stream(self, messages: List[Message]) -> Any:
+    async def ainvoke_stream(self, messages: list[Message]) -> Any:
         async_stream = await self.get_async_client().chat.completions.create(
             model=self.model,
             messages=[m.to_dict() for m in messages],  # type: ignore
@@ -234,8 +239,8 @@ class OpenAIChat(LLM):
             yield chunk
 
     def run_function(
-        self, function_call: Dict[str, Any]
-    ) -> Tuple[Message, Optional[FunctionCall]]:
+        self, function_call: dict[str, Any]
+    ) -> tuple[Message, FunctionCall | None]:
         _function_name = function_call.get("name")
         _function_arguments_str = function_call.get("arguments")
         if _function_name is not None:
@@ -287,7 +292,7 @@ class OpenAIChat(LLM):
             return _function_call_message, _function_call
         return Message(role="function", content="Function name is None."), None
 
-    def response(self, messages: List[Message]) -> str:
+    def response(self, messages: list[Message]) -> str:
         logger.debug("---------- OpenAI Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -304,11 +309,11 @@ class OpenAIChat(LLM):
         # -*- Parse response
         response_message: ChatCompletionMessage = response.choices[0].message
         response_role = response_message.role
-        response_content: Optional[str] = response_message.content
-        response_function_call: Optional[ChatCompletionFunctionCall] = (
+        response_content: str | None = response_message.content
+        response_function_call: ChatCompletionFunctionCall | None = (
             response_message.function_call
         )
-        response_tool_calls: Optional[List[ChatCompletionMessageToolCall]] = (
+        response_tool_calls: list[ChatCompletionMessageToolCall] | None = (
             response_message.tool_calls
         )
 
@@ -330,7 +335,7 @@ class OpenAIChat(LLM):
         self.metrics["response_times"].append(response_timer.elapsed)
 
         # Add token usage to metrics
-        response_usage: Optional[CompletionUsage] = response.usage
+        response_usage: CompletionUsage | None = response.usage
         prompt_tokens = (
             response_usage.prompt_tokens if response_usage is not None else None
         )
@@ -384,7 +389,7 @@ class OpenAIChat(LLM):
                 return final_response
             elif assistant_message.tool_calls is not None:
                 final_response = ""
-                function_calls_to_run: List[FunctionCall] = []
+                function_calls_to_run: list[FunctionCall] = []
                 for tool_call in assistant_message.tool_calls:
                     _tool_call_id = tool_call.get("id")
                     _function_call = get_function_call_for_tool_call(
@@ -431,7 +436,7 @@ class OpenAIChat(LLM):
             return assistant_message.get_content_string()
         return "Something went wrong, please try again."
 
-    async def aresponse(self, messages: List[Message]) -> str:
+    async def aresponse(self, messages: list[Message]) -> str:
         logger.debug("---------- OpenAI Async Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -448,11 +453,11 @@ class OpenAIChat(LLM):
         # -*- Parse response
         response_message: ChatCompletionMessage = response.choices[0].message
         response_role = response_message.role
-        response_content: Optional[str] = response_message.content
-        response_function_call: Optional[ChatCompletionFunctionCall] = (
+        response_content: str | None = response_message.content
+        response_function_call: ChatCompletionFunctionCall | None = (
             response_message.function_call
         )
-        response_tool_calls: Optional[List[ChatCompletionMessageToolCall]] = (
+        response_tool_calls: list[ChatCompletionMessageToolCall] | None = (
             response_message.tool_calls
         )
 
@@ -474,7 +479,7 @@ class OpenAIChat(LLM):
         self.metrics["response_times"].append(response_timer.elapsed)
 
         # Add token usage to metrics
-        response_usage: Optional[CompletionUsage] = response.usage
+        response_usage: CompletionUsage | None = response.usage
         prompt_tokens = (
             response_usage.prompt_tokens if response_usage is not None else None
         )
@@ -528,7 +533,7 @@ class OpenAIChat(LLM):
                 return final_response
             elif assistant_message.tool_calls is not None:
                 final_response = ""
-                function_calls_to_run: List[FunctionCall] = []
+                function_calls_to_run: list[FunctionCall] = []
                 for tool_call in assistant_message.tool_calls:
                     _tool_call_id = tool_call.get("id")
                     _function_call = get_function_call_for_tool_call(
@@ -575,7 +580,7 @@ class OpenAIChat(LLM):
             return assistant_message.get_content_string()
         return "Something went wrong, please try again."
 
-    def generate(self, messages: List[Message]) -> Dict:
+    def generate(self, messages: list[Message]) -> dict:
         logger.debug("---------- OpenAI Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -592,11 +597,11 @@ class OpenAIChat(LLM):
         # -*- Parse response
         response_message: ChatCompletionMessage = response.choices[0].message
         response_role = response_message.role
-        response_content: Optional[str] = response_message.content
-        response_function_call: Optional[ChatCompletionFunctionCall] = (
+        response_content: str | None = response_message.content
+        response_function_call: ChatCompletionFunctionCall | None = (
             response_message.function_call
         )
-        response_tool_calls: Optional[List[ChatCompletionMessageToolCall]] = (
+        response_tool_calls: list[ChatCompletionMessageToolCall] | None = (
             response_message.tool_calls
         )
 
@@ -618,7 +623,7 @@ class OpenAIChat(LLM):
         self.metrics["response_times"].append(response_timer.elapsed)
 
         # Add token usage to metrics
-        response_usage: Optional[CompletionUsage] = response.usage
+        response_usage: CompletionUsage | None = response.usage
         prompt_tokens = (
             response_usage.prompt_tokens if response_usage is not None else None
         )
@@ -656,7 +661,7 @@ class OpenAIChat(LLM):
         logger.debug("---------- OpenAI Response End ----------")
         return response_message_dict
 
-    def response_stream(self, messages: List[Message]) -> Iterator[str]:
+    def response_stream(self, messages: list[Message]) -> Iterator[str]:
         logger.debug("---------- OpenAI Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -665,7 +670,7 @@ class OpenAIChat(LLM):
         assistant_message_content = ""
         assistant_message_function_name = ""
         assistant_message_function_arguments_str = ""
-        assistant_message_tool_calls: Optional[List[ChoiceDeltaToolCall]] = None
+        assistant_message_tool_calls: list[ChoiceDeltaToolCall] | None = None
         completion_tokens = 0
         time_to_first_token = None
         response_timer = Timer()
@@ -673,9 +678,9 @@ class OpenAIChat(LLM):
         for response in self.invoke_stream(messages=messages):
             # logger.debug(f"OpenAI response type: {type(response)}")
             # logger.debug(f"OpenAI response: {response}")
-            response_content: Optional[str] = None
-            response_function_call: Optional[ChoiceDeltaFunctionCall] = None
-            response_tool_calls: Optional[List[ChoiceDeltaToolCall]] = None
+            response_content: str | None = None
+            response_function_call: ChoiceDeltaFunctionCall | None = None
+            response_tool_calls: list[ChoiceDeltaToolCall] | None = None
             if len(response.choices) > 0:
                 # -*- Parse response
                 response_delta: ChoiceDelta = response.choices[0].delta
@@ -731,7 +736,7 @@ class OpenAIChat(LLM):
         # -*- Add tool calls to assistant message
         if assistant_message_tool_calls is not None:
             # Build tool calls
-            tool_calls: List[Dict[str, Any]] = []
+            tool_calls: list[dict[str, Any]] = []
             for _tool_call in assistant_message_tool_calls:
                 _index = _tool_call.index
                 _tool_call_id = _tool_call.id
@@ -859,7 +864,7 @@ class OpenAIChat(LLM):
                 # -*- Yield new response using result of function call
                 yield from self.response_stream(messages=messages)
             elif assistant_message.tool_calls is not None:
-                function_calls_to_run: List[FunctionCall] = []
+                function_calls_to_run: list[FunctionCall] = []
                 for tool_call in assistant_message.tool_calls:
                     _tool_call_id = tool_call.get("id")
                     _function_call = get_function_call_for_tool_call(
@@ -906,7 +911,7 @@ class OpenAIChat(LLM):
                 yield from self.response_stream(messages=messages)
         logger.debug("---------- OpenAI Response End ----------")
 
-    async def aresponse_stream(self, messages: List[Message]) -> Any:
+    async def aresponse_stream(self, messages: list[Message]) -> Any:
         logger.debug("---------- OpenAI Async Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -915,7 +920,7 @@ class OpenAIChat(LLM):
         assistant_message_content = ""
         assistant_message_function_name = ""
         assistant_message_function_arguments_str = ""
-        assistant_message_tool_calls: Optional[List[ChoiceDeltaToolCall]] = None
+        assistant_message_tool_calls: list[ChoiceDeltaToolCall] | None = None
         completion_tokens = 0
         response_timer = Timer()
         response_timer.start()
@@ -923,9 +928,9 @@ class OpenAIChat(LLM):
         async for response in async_stream:
             # logger.debug(f"OpenAI response type: {type(response)}")
             # logger.debug(f"OpenAI response: {response}")
-            response_content: Optional[str] = None
-            response_function_call: Optional[ChoiceDeltaFunctionCall] = None
-            response_tool_calls: Optional[List[ChoiceDeltaToolCall]] = None
+            response_content: str | None = None
+            response_function_call: ChoiceDeltaFunctionCall | None = None
+            response_tool_calls: list[ChoiceDeltaToolCall] | None = None
             if len(response.choices) > 0:
                 # -*- Parse response
                 response_delta: ChoiceDelta = response.choices[0].delta
@@ -971,7 +976,7 @@ class OpenAIChat(LLM):
         # -*- Add tool calls to assistant message
         if assistant_message_tool_calls is not None:
             # Build tool calls
-            tool_calls: List[Dict[str, Any]] = []
+            tool_calls: list[dict[str, Any]] = []
             for _tool_call in assistant_message_tool_calls:
                 _index = _tool_call.index
                 _tool_call_id = _tool_call.id
@@ -1082,7 +1087,7 @@ class OpenAIChat(LLM):
                     yield fc
                 # yield from self.response_stream(messages=messages)
             elif assistant_message.tool_calls is not None:
-                function_calls_to_run: List[FunctionCall] = []
+                function_calls_to_run: list[FunctionCall] = []
                 for tool_call in assistant_message.tool_calls:
                     _tool_call_id = tool_call.get("id")
                     _function_call = get_function_call_for_tool_call(
@@ -1132,7 +1137,7 @@ class OpenAIChat(LLM):
                 # yield from self.response_stream(messages=messages)
         logger.debug("---------- OpenAI Async Response End ----------")
 
-    def generate_stream(self, messages: List[Message]) -> Iterator[Dict]:
+    def generate_stream(self, messages: list[Message]) -> Iterator[dict]:
         logger.debug("---------- OpenAI Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -1141,7 +1146,7 @@ class OpenAIChat(LLM):
         assistant_message_content = ""
         assistant_message_function_name = ""
         assistant_message_function_arguments_str = ""
-        assistant_message_tool_calls: Optional[List[ChoiceDeltaToolCall]] = None
+        assistant_message_tool_calls: list[ChoiceDeltaToolCall] | None = None
         completion_tokens = 0
         response_timer = Timer()
         response_timer.start()
@@ -1154,12 +1159,12 @@ class OpenAIChat(LLM):
             response_delta: ChoiceDelta = response.choices[0].delta
 
             # -*- Read content
-            response_content: Optional[str] = response_delta.content
+            response_content: str | None = response_delta.content
             if response_content is not None:
                 assistant_message_content += response_content
 
             # -*- Parse function call
-            response_function_call: Optional[ChoiceDeltaFunctionCall] = (
+            response_function_call: ChoiceDeltaFunctionCall | None = (
                 response_delta.function_call
             )
             if response_function_call is not None:
@@ -1171,7 +1176,7 @@ class OpenAIChat(LLM):
                     assistant_message_function_arguments_str += _function_args_stream
 
             # -*- Parse tool calls
-            response_tool_calls: Optional[List[ChoiceDeltaToolCall]] = (
+            response_tool_calls: list[ChoiceDeltaToolCall] | None = (
                 response_delta.tool_calls
             )
             if response_tool_calls is not None:
@@ -1198,7 +1203,7 @@ class OpenAIChat(LLM):
         # -*- Add tool calls to assistant message
         if assistant_message_tool_calls is not None:
             # Build tool calls
-            tool_calls: List[Dict[str, Any]] = []
+            tool_calls: list[dict[str, Any]] = []
             for tool_call in assistant_message_tool_calls:
                 _index = tool_call.index
                 _tool_call_id = tool_call.id

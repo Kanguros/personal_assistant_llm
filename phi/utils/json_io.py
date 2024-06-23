@@ -1,7 +1,6 @@
 import json
-from datetime import datetime, date
+from datetime import date, datetime
 from pathlib import Path
-from typing import Optional, Dict, Union, List
 
 from phi.utils.log import logger
 
@@ -17,16 +16,14 @@ class CustomJSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 
 
-def read_json_file(file_path: Optional[Path]) -> Optional[Union[Dict, List]]:
+def read_json_file(file_path: Path | None) -> dict | list | None:
     if file_path is not None and file_path.exists() and file_path.is_file():
         logger.debug(f"Reading {file_path}")
         return json.loads(file_path.read_text())
     return None
 
 
-def write_json_file(
-    file_path: Optional[Path], data: Optional[Union[Dict, List]], **kwargs
-) -> None:
+def write_json_file(file_path: Path | None, data: dict | list | None, **kwargs) -> None:
     if file_path is not None and data is not None:
         logger.debug(f"Writing {file_path}")
         file_path.write_text(

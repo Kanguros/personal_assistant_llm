@@ -1,6 +1,5 @@
 import json
 from pathlib import Path
-from typing import List
 
 from phi.document.base import Document
 from phi.document.reader import Reader
@@ -12,7 +11,7 @@ class JSONReader(Reader):
 
     chunk: bool = False
 
-    def read(self, path: Path) -> List[Document]:
+    def read(self, path: Path) -> list[Document]:
         if not path:
             raise ValueError("No path provided")
 

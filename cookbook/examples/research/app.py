@@ -1,17 +1,14 @@
 import json
-from typing import Optional
 
 import streamlit as st
-
 from assistants import (
     SearchTerms,
-    search_term_generator,
     arxiv_search_assistant,
+    arxiv_toolkit,
     exa_search_assistant,
     research_editor,
-    arxiv_toolkit,
-)  # type: ignore
-
+    search_term_generator,
+)
 
 st.set_page_config(
     page_title="Research Workflow",
@@ -66,7 +63,7 @@ def main() -> None:
     if "topic" in st.session_state:
         report_topic = st.session_state["topic"]
 
-        search_terms: Optional[SearchTerms] = None
+        search_terms: SearchTerms | None = None
         with st.status("Generating Search Terms", expanded=True) as status:
             with st.container():
                 search_terms_container = st.empty()
@@ -87,8 +84,8 @@ def main() -> None:
             st.write("Sorry report generation failed. Please try again.")
             return
 
-        exa_content: Optional[str] = None
-        arxiv_content: Optional[str] = None
+        exa_content: str | None = None
+        arxiv_content: str | None = None
 
         if search_exa:
             with st.status("Searching Exa", expanded=True) as status:

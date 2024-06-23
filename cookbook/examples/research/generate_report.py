@@ -1,16 +1,13 @@
-from typing import List
-
-from rich.pretty import pprint
-
 from assistants import (
-    SearchTerms,
     ArxivSearchResults,
-    search_term_generator,
+    SearchTerms,
     arxiv_search_assistant,
+    arxiv_toolkit,
     exa_search_assistant,
     research_editor,
-    arxiv_toolkit,
-)  # noqa
+    search_term_generator,
+)
+from rich.pretty import pprint
 
 # Topic to generate a report on
 topic = "Latest AI in Healthcare Research"
@@ -20,7 +17,7 @@ search_terms: SearchTerms = search_term_generator.run(topic)  # type: ignore
 pprint(search_terms)
 
 # Generate a list of search results
-arxiv_search_results: List[ArxivSearchResults] = []
+arxiv_search_results: list[ArxivSearchResults] = []
 for search_term in search_terms.terms:
     search_results: ArxivSearchResults = arxiv_search_assistant.run(search_term)  # type: ignore
     arxiv_search_results.append(search_results)

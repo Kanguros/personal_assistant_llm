@@ -1,19 +1,17 @@
 import json
-from typing import Optional
-from textwrap import dedent
 from pathlib import Path
+from textwrap import dedent
 
 from phi.assistant import Assistant
-from phi.tools.sql import SQLTools
-from phi.tools.file import FileTools
-from phi.llm.openai import OpenAIChat
 from phi.embedder.openai import OpenAIEmbedder
+from phi.knowledge.combined import CombinedKnowledgeBase
 from phi.knowledge.json import JSONKnowledgeBase
 from phi.knowledge.text import TextKnowledgeBase
-from phi.knowledge.combined import CombinedKnowledgeBase
-from phi.vectordb.pgvector import PgVector2
+from phi.llm.openai import OpenAIChat
 from phi.storage.assistant.postgres import PgAssistantStorage
-
+from phi.tools.file import FileTools
+from phi.tools.sql import SQLTools
+from phi.vectordb.pgvector import PgVector2
 
 # ************* Database Connection *************
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
@@ -93,8 +91,8 @@ semantic_model = {
 
 
 def get_sql_assistant(
-    run_id: Optional[str] = None,
-    user_id: Optional[str] = None,
+    run_id: str | None = None,
+    user_id: str | None = None,
     debug_mode: bool = True,
 ) -> Assistant:
     """Returns a Sql Assistant."""

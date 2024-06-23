@@ -1,4 +1,6 @@
-from typing import Any, Dict, Optional, Callable, get_type_hints
+from collections.abc import Callable
+from typing import Any, get_type_hints
+
 from pydantic import BaseModel, validate_call
 
 from phi.utils.log import logger
@@ -11,16 +13,16 @@ class Function(BaseModel):
     # Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.
     name: str
     # A description of what the function does, used by the model to choose when and how to call the function.
-    description: Optional[str] = None
+    description: str | None = None
     # The parameters the functions accepts, described as a JSON Schema object.
     # To describe a function that accepts no parameters, provide the value {"type": "object", "properties": {}}.
-    parameters: Dict[str, Any] = {"type": "object", "properties": {}}
-    entrypoint: Optional[Callable] = None
+    parameters: dict[str, Any] = {"type": "object", "properties": {}}
+    entrypoint: Callable | None = None
 
     # If True, the arguments are sanitized before being passed to the function.
     sanitize_arguments: bool = True
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return self.model_dump(
             exclude_none=True, include={"name", "description", "parameters"}
         )
@@ -28,6 +30,7 @@ class Function(BaseModel):
     @classmethod
     def from_callable(cls, c: Callable) -> "Function":
         from inspect import getdoc
+
         from phi.utils.json_schema import get_json_schema
 
         parameters = {"type": "object", "properties": {}}
@@ -56,7 +59,7 @@ class Function(BaseModel):
         else:
             return t.__name__
 
-    def get_definition_for_prompt(self) -> Optional[str]:
+    def get_definition_for_prompt(self) -> str | None:
         """Returns a function definition that can be used in a prompt."""
         import json
 
@@ -77,7 +80,7 @@ class Function(BaseModel):
         }
         return json.dumps(function_info, indent=2)
 
-    def get_definition_for_prompt_dict(self) -> Optional[Dict[str, Any]]:
+    def get_definition_for_prompt_dict(self) -> dict[str, Any] | None:
         """Returns a function definition that can be used in a prompt."""
 
         if self.entrypoint is None:
@@ -104,14 +107,14 @@ class FunctionCall(BaseModel):
     # The function to be called.
     function: Function
     # The arguments to call the function with.
-    arguments: Optional[Dict[str, Any]] = None
+    arguments: dict[str, Any] | None = None
     # The result of the function call.
-    result: Optional[Any] = None
+    result: Any | None = None
     # The ID of the function call.
-    call_id: Optional[str] = None
+    call_id: str | None = None
 
     # Error while parsing arguments or running the function.
-    error: Optional[str] = None
+    error: str | None = None
 
     def get_call_str(self) -> str:
         """Returns a string representation of the function call."""

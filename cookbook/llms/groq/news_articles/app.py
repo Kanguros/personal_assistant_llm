@@ -1,12 +1,10 @@
 import nest_asyncio
-from typing import Optional
-
 import streamlit as st
+from assistants import get_article_summarizer, get_article_writer  # type: ignore
 from duckduckgo_search import DDGS
+
 from phi.tools.newspaper4k import Newspaper4k
 from phi.utils.log import logger
-
-from assistants import get_article_summarizer, get_article_writer  # type: ignore
 
 nest_asyncio.apply()
 st.set_page_config(
@@ -83,7 +81,7 @@ def main() -> None:
     write_article = st.button("Write Article")
     if write_article:
         news_results = []
-        news_summary: Optional[str] = None
+        news_summary: str | None = None
         with st.status("Reading News", expanded=False) as status:
             with st.container():
                 news_container = st.empty()

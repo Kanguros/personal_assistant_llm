@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import List
 
 from phi.document import Document
 
@@ -20,18 +19,18 @@ class VectorDb(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def insert(self, documents: List[Document]) -> None:
+    def insert(self, documents: list[Document]) -> None:
         raise NotImplementedError
 
     def upsert_available(self) -> bool:
         return False
 
     @abstractmethod
-    def upsert(self, documents: List[Document]) -> None:
+    def upsert(self, documents: list[Document]) -> None:
         raise NotImplementedError
 
     @abstractmethod
-    def search(self, query: str, limit: int = 5) -> List[Document]:
+    def search(self, query: str, limit: int = 5) -> list[Document]:
         raise NotImplementedError
 
     @abstractmethod

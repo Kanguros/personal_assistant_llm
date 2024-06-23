@@ -1,16 +1,15 @@
-import time
 import random
-from typing import Set, Dict, List, Tuple
+import time
 from urllib.parse import urljoin, urlparse
+
+import httpx
 
 from phi.document.base import Document
 from phi.document.reader import Reader
 from phi.utils.log import logger
 
-import httpx
-
 try:
-    from bs4 import BeautifulSoup  # noqa: F401
+    from bs4 import BeautifulSoup
 except ImportError:
     raise ImportError(
         "The `bs4` package is not installed. Please install it via `pip install beautifulsoup4`."
@@ -23,8 +22,8 @@ class WebsiteReader(Reader):
     max_depth: int = 3
     max_links: int = 10
 
-    _visited: Set[str] = set()
-    _urls_to_crawl: List[Tuple[str, int]] = []
+    _visited: set[str] = set()
+    _urls_to_crawl: list[tuple[str, int]] = []
 
     def delay(self, min_seconds=1, max_seconds=3):
         """
@@ -67,7 +66,7 @@ class WebsiteReader(Reader):
 
         return ""
 
-    def crawl(self, url: str, starting_depth: int = 1) -> Dict[str, str]:
+    def crawl(self, url: str, starting_depth: int = 1) -> dict[str, str]:
         """
         Crawls a website and returns a dictionary of URLs and their corresponding content.
 
@@ -86,7 +85,7 @@ class WebsiteReader(Reader):
         crawl deeper than the specified depth.
         """
         num_links = 0
-        crawler_result: Dict[str, str] = {}
+        crawler_result: dict[str, str] = {}
         primary_domain = self._get_primary_domain(url)
         # Add starting URL with its depth to the global list
         self._urls_to_crawl.append((url, starting_depth))
@@ -141,7 +140,7 @@ class WebsiteReader(Reader):
 
         return crawler_result
 
-    def read(self, url: str) -> List[Document]:
+    def read(self, url: str) -> list[Document]:
         """
         Reads a website and returns a list of documents.
 

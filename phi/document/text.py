@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import List
 
 from phi.document.base import Document
 from phi.document.reader import Reader
@@ -9,7 +8,7 @@ from phi.utils.log import logger
 class TextReader(Reader):
     """Reader for Text files"""
 
-    def read(self, path: Path) -> List[Document]:
+    def read(self, path: Path) -> list[Document]:
         if not path:
             raise ValueError("No path provided")
 

@@ -1,11 +1,9 @@
-from typing import Optional
-
 from phi.assistant import Assistant
+from phi.embedder.ollama import OllamaEmbedder
 from phi.knowledge import AssistantKnowledge
 from phi.llm.ollama import Ollama
-from phi.embedder.ollama import OllamaEmbedder
-from phi.vectordb.pgvector import PgVector2
 from phi.storage.assistant.postgres import PgAssistantStorage
+from phi.vectordb.pgvector import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 
@@ -13,8 +11,8 @@ db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 def get_rag_assistant(
     llm_model: str = "llama3",
     embeddings_model: str = "nomic-embed-text",
-    user_id: Optional[str] = None,
-    run_id: Optional[str] = None,
+    user_id: str | None = None,
+    run_id: str | None = None,
     debug_mode: bool = True,
 ) -> Assistant:
     """Get a Local RAG Assistant."""

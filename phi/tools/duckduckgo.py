@@ -1,5 +1,5 @@
 import json
-from typing import Any, Optional
+from typing import Any
 
 from phi.tools import Toolkit
 from phi.utils.log import logger
@@ -17,19 +17,19 @@ class DuckDuckGo(Toolkit):
         self,
         search: bool = True,
         news: bool = True,
-        fixed_max_results: Optional[int] = None,
-        headers: Optional[Any] = None,
-        proxy: Optional[str] = None,
-        proxies: Optional[Any] = None,
-        timeout: Optional[int] = 10,
+        fixed_max_results: int | None = None,
+        headers: Any | None = None,
+        proxy: str | None = None,
+        proxies: Any | None = None,
+        timeout: int | None = 10,
     ):
         super().__init__(name="duckduckgo")
 
-        self.headers: Optional[Any] = headers
-        self.proxy: Optional[str] = proxy
-        self.proxies: Optional[Any] = proxies
-        self.timeout: Optional[int] = timeout
-        self.fixed_max_results: Optional[int] = fixed_max_results
+        self.headers: Any | None = headers
+        self.proxy: str | None = proxy
+        self.proxies: Any | None = proxies
+        self.timeout: int | None = timeout
+        self.fixed_max_results: int | None = fixed_max_results
         if search:
             self.register(self.duckduckgo_search)
         if news:

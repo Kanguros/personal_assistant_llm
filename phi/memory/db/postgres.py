@@ -1,12 +1,10 @@
-from typing import Optional, List
-
 try:
     from sqlalchemy.dialects import postgresql
-    from sqlalchemy.engine import create_engine, Engine
+    from sqlalchemy.engine import Engine, create_engine
     from sqlalchemy.inspection import inspect
     from sqlalchemy.orm import Session, sessionmaker
-    from sqlalchemy.schema import MetaData, Table, Column
-    from sqlalchemy.sql.expression import text, select, delete
+    from sqlalchemy.schema import Column, MetaData, Table
+    from sqlalchemy.sql.expression import delete, select, text
     from sqlalchemy.types import DateTime, String
 except ImportError:
     raise ImportError("`sqlalchemy` not installed")
@@ -20,9 +18,9 @@ class PgMemoryDb(MemoryDb):
     def __init__(
         self,
         table_name: str,
-        schema: Optional[str] = "ai",
-        db_url: Optional[str] = None,
-        db_engine: Optional[Engine] = None,
+        schema: str | None = "ai",
+        db_url: str | None = None,
+        db_engine: Engine | None = None,
     ):
         """
         This class provides a memory store backed by a postgres table.
@@ -37,7 +35,7 @@ class PgMemoryDb(MemoryDb):
             db_url (Optional[str]): The database URL to connect to. Defaults to None.
             db_engine (Optional[Engine]): The database engine to use. Defaults to None.
         """
-        _engine: Optional[Engine] = db_engine
+        _engine: Engine | None = db_engine
         if _engine is None and db_url is not None:
             _engine = create_engine(db_url)
 
@@ -45,8 +43,8 @@ class PgMemoryDb(MemoryDb):
             raise ValueError("Must provide either db_url or db_engine")
 
         self.table_name: str = table_name
-        self.schema: Optional[str] = schema
-        self.db_url: Optional[str] = db_url
+        self.schema: str | None = schema
+        self.db_url: str | None = db_url
         self.db_engine: Engine = _engine
         self.metadata: MetaData = MetaData(schema=self.schema)
         self.Session: sessionmaker[Session] = sessionmaker(bind=self.db_engine)
@@ -83,11 +81,11 @@ class PgMemoryDb(MemoryDb):
 
     def read_memories(
         self,
-        user_id: Optional[str] = None,
-        limit: Optional[int] = None,
-        sort: Optional[str] = None,
-    ) -> List[MemoryRow]:
-        memories: List[MemoryRow] = []
+        user_id: str | None = None,
+        limit: int | None = None,
+        sort: str | None = None,
+    ) -> list[MemoryRow]:
+        memories: list[MemoryRow] = []
         with self.Session() as sess, sess.begin():
             try:
                 stmt = select(self.table)

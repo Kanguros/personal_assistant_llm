@@ -3,9 +3,9 @@ The research Assistant searches for EXA for a topic
 and writes an article in markdown format.
 """
 
+from datetime import datetime
 from pathlib import Path
 from textwrap import dedent
-from datetime import datetime
 
 from phi.assistant import Assistant
 from phi.llm.openai import OpenAIChat

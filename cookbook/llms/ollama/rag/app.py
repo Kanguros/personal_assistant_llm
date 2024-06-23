@@ -1,13 +1,11 @@
-from typing import List
-
 import streamlit as st
+from assistant import get_rag_assistant  # type: ignore
+
 from phi.assistant import Assistant
 from phi.document import Document
 from phi.document.reader.pdf import PDFReader
 from phi.document.reader.website import WebsiteReader
 from phi.utils.log import logger
-
-from assistant import get_rag_assistant  # type: ignore
 
 st.set_page_config(
     page_title="Local RAG",
@@ -131,7 +129,7 @@ def main() -> None:
                 alert = st.sidebar.info("Processing URLs...", icon="ℹ️")
                 if f"{input_url}_scraped" not in st.session_state:
                     scraper = WebsiteReader(max_links=2, max_depth=1)
-                    web_documents: List[Document] = scraper.read(input_url)
+                    web_documents: list[Document] = scraper.read(input_url)
                     if web_documents:
                         rag_assistant.knowledge_base.load_documents(
                             web_documents, upsert=True
@@ -155,7 +153,7 @@ def main() -> None:
             rag_name = uploaded_file.name.split(".")[0]
             if f"{rag_name}_uploaded" not in st.session_state:
                 reader = PDFReader()
-                rag_documents: List[Document] = reader.read(uploaded_file)
+                rag_documents: list[Document] = reader.read(uploaded_file)
                 if rag_documents:
                     rag_assistant.knowledge_base.load_documents(
                         rag_documents, upsert=True
@@ -171,7 +169,7 @@ def main() -> None:
             st.sidebar.success("Knowledge base cleared")
 
     if rag_assistant.storage:
-        rag_assistant_run_ids: List[str] = rag_assistant.storage.get_all_run_ids()
+        rag_assistant_run_ids: list[str] = rag_assistant.storage.get_all_run_ids()
         new_rag_assistant_run_id = st.sidebar.selectbox(
             "Run ID", options=rag_assistant_run_ids
         )

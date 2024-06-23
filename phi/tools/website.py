@@ -1,5 +1,4 @@
 import json
-from typing import List, Optional
 
 from phi.document import Document
 from phi.knowledge.website import WebsiteKnowledgeBase
@@ -8,9 +7,9 @@ from phi.utils.log import logger
 
 
 class WebsiteTools(Toolkit):
-    def __init__(self, knowledge_base: Optional[WebsiteKnowledgeBase] = None):
+    def __init__(self, knowledge_base: WebsiteKnowledgeBase | None = None):
         super().__init__(name="website_tools")
-        self.knowledge_base: Optional[WebsiteKnowledgeBase] = knowledge_base
+        self.knowledge_base: WebsiteKnowledgeBase | None = knowledge_base
 
         if self.knowledge_base is not None and isinstance(
             self.knowledge_base, WebsiteKnowledgeBase
@@ -48,5 +47,5 @@ class WebsiteTools(Toolkit):
         website = WebsiteReader()
 
         logger.debug(f"Reading website: {url}")
-        relevant_docs: List[Document] = website.read(url=url)
+        relevant_docs: list[Document] = website.read(url=url)
         return json.dumps([doc.to_dict() for doc in relevant_docs])

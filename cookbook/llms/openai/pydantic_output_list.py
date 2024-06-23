@@ -1,6 +1,6 @@
-from typing import List
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
+
 from phi.assistant import Assistant
 from phi.llm.openai import OpenAIChat
 
@@ -14,7 +14,7 @@ class MovieScript(BaseModel):
         ..., description="Genre of the movie. If not available, select action comedy."
     )
     name: str = Field(..., description="Give a name to this movie")
-    characters: List[str] = Field(..., description="Name of characters for this movie.")
+    characters: list[str] = Field(..., description="Name of characters for this movie.")
     storyline: str = Field(
         ..., description="2 sentence storyline for the movie. Make it punchy!"
     )
@@ -22,7 +22,7 @@ class MovieScript(BaseModel):
 
 # Generate a list of pydantic models
 class MovieScripts(BaseModel):
-    movie_scripts: List[MovieScript] = Field(
+    movie_scripts: list[MovieScript] = Field(
         ...,
         description="List of movie scripts for the given theme. Provide 3 different scripts.",
     )

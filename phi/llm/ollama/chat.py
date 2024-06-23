@@ -1,6 +1,7 @@
 import json
+from collections.abc import Iterator, Mapping
 from textwrap import dedent
-from typing import Optional, List, Iterator, Dict, Any, Mapping, Union
+from typing import Any
 
 from phi.llm.base import LLM, Message
 from phi.tools.function import FunctionCall
@@ -18,13 +19,13 @@ except ImportError:
 class Ollama(LLM):
     name: str = "Ollama"
     model: str = "openhermes"
-    host: Optional[str] = None
-    timeout: Optional[Any] = None
-    format: Optional[str] = None
-    options: Optional[Any] = None
-    keep_alive: Optional[Union[float, str]] = None
-    client_kwargs: Optional[Dict[str, Any]] = None
-    ollama_client: Optional[OllamaClient] = None
+    host: str | None = None
+    timeout: Any | None = None
+    format: str | None = None
+    options: Any | None = None
+    keep_alive: float | str | None = None
+    client_kwargs: dict[str, Any] | None = None
+    ollama_client: OllamaClient | None = None
     # Maximum number of function calls allowed across all iterations.
     function_call_limit: int = 5
     # Deactivate tool calls after 1 tool call
@@ -37,7 +38,7 @@ class Ollama(LLM):
         if self.ollama_client:
             return self.ollama_client
 
-        _ollama_params: Dict[str, Any] = {}
+        _ollama_params: dict[str, Any] = {}
         if self.host:
             _ollama_params["host"] = self.host
         if self.timeout:
@@ -47,8 +48,8 @@ class Ollama(LLM):
         return OllamaClient(**_ollama_params)
 
     @property
-    def api_kwargs(self) -> Dict[str, Any]:
-        kwargs: Dict[str, Any] = {}
+    def api_kwargs(self) -> dict[str, Any]:
+        kwargs: dict[str, Any] = {}
         if self.format is not None:
             kwargs["format"] = self.format
         elif self.response_format is not None:
@@ -62,7 +63,7 @@ class Ollama(LLM):
             kwargs["keep_alive"] = self.keep_alive
         return kwargs
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         _dict = super().to_dict()
         if self.host:
             _dict["host"] = self.host
@@ -74,7 +75,7 @@ class Ollama(LLM):
             _dict["response_format"] = self.response_format
         return _dict
 
-    def to_llm_message(self, message: Message) -> Dict[str, Any]:
+    def to_llm_message(self, message: Message) -> dict[str, Any]:
         msg = {
             "role": message.role,
             "content": message.content,
@@ -83,14 +84,14 @@ class Ollama(LLM):
             msg["images"] = message.model_extra.get("images")
         return msg
 
-    def invoke(self, messages: List[Message]) -> Mapping[str, Any]:
+    def invoke(self, messages: list[Message]) -> Mapping[str, Any]:
         return self.client.chat(
             model=self.model,
             messages=[self.to_llm_message(m) for m in messages],
             **self.api_kwargs,
         )
 
-    def invoke_stream(self, messages: List[Message]) -> Iterator[Mapping[str, Any]]:
+    def invoke_stream(self, messages: list[Message]) -> Iterator[Mapping[str, Any]]:
         yield from self.client.chat(
             model=self.model,
             messages=[self.to_llm_message(m) for m in messages],
@@ -103,7 +104,7 @@ class Ollama(LLM):
         # This is triggered when the function call limit is reached.
         self.format = ""
 
-    def response(self, messages: List[Message]) -> str:
+    def response(self, messages: list[Message]) -> str:
         logger.debug("---------- Ollama Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -120,7 +121,7 @@ class Ollama(LLM):
         # -*- Parse response
         response_message: Mapping[str, Any] = response.get("message")  # type: ignore
         response_role = response_message.get("role")
-        response_content: Optional[str] = response_message.get("content")
+        response_content: str | None = response_message.get("content")
 
         # -*- Create assistant message
         assistant_message = Message(
@@ -139,7 +140,7 @@ class Ollama(LLM):
                         assistant_tool_calls = _tool_call_content_json.get("tool_calls")
                         if isinstance(assistant_tool_calls, list):
                             # Build tool calls
-                            tool_calls: List[Dict[str, Any]] = []
+                            tool_calls: list[dict[str, Any]] = []
                             logger.debug(
                                 f"Building tool calls from {assistant_tool_calls}"
                             )
@@ -179,7 +180,7 @@ class Ollama(LLM):
         # -*- Parse and run function call
         if assistant_message.tool_calls is not None and self.run_tools:
             final_response = ""
-            function_calls_to_run: List[FunctionCall] = []
+            function_calls_to_run: list[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
                 _function_call = get_function_call_for_tool_call(
                     tool_call, self.functions
@@ -227,7 +228,7 @@ class Ollama(LLM):
             return assistant_message.get_content_string()
         return "Something went wrong, please try again."
 
-    def response_stream(self, messages: List[Message]) -> Iterator[str]:
+    def response_stream(self, messages: list[Message]) -> Iterator[str]:
         logger.debug("---------- Ollama Response Start ----------")
         # -*- Log messages for debugging
         for m in messages:
@@ -250,7 +251,7 @@ class Ollama(LLM):
             # -*- Parse response
             # logger.info(f"Ollama partial response: {response}")
             # logger.info(f"Ollama partial response type: {type(response)}")
-            response_message: Optional[dict] = response.get("message")
+            response_message: dict | None = response.get("message")
             response_content = (
                 response_message.get("content") if response_message else None
             )
@@ -319,7 +320,7 @@ class Ollama(LLM):
                         assistant_tool_calls = _tool_call_content_json.get("tool_calls")
                         if isinstance(assistant_tool_calls, list):
                             # Build tool calls
-                            tool_calls: List[Dict[str, Any]] = []
+                            tool_calls: list[dict[str, Any]] = []
                             logger.debug(
                                 f"Building tool calls from {assistant_tool_calls}"
                             )
@@ -375,7 +376,7 @@ class Ollama(LLM):
 
         # -*- Parse and run function call
         if assistant_message.tool_calls is not None and self.run_tools:
-            function_calls_to_run: List[FunctionCall] = []
+            function_calls_to_run: list[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
                 _function_call = get_function_call_for_tool_call(
                     tool_call, self.functions
@@ -417,7 +418,7 @@ class Ollama(LLM):
             yield from self.response_stream(messages=messages)
         logger.debug("---------- Ollama Response End ----------")
 
-    def add_original_user_message(self, messages: List[Message]) -> List[Message]:
+    def add_original_user_message(self, messages: list[Message]) -> list[Message]:
         # Add the original user message to the messages to remind the LLM of the original task
         original_user_message_content = None
         for m in messages:
@@ -433,7 +434,7 @@ class Ollama(LLM):
 
         return messages
 
-    def get_instructions_to_generate_tool_calls(self) -> List[str]:
+    def get_instructions_to_generate_tool_calls(self) -> list[str]:
         if self.functions is not None:
             return [
                 "To respond to the users message, you can use one or more of the tools provided above.",
@@ -455,7 +456,7 @@ class Ollama(LLM):
             ]
         return []
 
-    def get_tool_calls_definition(self) -> Optional[str]:
+    def get_tool_calls_definition(self) -> str | None:
         if self.functions is not None:
             _tool_choice_prompt = "To respond to the users message, you have access to the following tools:"
             for _f_name, _function in self.functions.items():
@@ -466,8 +467,8 @@ class Ollama(LLM):
             return _tool_choice_prompt
         return None
 
-    def get_system_prompt_from_llm(self) -> Optional[str]:
+    def get_system_prompt_from_llm(self) -> str | None:
         return self.get_tool_calls_definition()
 
-    def get_instructions_from_llm(self) -> Optional[List[str]]:
+    def get_instructions_from_llm(self) -> list[str] | None:
         return self.get_instructions_to_generate_tool_calls()

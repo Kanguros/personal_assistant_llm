@@ -1,29 +1,30 @@
 import json
-from hashlib import md5
 from datetime import datetime
-from typing import Optional, Any, Dict
+from hashlib import md5
+from typing import Any
+
 from pydantic import BaseModel, ConfigDict, model_validator
 
 
 class MemoryRow(BaseModel):
     """Memory Row that is stored in the database"""
 
-    memory: Dict[str, Any]
-    user_id: Optional[str] = None
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
+    memory: dict[str, Any]
+    user_id: str | None = None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
     # id for this memory, auto-generated from the memory
-    id: Optional[str] = None
+    id: str | None = None
 
     model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
 
-    def serializable_dict(self) -> Dict[str, Any]:
+    def serializable_dict(self) -> dict[str, Any]:
         _dict = self.model_dump(exclude={"created_at", "updated_at"})
         _dict["created_at"] = self.created_at.isoformat() if self.created_at else None
         _dict["updated_at"] = self.updated_at.isoformat() if self.updated_at else None
         return _dict
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return self.serializable_dict()
 
     @model_validator(mode="after")

@@ -1,7 +1,6 @@
 from phi.assistant import Assistant
 from phi.tools.hackernews import HackerNews
 
-
 hn_assistant = Assistant(
     name="Hackernews Team",
     tools=[HackerNews()],

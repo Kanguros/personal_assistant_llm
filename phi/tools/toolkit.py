@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import Callable, Dict
+from collections.abc import Callable
 
 from phi.tools.function import Function
 from phi.utils.log import logger
@@ -8,7 +8,7 @@ from phi.utils.log import logger
 class Toolkit:
     def __init__(self, name: str = "toolkit"):
         self.name: str = name
-        self.functions: Dict[str, Function] = OrderedDict()
+        self.functions: dict[str, Function] = OrderedDict()
 
     def register(self, function: Callable, sanitize_arguments: bool = True):
         try:

@@ -1,4 +1,4 @@
-from typing import List, Any, Optional, cast
+from typing import Any, cast
 
 from pydantic import BaseModel
 
@@ -8,12 +8,12 @@ from phi.utils.log import logger
 
 
 class MemoryClassifier(BaseModel):
-    llm: Optional[LLM] = None
+    llm: LLM | None = None
 
     # Provide the system prompt for the classifier as a string
-    system_prompt: Optional[str] = None
+    system_prompt: str | None = None
     # Existing Memories
-    existing_memories: Optional[List[Memory]] = None
+    existing_memories: list[Memory] | None = None
 
     def update_llm(self) -> None:
         if self.llm is None:
@@ -29,7 +29,7 @@ class MemoryClassifier(BaseModel):
 
             self.llm = OpenAIChat()
 
-    def get_system_prompt(self) -> Optional[str]:
+    def get_system_prompt(self) -> str | None:
         # If the system_prompt is provided, use it
         if self.system_prompt is not None:
             return self.system_prompt
@@ -64,7 +64,7 @@ class MemoryClassifier(BaseModel):
 
     def run(
         self,
-        message: Optional[str] = None,
+        message: str | None = None,
         **kwargs: Any,
     ) -> str:
         logger.debug("*********** MemoryClassifier Start ***********")
@@ -73,7 +73,7 @@ class MemoryClassifier(BaseModel):
         self.update_llm()
 
         # -*- Prepare the List of messages sent to the LLM
-        llm_messages: List[Message] = []
+        llm_messages: list[Message] = []
 
         # Get the System prompt
         system_prompt = self.get_system_prompt()

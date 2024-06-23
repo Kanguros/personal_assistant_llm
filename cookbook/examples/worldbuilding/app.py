@@ -1,10 +1,9 @@
-from typing import Optional
+from logging import getLogger
 
 import streamlit as st
-from phi.tools.streamlit.components import reload_button_sidebar
+from assistant import World, get_world_builder, get_world_explorer  # type: ignore
 
-from assistant import get_world_builder, get_world_explorer, World  # type: ignore
-from logging import getLogger
+from phi.tools.streamlit.components import reload_button_sidebar
 
 logger = getLogger(__name__)
 
@@ -53,7 +52,7 @@ def main() -> None:
         restart_assistant()
 
     # Get the world builder
-    world: Optional[World] = (
+    world: World | None = (
         st.session_state["world"] if "world" in st.session_state else None
     )
     world_builder = get_world_builder(debug_mode=True)

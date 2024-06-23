@@ -1,6 +1,5 @@
-from typing import Optional
 from textwrap import dedent
-from typing import Any, List
+from typing import Any
 
 from phi.assistant import Assistant
 from phi.llm.ollama import Ollama
@@ -12,13 +11,13 @@ def get_function_calling_assistant(
     llm_id: str = "llama3",
     ddg_search: bool = False,
     yfinance: bool = False,
-    user_id: Optional[str] = None,
-    run_id: Optional[str] = None,
+    user_id: str | None = None,
+    run_id: str | None = None,
     debug_mode: bool = True,
 ) -> Assistant:
     """Get a Function Calling Assistant."""
 
-    tools: List[Any] = []
+    tools: list[Any] = []
     if ddg_search:
         tools.append(DuckDuckGo(fixed_max_results=3))
     if yfinance:

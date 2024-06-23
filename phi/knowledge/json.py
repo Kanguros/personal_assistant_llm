@@ -1,5 +1,5 @@
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Union, List, Iterator
 
 from phi.document import Document
 from phi.document.json import JSONReader
@@ -7,11 +7,11 @@ from phi.knowledge.base import AssistantKnowledge
 
 
 class JSONKnowledgeBase(AssistantKnowledge):
-    path: Union[str, Path]
+    path: str | Path
     reader: JSONReader = JSONReader()
 
     @property
-    def document_lists(self) -> Iterator[List[Document]]:
+    def document_lists(self) -> Iterator[list[Document]]:
         """Iterate over Json files and yield lists of documents.
         Each object yielded by the iterator is a list of documents.
 

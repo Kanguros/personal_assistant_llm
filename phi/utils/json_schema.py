@@ -1,4 +1,4 @@
-from typing import Any, Dict, Union, get_args, get_origin, Optional
+from typing import Any, Union, get_args, get_origin
 
 from phi.utils.log import logger
 
@@ -23,7 +23,7 @@ def get_json_type_for_py_type(arg: str) -> str:
     return arg
 
 
-def get_json_schema_for_arg(t: Any) -> Optional[Any]:
+def get_json_schema_for_arg(t: Any) -> Any | None:
     # logger.info(f"Getting JSON schema for arg: {t}")
     json_schema = None
     type_args = get_args(t)
@@ -45,8 +45,8 @@ def get_json_schema_for_arg(t: Any) -> Optional[Any]:
     return json_schema
 
 
-def get_json_schema(type_hints: Dict[str, Any]) -> Dict[str, Any]:
-    json_schema: Dict[str, Any] = {"type": "object", "properties": {}}
+def get_json_schema(type_hints: dict[str, Any]) -> dict[str, Any]:
+    json_schema: dict[str, Any] = {"type": "object", "properties": {}}
     for k, v in type_hints.items():
         # logger.info(f"Parsing arg: {k} | {v}")
         if k == "return":

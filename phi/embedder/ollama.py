@@ -1,4 +1,4 @@
-from typing import Optional, Dict, List, Tuple, Any
+from typing import Any
 
 from phi.embedder.base import Embedder
 from phi.utils.log import logger
@@ -13,18 +13,18 @@ except ImportError:
 class OllamaEmbedder(Embedder):
     model: str = "openhermes"
     dimensions: int = 4096
-    host: Optional[str] = None
-    timeout: Optional[Any] = None
-    options: Optional[Any] = None
-    client_kwargs: Optional[Dict[str, Any]] = None
-    ollama_client: Optional[OllamaClient] = None
+    host: str | None = None
+    timeout: Any | None = None
+    options: Any | None = None
+    client_kwargs: dict[str, Any] | None = None
+    ollama_client: OllamaClient | None = None
 
     @property
     def client(self) -> OllamaClient:
         if self.ollama_client:
             return self.ollama_client
 
-        _ollama_params: Dict[str, Any] = {}
+        _ollama_params: dict[str, Any] = {}
         if self.host:
             _ollama_params["host"] = self.host
         if self.timeout:
@@ -33,14 +33,14 @@ class OllamaEmbedder(Embedder):
             _ollama_params.update(self.client_kwargs)
         return OllamaClient(**_ollama_params)
 
-    def _response(self, text: str) -> Dict[str, Any]:
-        kwargs: Dict[str, Any] = {}
+    def _response(self, text: str) -> dict[str, Any]:
+        kwargs: dict[str, Any] = {}
         if self.options is not None:
             kwargs["options"] = self.options
 
         return self.client.embeddings(prompt=text, model=self.model, **kwargs)  # type: ignore
 
-    def get_embedding(self, text: str) -> List[float]:
+    def get_embedding(self, text: str) -> list[float]:
         try:
             response = self._response(text=text)
             if response is None:
@@ -50,7 +50,7 @@ class OllamaEmbedder(Embedder):
             logger.warning(e)
             return []
 
-    def get_embedding_and_usage(self, text: str) -> Tuple[List[float], Optional[Dict]]:
+    def get_embedding_and_usage(self, text: str) -> tuple[list[float], dict | None]:
         embedding = []
         usage = None
         try:

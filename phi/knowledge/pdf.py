@@ -1,17 +1,17 @@
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Union, List, Iterator
 
 from phi.document import Document
-from phi.document.pdf import PDFReader, PDFImageReader
+from phi.document.pdf import PDFImageReader, PDFReader
 from phi.knowledge.base import AssistantKnowledge
 
 
 class PDFKnowledgeBase(AssistantKnowledge):
-    path: Union[str, Path]
-    reader: Union[PDFReader, PDFImageReader] = PDFReader()
+    path: str | Path
+    reader: PDFReader | PDFImageReader = PDFReader()
 
     @property
-    def document_lists(self) -> Iterator[List[Document]]:
+    def document_lists(self) -> Iterator[list[Document]]:
         """Iterate over PDFs and yield lists of documents.
         Each object yielded by the iterator is a list of documents.
 

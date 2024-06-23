@@ -9,7 +9,7 @@ zd_password = os.getenv("ZENDESK_PW")
 zd_company_name = os.getenv("ZENDESK_COMPANY_NAME")
 
 if not zd_username or not zd_password or not zd_company_name:
-    raise EnvironmentError(
+    raise OSError(
         "Please set the following environment variables: ZENDESK_USERNAME, ZENDESK_PW, ZENDESK_COMPANY_NAME"
     )
 

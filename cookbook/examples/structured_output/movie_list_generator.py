@@ -1,6 +1,6 @@
-from typing import List
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
+
 from phi.assistant import Assistant
 
 
@@ -14,14 +14,14 @@ class MovieScript(BaseModel):
     )
     genre: str = Field(..., description="Genre of the movie.")
     name: str = Field(..., description="Give a name to this movie")
-    characters: List[str] = Field(..., description="Name of characters for this movie.")
+    characters: list[str] = Field(..., description="Name of characters for this movie.")
     storyline: str = Field(
         ..., description="3 sentence storyline for the movie. Make it exciting!"
     )
 
 
 class MovieScripts(BaseModel):
-    items: List[MovieScript] = Field(..., description="List of movie scripts.")
+    items: list[MovieScript] = Field(..., description="List of movie scripts.")
 
 
 movie_assistant = Assistant(

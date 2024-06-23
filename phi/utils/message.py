@@ -1,7 +1,4 @@
-from typing import Dict, List, Union
-
-
-def get_text_from_message(message: Union[List, Dict, str]) -> str:
+def get_text_from_message(message: list | dict | str) -> str:
     """Return the user texts from the message"""
 
     if isinstance(message, str):

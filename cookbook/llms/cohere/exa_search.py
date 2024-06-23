@@ -1,7 +1,7 @@
 from phi.assistant import Assistant
+from phi.llm.cohere import CohereChat
 from phi.tools.exa import ExaTools
 from phi.tools.website import WebsiteTools
-from phi.llm.cohere import CohereChat
 
 assistant = Assistant(
     llm=CohereChat(model="command-r-plus"),

@@ -1,20 +1,19 @@
 from pathlib import Path
 from textwrap import dedent
-from typing import Optional, List
 
-from phi.assistant import Assistant, AssistantMemory, AssistantKnowledge
-from phi.tools import Toolkit
-from phi.tools.exa import ExaTools
-from phi.tools.calculator import Calculator
-from phi.tools.duckduckgo import DuckDuckGo
-from phi.tools.yfinance import YFinanceTools
-from phi.tools.file import FileTools
-from phi.llm.openai import OpenAIChat
-from phi.embedder.openai import OpenAIEmbedder
+from phi.assistant import Assistant, AssistantKnowledge, AssistantMemory
 from phi.assistant.python import PythonAssistant
-from phi.vectordb.pgvector import PgVector2
+from phi.embedder.openai import OpenAIEmbedder
+from phi.llm.openai import OpenAIChat
 from phi.memory.db.postgres import PgMemoryDb
 from phi.storage.assistant.postgres import PgAssistantStorage
+from phi.tools import Toolkit
+from phi.tools.calculator import Calculator
+from phi.tools.duckduckgo import DuckDuckGo
+from phi.tools.exa import ExaTools
+from phi.tools.file import FileTools
+from phi.tools.yfinance import YFinanceTools
+from phi.vectordb.pgvector import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 cwd = Path(__file__).parent.resolve()
@@ -25,8 +24,8 @@ if not scratch_dir.exists():
 
 def get_personalized_assistant(
     llm_id: str = "gpt-4o",
-    user_id: Optional[str] = None,
-    run_id: Optional[str] = None,
+    user_id: str | None = None,
+    run_id: str | None = None,
     calculator: bool = False,
     ddg_search: bool = False,
     file_tools: bool = False,
@@ -36,8 +35,8 @@ def get_personalized_assistant(
     debug_mode: bool = True,
 ) -> Assistant:
     # Add tools available to the LLM OS
-    tools: List[Toolkit] = []
-    extra_instructions: List[str] = []
+    tools: list[Toolkit] = []
+    extra_instructions: list[str] = []
     if calculator:
         tools.append(
             Calculator(
@@ -69,7 +68,7 @@ def get_personalized_assistant(
         )
 
     # Add team members available to the LLM OS
-    team: List[Assistant] = []
+    team: list[Assistant] = []
     if python_assistant:
         _python_assistant = PythonAssistant(
             name="Python Assistant",

@@ -1,8 +1,7 @@
-from typing import Optional, List
 from pathlib import Path
+from textwrap import dedent
 
 from pydantic import model_validator
-from textwrap import dedent
 
 from phi.assistant import Assistant
 from phi.tools.duckdb import DuckDbTools
@@ -19,7 +18,7 @@ except ImportError:
 
 class DuckDbAssistant(Assistant):
     name: str = "DuckDbAssistant"
-    semantic_model: Optional[str] = None
+    semantic_model: str | None = None
 
     add_chat_history_to_messages: bool = True
     num_history_messages: int = 6
@@ -27,24 +26,24 @@ class DuckDbAssistant(Assistant):
     followups: bool = False
     read_tool_call_history: bool = True
 
-    db_path: Optional[str] = None
-    connection: Optional[duckdb.DuckDBPyConnection] = None
-    init_commands: Optional[List] = None
+    db_path: str | None = None
+    connection: duckdb.DuckDBPyConnection | None = None
+    init_commands: list | None = None
     read_only: bool = False
-    config: Optional[dict] = None
+    config: dict | None = None
     run_queries: bool = True
     inspect_queries: bool = True
     create_tables: bool = True
     summarize_tables: bool = True
     export_tables: bool = True
 
-    base_dir: Optional[Path] = None
+    base_dir: Path | None = None
     save_files: bool = True
     read_files: bool = False
     list_files: bool = False
 
-    _duckdb_tools: Optional[DuckDbTools] = None
-    _file_tools: Optional[FileTools] = None
+    _duckdb_tools: DuckDbTools | None = None
+    _file_tools: FileTools | None = None
 
     @model_validator(mode="after")
     def add_assistant_tools(self) -> "DuckDbAssistant":
@@ -102,7 +101,7 @@ class DuckDbAssistant(Assistant):
                 raise ValueError("Could not connect to DuckDB.")
         return self.connection
 
-    def get_default_instructions(self) -> List[str]:
+    def get_default_instructions(self) -> list[str]:
         _instructions = []
 
         # Add instructions specifically from the LLM
@@ -164,7 +163,7 @@ class DuckDbAssistant(Assistant):
             "Analyse the results and return the answer to the user.",
             "If the user wants to save the query, use the `save_contents_to_file` function.",
             "Remember to give a relevant name to the file with `.sql` extension and make sure you add a `;` at the end of the query."
-            + " Tell the user the file name.",
+            " Tell the user the file name.",
             "Continue till you have accomplished the task.",
             "Show the user the SQL you ran",
         ]
@@ -179,7 +178,7 @@ class DuckDbAssistant(Assistant):
 
         return _instructions
 
-    def get_system_prompt(self, **kwargs) -> Optional[str]:
+    def get_system_prompt(self, **kwargs) -> str | None:
         """Return the system prompt for the duckdb assistant"""
 
         logger.debug("Building the system prompt for the DuckDbAssistant.")

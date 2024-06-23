@@ -1,14 +1,14 @@
-from typing import List, Iterator
+from collections.abc import Iterator
 
 from phi.document import Document
 from phi.knowledge.base import AssistantKnowledge
 
 
 class DocumentKnowledgeBase(AssistantKnowledge):
-    documents: List[Document]
+    documents: list[Document]
 
     @property
-    def document_lists(self) -> Iterator[List[Document]]:
+    def document_lists(self) -> Iterator[list[Document]]:
         """Iterate over documents and yield lists of documents.
         Each object yielded by the iterator is a list of documents.
 

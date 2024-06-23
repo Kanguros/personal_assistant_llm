@@ -1,4 +1,4 @@
-from typing import Iterator, List, Optional
+from collections.abc import Iterator
 
 from pydantic import model_validator
 
@@ -9,8 +9,8 @@ from phi.utils.log import logger
 
 
 class WebsiteKnowledgeBase(AssistantKnowledge):
-    urls: List[str] = []
-    reader: Optional[WebsiteReader] = None
+    urls: list[str] = []
+    reader: WebsiteReader | None = None
 
     # WebsiteReader parameters
     max_depth: int = 3
@@ -25,7 +25,7 @@ class WebsiteKnowledgeBase(AssistantKnowledge):
         return self  # type: ignore
 
     @property
-    def document_lists(self) -> Iterator[List[Document]]:
+    def document_lists(self) -> Iterator[list[Document]]:
         """Iterate over urls and yield lists of documents.
         Each object yielded by the iterator is a list of documents.
 

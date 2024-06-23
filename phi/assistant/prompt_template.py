@@ -1,16 +1,17 @@
-from typing import Optional, Dict, Any
 from collections import defaultdict
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict
+
 from phi.utils.log import logger
 
 
 class PromptTemplate(BaseModel):
-    id: Optional[str] = None
+    id: str | None = None
     template: str
-    default_params: Optional[Dict[str, Any]] = None
+    default_params: dict[str, Any] | None = None
     ignore_missing_keys: bool = False
-    default_factory: Optional[Any] = None
+    default_factory: Any | None = None
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 

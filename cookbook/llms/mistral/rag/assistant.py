@@ -1,11 +1,9 @@
-from typing import Optional
-
 from phi.assistant import Assistant
+from phi.embedder.mistral import MistralEmbedder
 from phi.knowledge import AssistantKnowledge
 from phi.llm.mistral import Mistral
-from phi.embedder.mistral import MistralEmbedder
-from phi.vectordb.pgvector import PgVector2
 from phi.storage.assistant.postgres import PgAssistantStorage
+from phi.vectordb.pgvector import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 
@@ -28,9 +26,9 @@ mistral_assistant_knowledge = AssistantKnowledge(
 
 
 def get_mistral_assistant(
-    model: Optional[str] = "mistral-large-latest",
-    user_id: Optional[str] = None,
-    run_id: Optional[str] = None,
+    model: str | None = "mistral-large-latest",
+    user_id: str | None = None,
+    run_id: str | None = None,
     debug_mode: bool = True,
 ) -> Assistant:
     """Get a Mistral RAG Assistant."""

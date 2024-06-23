@@ -1,5 +1,5 @@
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Union, List, Iterator
 
 from phi.document import Document
 from phi.document.docx import DocxReader
@@ -7,12 +7,12 @@ from phi.knowledge.base import AssistantKnowledge
 
 
 class DocxKnowledgeBase(AssistantKnowledge):
-    path: Union[str, Path]
-    formats: List[str] = [".doc", ".docx"]
+    path: str | Path
+    formats: list[str] = [".doc", ".docx"]
     reader: DocxReader = DocxReader()
 
     @property
-    def document_lists(self) -> Iterator[List[Document]]:
+    def document_lists(self) -> Iterator[list[Document]]:
         """Iterate over doc/docx files and yield lists of documents.
         Each object yielded by the iterator is a list of documents.
 
