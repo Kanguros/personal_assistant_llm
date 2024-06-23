@@ -8,13 +8,16 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("Research Assistant powered by Groq")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def main() -> None:
     # Get model
     llm_model = st.sidebar.selectbox(
-        "Select Model", options=["llama3-70b-8192", "llama3-8b-8192", "mixtral-8x7b-32768"]
+        "Select Model",
+        options=["llama3-70b-8192", "llama3-8b-8192", "mixtral-8x7b-32768"],
     )
     # Set assistant_type in session state
     if "llm_model" not in st.session_state:
@@ -55,7 +58,9 @@ def main() -> None:
         with st.status("Searching Web", expanded=True) as status:
             with st.container():
                 tavily_container = st.empty()
-                tavily_search_results = TavilyTools().web_search_using_tavily(report_topic)
+                tavily_search_results = TavilyTools().web_search_using_tavily(
+                    report_topic
+                )
                 if tavily_search_results:
                     tavily_container.markdown(tavily_search_results)
             status.update(label="Web Search Complete", state="complete", expanded=False)

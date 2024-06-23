@@ -41,7 +41,8 @@ class AssistantMemory(BaseModel):
 
     def to_dict(self) -> Dict[str, Any]:
         _memory_dict = self.model_dump(
-            exclude_none=True, exclude={"db", "updating", "memories", "classifier", "manager"}
+            exclude_none=True,
+            exclude={"db", "updating", "memories", "classifier", "manager"},
         )
         if self.memories:
             _memory_dict["memories"] = [memory.to_dict() for memory in self.memories]

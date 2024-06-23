@@ -12,7 +12,9 @@ from phi.utils.log import logger, set_log_level_to_debug
 try:
     from openai import OpenAI
     from openai.types.beta.assistant import Assistant as OpenAIAssistantType
-    from openai.types.beta.assistant_deleted import AssistantDeleted as OpenAIAssistantDeleted
+    from openai.types.beta.assistant_deleted import (
+        AssistantDeleted as OpenAIAssistantDeleted,
+    )
 except ImportError:
     logger.error("`openai` not installed")
     raise
@@ -99,7 +101,9 @@ class OpenAIAssistant(BaseModel):
                     self.functions = {}
                 if isinstance(tool, Toolkit):
                     self.functions.update(tool.functions)
-                    logger.debug(f"Functions from {tool.name} added to OpenAIAssistant.")
+                    logger.debug(
+                        f"Functions from {tool.name} added to OpenAIAssistant."
+                    )
                 elif isinstance(tool, Function):
                     self.functions[tool.name] = tool
                     logger.debug(f"Function {tool.name} added to OpenAIAssistant.")
@@ -314,5 +318,8 @@ class OpenAIAssistant(BaseModel):
                 break
 
             thread.print_response(
-                message=message, assistant=self, current_message_only=current_message_only, markdown=markdown
+                message=message,
+                assistant=self,
+                current_message_only=current_message_only,
+                markdown=markdown,
             )

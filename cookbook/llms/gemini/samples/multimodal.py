@@ -14,7 +14,9 @@ def multimodal_example(project: Optional[str], location: Optional[str]) -> str:
     response = multimodal_model.generate_content(
         [
             # Add an example image
-            Part.from_uri("gs://generativeai-downloads/images/scones.jpg", mime_type="image/jpeg"),
+            Part.from_uri(
+                "gs://generativeai-downloads/images/scones.jpg", mime_type="image/jpeg"
+            ),
             # Add an example query
             "what is shown in this image?",
         ]

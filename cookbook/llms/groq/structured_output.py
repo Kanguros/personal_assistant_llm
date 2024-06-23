@@ -7,10 +7,17 @@ from phi.llm.groq import Groq
 
 class MovieScript(BaseModel):
     name: str = Field(..., description="Give a name to this movie")
-    setting: str = Field(..., description="Provide a nice setting for a blockbuster movie.")
-    genre: str = Field(..., description="Genre of the movie. If not available, select action or romantic comedy.")
+    setting: str = Field(
+        ..., description="Provide a nice setting for a blockbuster movie."
+    )
+    genre: str = Field(
+        ...,
+        description="Genre of the movie. If not available, select action or romantic comedy.",
+    )
     characters: List[str] = Field(..., description="Name of characters for this movie.")
-    storyline: str = Field(..., description="3 sentence storyline for the movie. Make it exciting!")
+    storyline: str = Field(
+        ..., description="3 sentence storyline for the movie. Make it exciting!"
+    )
 
 
 movie_assistant = Assistant(

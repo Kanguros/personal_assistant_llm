@@ -20,7 +20,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("Hermes 2 Pro Autonomous RAG")
-st.markdown("##### :orange_heart: built with [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built with [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def restart_assistant():
@@ -65,7 +67,9 @@ def main() -> None:
         st.session_state["messages"] = assistant_chat_history
     else:
         logger.debug("No chat history found")
-        st.session_state["messages"] = [{"role": "assistant", "content": "Ask me anything..."}]
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": "Ask me anything..."}
+        ]
 
     # Prompt for user input
     if prompt := st.chat_input():
@@ -89,7 +93,9 @@ def main() -> None:
                 response += delta  # type: ignore
                 resp_container.markdown(response)
 
-            st.session_state["messages"].append({"role": "assistant", "content": response})
+            st.session_state["messages"].append(
+                {"role": "assistant", "content": response}
+            )
 
     if st.sidebar.button("New Run"):
         restart_assistant()
@@ -120,14 +126,18 @@ def main() -> None:
                 reader = PDFReader()
                 auto_rag_documents: List[Document] = reader.read(uploaded_file)
                 if auto_rag_documents:
-                    assistant.knowledge_base.load_documents(auto_rag_documents, upsert=True)
+                    assistant.knowledge_base.load_documents(
+                        auto_rag_documents, upsert=True
+                    )
                 else:
                     st.sidebar.error("Could not read PDF")
                 st.session_state[f"{auto_rag_name}_uploaded"] = True
             alert.empty()
 
     if assistant.storage:
-        assistant_run_ids: List[str] = assistant.storage.get_all_run_ids(user_id=username)
+        assistant_run_ids: List[str] = assistant.storage.get_all_run_ids(
+            user_id=username
+        )
         new_assistant_run_id = st.sidebar.selectbox("Run ID", options=assistant_run_ids)
         if st.session_state["assistant_run_id"] != new_assistant_run_id:
             logger.info(f"---*--- Loading Hermes2 run: {new_assistant_run_id} ---*---")

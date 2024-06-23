@@ -22,7 +22,11 @@ investment_report = str(reports_dir.joinpath("investment_report.md"))
 stock_analyst = Assistant(
     name="Stock Analyst",
     llm=Groq(model="llama3-70b-8192"),
-    tools=[YFinanceTools(company_info=True, analyst_recommendations=True, company_news=True)],
+    tools=[
+        YFinanceTools(
+            company_info=True, analyst_recommendations=True, company_news=True
+        )
+    ],
     description="You are a Senior Investment Analyst for Goldman Sachs tasked with producing a research report for a very important client.",
     instructions=[
         "You will be provided with a list of companies to write a report on.",

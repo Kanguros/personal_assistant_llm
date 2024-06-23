@@ -6,7 +6,10 @@ Assistant(
     debug_mode=True,
 ).print_response(
     messages=[
-        {"role": "user", "content": "What is the color of a banana? Provide your answer in the xml tag <answer>."},
+        {
+            "role": "user",
+            "content": "What is the color of a banana? Provide your answer in the xml tag <answer>.",
+        },
         {"role": "assistant", "content": "<answer>"},
     ],
 )

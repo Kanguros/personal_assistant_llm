@@ -20,6 +20,8 @@ duckdb_assistant = DuckDbAssistant(
 )
 
 # duckdb_assistant.cli_app()
-duckdb_assistant.print_response("What is the average rating of movies? Show me the SQL?")
+duckdb_assistant.print_response(
+    "What is the average rating of movies? Show me the SQL?"
+)
 duckdb_assistant.print_response("Show me a histogram of movie ratings?")
 duckdb_assistant.print_response("What are the top 5 movies?")

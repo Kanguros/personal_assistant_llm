@@ -8,11 +8,17 @@ from phi.tools.arxiv_toolkit import ArxivToolkit
 from phi.tools.duckduckgo import DuckDuckGo
 from phi.tools.exa import ExaTools
 
-arxiv_toolkit = ArxivToolkit(download_dir=Path(__file__).parent.parent.parent.parent.joinpath("wip", "arxiv_pdfs"))
+arxiv_toolkit = ArxivToolkit(
+    download_dir=Path(__file__).parent.parent.parent.parent.joinpath(
+        "wip", "arxiv_pdfs"
+    )
+)
 
 
 class SearchTerms(BaseModel):
-    terms: List[str] = Field(..., description="List of 2 search terms related to a topic.")
+    terms: List[str] = Field(
+        ..., description="List of 2 search terms related to a topic."
+    )
 
 
 class ArxivSearchResult(BaseModel):
@@ -21,22 +27,32 @@ class ArxivSearchResult(BaseModel):
     summary: str = Field(..., description="Summary from the article.")
     pdf_url: str = Field(..., description="Url of the PDF from the article.")
     links: List[str] = Field(..., description="Links for the article.")
-    reasoning: str = Field(..., description="Clear description of why you chose this article from the results.")
+    reasoning: str = Field(
+        ...,
+        description="Clear description of why you chose this article from the results.",
+    )
 
 
 class ArxivSearchResults(BaseModel):
-    results: List[ArxivSearchResult] = Field(..., description="List of top search results.")
+    results: List[ArxivSearchResult] = Field(
+        ..., description="List of top search results."
+    )
 
 
 class WebSearchResult(BaseModel):
     title: str = Field(..., description="Title of the article.")
     summary: str = Field(..., description="Summary from the article.")
     links: List[str] = Field(..., description="Links for the article.")
-    reasoning: str = Field(..., description="Clear description of why you chose this article from the results.")
+    reasoning: str = Field(
+        ...,
+        description="Clear description of why you chose this article from the results.",
+    )
 
 
 class WebSearchResults(BaseModel):
-    results: List[WebSearchResult] = Field(..., description="List of top search results.")
+    results: List[WebSearchResult] = Field(
+        ..., description="List of top search results."
+    )
 
 
 search_term_generator = Assistant(

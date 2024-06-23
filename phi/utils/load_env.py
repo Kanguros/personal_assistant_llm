@@ -2,7 +2,9 @@ from pathlib import Path
 from typing import Optional, Dict
 
 
-def load_env(env: Optional[Dict[str, str]] = None, dotenv_dir: Optional[Path] = None) -> None:
+def load_env(
+    env: Optional[Dict[str, str]] = None, dotenv_dir: Optional[Path] = None
+) -> None:
     from os import environ
 
     if dotenv_dir is not None:

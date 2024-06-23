@@ -21,7 +21,9 @@ text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 documents = text_splitter.split_documents(raw_documents)
 
 # Embed each chunk and load it into the vector store
-Chroma.from_documents(documents, OpenAIEmbeddings(), persist_directory=str(chroma_db_dir))
+Chroma.from_documents(
+    documents, OpenAIEmbeddings(), persist_directory=str(chroma_db_dir)
+)
 
 # Get the vector database
 db = Chroma(embedding_function=OpenAIEmbeddings(), persist_directory=str(chroma_db_dir))

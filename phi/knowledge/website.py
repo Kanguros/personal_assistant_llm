@@ -19,7 +19,9 @@ class WebsiteKnowledgeBase(AssistantKnowledge):
     @model_validator(mode="after")  # type: ignore
     def set_reader(self) -> "WebsiteKnowledgeBase":
         if self.reader is None:
-            self.reader = WebsiteReader(max_depth=self.max_depth, max_links=self.max_links)
+            self.reader = WebsiteReader(
+                max_depth=self.max_depth, max_links=self.max_links
+            )
         return self  # type: ignore
 
     @property
@@ -34,7 +36,9 @@ class WebsiteKnowledgeBase(AssistantKnowledge):
             for _url in self.urls:
                 yield self.reader.read(url=_url)
 
-    def load(self, recreate: bool = False, upsert: bool = True, skip_existing: bool = True) -> None:
+    def load(
+        self, recreate: bool = False, upsert: bool = True, skip_existing: bool = True
+    ) -> None:
         """Load the website contents to the vector db"""
 
         if self.vector_db is None:
@@ -69,7 +73,11 @@ class WebsiteKnowledgeBase(AssistantKnowledge):
             document_list = self.reader.read(url=url)
             # Filter out documents which already exist in the vector db
             if not recreate:
-                document_list = [document for document in document_list if not self.vector_db.doc_exists(document)]
+                document_list = [
+                    document
+                    for document in document_list
+                    if not self.vector_db.doc_exists(document)
+                ]
 
             self.vector_db.insert(documents=document_list)
             num_documents += len(document_list)

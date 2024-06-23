@@ -143,7 +143,9 @@ class PythonAssistant(Assistant):
                 "Give the file a `.py` extension and share it with the user."
             ]
         if self.run_code:
-            _instructions += ["After the script is ready, run it using the `run_python_code` function."]
+            _instructions += [
+                "After the script is ready, run it using the `run_python_code` function."
+            ]
         _instructions += ["Continue till you have accomplished the task."]
 
         # Add instructions for using markdown
@@ -163,7 +165,8 @@ class PythonAssistant(Assistant):
         # -*- Build the default system prompt
         # First add the Assistant description
         _system_prompt = (
-            self.description or "You are an expert in Python and can accomplish any task that is asked of you."
+            self.description
+            or "You are an expert in Python and can accomplish any task that is asked of you."
         )
         _system_prompt += "\n"
 
@@ -233,5 +236,7 @@ class PythonAssistant(Assistant):
             """
             )
 
-        _system_prompt += "\nREMEMBER, NEVER RUN CODE TO DELETE DATA OR ABUSE THE LOCAL SYSTEM."
+        _system_prompt += (
+            "\nREMEMBER, NEVER RUN CODE TO DELETE DATA OR ABUSE THE LOCAL SYSTEM."
+        )
         return _system_prompt

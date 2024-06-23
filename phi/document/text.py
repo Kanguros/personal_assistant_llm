@@ -18,7 +18,12 @@ class TextReader(Reader):
 
         try:
             logger.info(f"Reading: {path}")
-            file_name = path.name.split("/")[-1].split(".")[0].replace("/", "_").replace(" ", "_")
+            file_name = (
+                path.name.split("/")[-1]
+                .split(".")[0]
+                .replace("/", "_")
+                .replace(" ", "_")
+            )
             file_contents = path.read_text()
             documents = [
                 Document(

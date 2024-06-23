@@ -4,7 +4,9 @@ from phi.tools.website import WebsiteTools
 from phi.llm.ollama import Hermes
 
 assistant = Assistant(
-    llm=Hermes(model="adrienbrault/nous-hermes2pro:Q8_0"), tools=[ExaTools(), WebsiteTools()], show_tool_calls=True
+    llm=Hermes(model="adrienbrault/nous-hermes2pro:Q8_0"),
+    tools=[ExaTools(), WebsiteTools()],
+    show_tool_calls=True,
 )
 assistant.print_response(
     "produce this table: research chromatic homotopy theory, "

@@ -7,4 +7,6 @@ assistant = Assistant(
     description="You are a YouTube assistant. Obtain the captions of a YouTube video and answer questions.",
     debug_mode=True,
 )
-assistant.print_response("Summarize this video https://www.youtube.com/watch?v=Iv9dewmcFbs&t", markdown=True)
+assistant.print_response(
+    "Summarize this video https://www.youtube.com/watch?v=Iv9dewmcFbs&t", markdown=True
+)

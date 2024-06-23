@@ -126,7 +126,9 @@ class LLM(BaseModel):
                     # If the function does not exist in self.functions, add to self.tools
                     if name not in self.functions:
                         self.functions[name] = func
-                        self.tools.append({"type": "function", "function": func.to_dict()})
+                        self.tools.append(
+                            {"type": "function", "function": func.to_dict()}
+                        )
                         logger.debug(f"Function {name} from {tool.name} added to LLM.")
 
             elif isinstance(tool, Function):
@@ -141,7 +143,9 @@ class LLM(BaseModel):
                     if function_name not in self.functions:
                         func = Function.from_callable(tool)
                         self.functions[func.name] = func
-                        self.tools.append({"type": "function", "function": func.to_dict()})
+                        self.tools.append(
+                            {"type": "function", "function": func.to_dict()}
+                        )
                         logger.debug(f"Function {func.name} added to LLM.")
                 except Exception as e:
                     logger.warning(f"Could not add function {tool}: {e}")
@@ -151,7 +155,9 @@ class LLM(BaseModel):
         # This is triggered when the function call limit is reached.
         self.tool_choice = "none"
 
-    def run_function_calls(self, function_calls: List[FunctionCall], role: str = "tool") -> List[Message]:
+    def run_function_calls(
+        self, function_calls: List[FunctionCall], role: str = "tool"
+    ) -> List[Message]:
         function_call_results: List[Message] = []
         for function_call in function_calls:
             if self.function_call_stack is None:
@@ -173,7 +179,9 @@ class LLM(BaseModel):
                 self.metrics["tool_call_times"] = {}
             if function_call.function.name not in self.metrics["tool_call_times"]:
                 self.metrics["tool_call_times"][function_call.function.name] = []
-            self.metrics["tool_call_times"][function_call.function.name].append(_function_call_timer.elapsed)
+            self.metrics["tool_call_times"][function_call.function.name].append(
+                _function_call_timer.elapsed
+            )
             function_call_results.append(_function_call_result)
             self.function_call_stack.append(function_call)
 

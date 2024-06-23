@@ -15,7 +15,11 @@ class PromptTemplate(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def get_prompt(self, **kwargs) -> str:
-        template_params = (self.default_factory or defaultdict(str)) if self.ignore_missing_keys else {}
+        template_params = (
+            (self.default_factory or defaultdict(str))
+            if self.ignore_missing_keys
+            else {}
+        )
         if self.default_params:
             template_params.update(self.default_params)
         template_params.update(kwargs)

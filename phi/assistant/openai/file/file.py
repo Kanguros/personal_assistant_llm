@@ -64,7 +64,9 @@ class File(BaseModel):
         self.status_details = openai_file.status_details
 
     def create(self) -> "File":
-        self.openai_file = self.client.files.create(file=self.read(), purpose=self.purpose)
+        self.openai_file = self.client.files.create(
+            file=self.read(), purpose=self.purpose
+        )
         self.load_from_openai(self.openai_file)
         logger.debug(f"File created: {self.openai_file.id}")
         logger.debug(f"File: {self.openai_file}")
@@ -120,13 +122,17 @@ class File(BaseModel):
             file_to_download = self.get_from_openai()
             if file_to_download is not None:
                 logger.debug(f"Downloading file: {file_to_download.id}")
-                response = self.client.files.with_raw_response.retrieve_content(file_id=file_to_download.id)
+                response = self.client.files.with_raw_response.retrieve_content(
+                    file_id=file_to_download.id
+                )
                 if path:
                     with open(path, "wb") as f:
                         f.write(response.content)
                     return path
                 else:
-                    with NamedTemporaryFile(delete=False, mode="wb", suffix=f"{suffix}") as temp_file:
+                    with NamedTemporaryFile(
+                        delete=False, mode="wb", suffix=f"{suffix}"
+                    ) as temp_file:
                         temp_file.write(response.content)
                         temp_file_path = temp_file.name
                     return temp_file_path

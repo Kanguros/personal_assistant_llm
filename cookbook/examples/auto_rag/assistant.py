@@ -24,12 +24,16 @@ def get_auto_rag_assistant(
         run_id=run_id,
         user_id=user_id,
         llm=OpenAIChat(model=llm_model),
-        storage=PgAssistantStorage(table_name="auto_rag_assistant_openai", db_url=db_url),
+        storage=PgAssistantStorage(
+            table_name="auto_rag_assistant_openai", db_url=db_url
+        ),
         knowledge_base=AssistantKnowledge(
             vector_db=PgVector2(
                 db_url=db_url,
                 collection="auto_rag_documents_openai",
-                embedder=OpenAIEmbedder(model="text-embedding-3-small", dimensions=1536),
+                embedder=OpenAIEmbedder(
+                    model="text-embedding-3-small", dimensions=1536
+                ),
             ),
             # 3 references are added to the prompt
             num_documents=3,

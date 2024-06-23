@@ -12,7 +12,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("Local Function Calling with Ollama")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def restart_assistant():
@@ -32,7 +34,10 @@ def restart_assistant():
 
 def main() -> None:
     # Get LLM id
-    llm_id = st.sidebar.selectbox("Select LLM", options=["hermes2pro-llama3", "llama3"]) or "hermes2pro-llama3"
+    llm_id = (
+        st.sidebar.selectbox("Select LLM", options=["hermes2pro-llama3", "llama3"])
+        or "hermes2pro-llama3"
+    )
     # Set llm in session state
     if "llm_id" not in st.session_state:
         st.session_state["llm_id"] = llm_id
@@ -69,7 +74,10 @@ def main() -> None:
 
     # Get the assistant
     local_assistant: Assistant
-    if "local_assistant" not in st.session_state or st.session_state["local_assistant"] is None:
+    if (
+        "local_assistant" not in st.session_state
+        or st.session_state["local_assistant"] is None
+    ):
         logger.info(f"---*--- Creating {llm_id} Assistant ---*---")
         local_assistant = get_function_calling_assistant(
             llm_id=llm_id,
@@ -87,7 +95,9 @@ def main() -> None:
         st.session_state["messages"] = assistant_chat_history
     else:
         logger.debug("No chat history found")
-        st.session_state["messages"] = [{"role": "assistant", "content": "Ask me questions..."}]
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": "Ask me questions..."}
+        ]
 
     # Prompt for user input
     if prompt := st.chat_input():
@@ -110,7 +120,9 @@ def main() -> None:
             for delta in local_assistant.run(question):
                 response += delta  # type: ignore
                 resp_container.markdown(response)
-            st.session_state["messages"].append({"role": "assistant", "content": response})
+            st.session_state["messages"].append(
+                {"role": "assistant", "content": response}
+            )
 
     if st.sidebar.button("New Run"):
         restart_assistant()

@@ -14,7 +14,9 @@ if not zd_username or not zd_password or not zd_company_name:
     )
 
 # Initialize the ZendeskTools with the credentials
-zendesk_tools = ZendeskTools(username=zd_username, password=zd_password, company_name=zd_company_name)
+zendesk_tools = ZendeskTools(
+    username=zd_username, password=zd_password, company_name=zd_company_name
+)
 
 # Create an instance of Assistant and pass the initialized tool
 assistant = Assistant(tools=[zendesk_tools], show_tool_calls=True)

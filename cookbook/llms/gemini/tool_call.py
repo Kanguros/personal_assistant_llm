@@ -13,4 +13,6 @@ assistant = Assistant(
     tools=[DuckDuckGo()],
     show_tool_calls=True,
 )
-assistant.print_response("Whats happening in France?  Summarize top 10 stories with sources", markdown=True)
+assistant.print_response(
+    "Whats happening in France?  Summarize top 10 stories with sources", markdown=True
+)

@@ -50,7 +50,14 @@ retriever = VectorIndexRetriever(index)
 knowledge_base = LlamaIndexKnowledgeBase(retriever=retriever)
 
 # Create an assistant with the knowledge base
-assistant = Assistant(knowledge_base=knowledge_base, search_knowledge=True, debug_mode=True, show_tool_calls=True)
+assistant = Assistant(
+    knowledge_base=knowledge_base,
+    search_knowledge=True,
+    debug_mode=True,
+    show_tool_calls=True,
+)
 
 # Use the assistant to ask a question and print a response.
-assistant.print_response("Explain what this text means: low end eats the high end", markdown=True)
+assistant.print_response(
+    "Explain what this text means: low end eats the high end", markdown=True
+)

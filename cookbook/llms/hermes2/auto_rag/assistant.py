@@ -16,7 +16,9 @@ knowledge_base = AssistantKnowledge(
         # Store embeddings in table: ai.hermes2_auto_rag_documents
         collection="hermes2_auto_rag_documents",
         # Use the OllamaEmbedder to generate embeddings
-        embedder=OllamaEmbedder(model="adrienbrault/nous-hermes2pro:Q8_0", dimensions=4096),
+        embedder=OllamaEmbedder(
+            model="adrienbrault/nous-hermes2pro:Q8_0", dimensions=4096
+        ),
     ),
     # 3 references are added to the prompt
     num_documents=3,
@@ -30,7 +32,10 @@ storage = PgAssistantStorage(
 
 
 def get_hermes_assistant(
-    user_id: Optional[str] = None, run_id: Optional[str] = None, web_search: bool = False, debug_mode: bool = False
+    user_id: Optional[str] = None,
+    run_id: Optional[str] = None,
+    web_search: bool = False,
+    debug_mode: bool = False,
 ) -> Assistant:
     """Get an Autonomous Hermes 2 Assistant."""
 

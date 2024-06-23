@@ -24,7 +24,9 @@ articles_dir.mkdir(parents=True, exist_ok=True)
 class NewsArticle(BaseModel):
     title: str = Field(..., description="Title of the article.")
     url: str = Field(..., description="Link to the article.")
-    summary: Optional[str] = Field(..., description="Summary of the article if available.")
+    summary: Optional[str] = Field(
+        ..., description="Summary of the article if available."
+    )
 
 
 researcher = Assistant(

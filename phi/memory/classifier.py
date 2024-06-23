@@ -23,7 +23,8 @@ class MemoryClassifier(BaseModel):
             except ModuleNotFoundError as e:
                 logger.exception(e)
                 logger.error(
-                    "phidata uses `openai` as the default LLM. " "Please provide an `llm` or install `openai`."
+                    "phidata uses `openai` as the default LLM. "
+                    "Please provide an `llm` or install `openai`."
                 )
                 exit(1)
 
@@ -84,7 +85,9 @@ class MemoryClassifier(BaseModel):
             llm_messages.append(system_prompt_message)
 
         # Build the user prompt message
-        user_prompt_message = Message(role="user", content=message, **kwargs) if message else None
+        user_prompt_message = (
+            Message(role="user", content=message, **kwargs) if message else None
+        )
         if user_prompt_message is not None:
             llm_messages += [user_prompt_message]
 

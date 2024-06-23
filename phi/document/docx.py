@@ -23,7 +23,12 @@ class DocxReader(Reader):
 
         try:
             logger.info(f"Reading: {path}")
-            doc_name = path.name.split("/")[-1].split(".")[0].replace("/", "_").replace(" ", "_")
+            doc_name = (
+                path.name.split("/")[-1]
+                .split(".")[0]
+                .replace("/", "_")
+                .replace(" ", "_")
+            )
             doc_content = textract.process(path)
             documents = [
                 Document(

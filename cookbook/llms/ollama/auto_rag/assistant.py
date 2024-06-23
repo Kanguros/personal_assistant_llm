@@ -23,7 +23,9 @@ def get_auto_rag_assistant(
         run_id=run_id,
         user_id=user_id,
         llm=Ollama(model="adrienbrault/nous-hermes2pro-llama3-8b:q8_0"),
-        storage=PgAssistantStorage(table_name="auto_rag_assistant_ollama", db_url=db_url),
+        storage=PgAssistantStorage(
+            table_name="auto_rag_assistant_ollama", db_url=db_url
+        ),
         knowledge_base=AssistantKnowledge(
             vector_db=PgVector2(
                 db_url=db_url,

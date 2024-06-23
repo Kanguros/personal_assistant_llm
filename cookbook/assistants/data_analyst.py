@@ -18,5 +18,9 @@ data_analyst = DuckDbAssistant(
     ),
 )
 
-data_analyst.print_response("What is the average rating of movies? Show me the SQL.", markdown=True)
-data_analyst.print_response("Show me a histogram of ratings. Choose a bucket size", markdown=True)
+data_analyst.print_response(
+    "What is the average rating of movies? Show me the SQL.", markdown=True
+)
+data_analyst.print_response(
+    "Show me a histogram of ratings. Choose a bucket size", markdown=True
+)

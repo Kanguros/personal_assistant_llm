@@ -14,7 +14,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("RAG Chat Assistant")
-st.markdown("##### :orange_heart: Built with [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: Built with [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def restart_assistant():
@@ -31,7 +33,10 @@ def restart_assistant():
 def main() -> None:
     # Get LLM Model
     model = (
-        st.sidebar.selectbox("Select LLM", options=["llama3-70b-8192", "llama3-8b-8192", "mixtral-8x7b-32768"])
+        st.sidebar.selectbox(
+            "Select LLM",
+            options=["llama3-70b-8192", "llama3-8b-8192", "mixtral-8x7b-32768"],
+        )
         or "llama3-70b-8192"
     )
     # Set llm in session state
@@ -46,7 +51,10 @@ def main() -> None:
     max_references = 10
     default_references = 3
     num_documents = st.sidebar.number_input(
-        "Number of References", value=default_references, min_value=1, max_value=max_references
+        "Number of References",
+        value=default_references,
+        min_value=1,
+        max_value=max_references,
     )
     if "prev_num_documents" not in st.session_state:
         st.session_state["prev_num_documents"] = num_documents
@@ -56,7 +64,10 @@ def main() -> None:
 
     # Get the assistant
     chat_assistant: Assistant
-    if "chat_assistant" not in st.session_state or st.session_state["chat_assistant"] is None:
+    if (
+        "chat_assistant" not in st.session_state
+        or st.session_state["chat_assistant"] is None
+    ):
         chat_assistant = get_rag_chat_assistant(
             model=model,
             num_documents=num_documents,
@@ -79,7 +90,9 @@ def main() -> None:
         st.session_state["messages"] = chat_assistant_chat_history
     else:
         logger.debug("No chat history found")
-        st.session_state["messages"] = [{"role": "assistant", "content": "Upload a doc and ask me questions..."}]
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": "Upload a doc and ask me questions..."}
+        ]
 
     # Prompt for user input
     if prompt := st.chat_input():
@@ -102,7 +115,9 @@ def main() -> None:
             for delta in chat_assistant.run(question):
                 response += delta  # type: ignore
                 resp_container.markdown(response)
-            st.session_state["messages"].append({"role": "assistant", "content": response})
+            st.session_state["messages"].append(
+                {"role": "assistant", "content": response}
+            )
 
     # Load knowledge base
     if chat_assistant.knowledge_base:
@@ -111,7 +126,9 @@ def main() -> None:
             st.session_state["url_scrape_key"] = 0
 
         input_url = st.sidebar.text_input(
-            "Add URL to Knowledge Base", type="default", key=st.session_state["url_scrape_key"]
+            "Add URL to Knowledge Base",
+            type="default",
+            key=st.session_state["url_scrape_key"],
         )
         add_url_button = st.sidebar.button("Add URL")
         if add_url_button:
@@ -121,7 +138,9 @@ def main() -> None:
                     scraper = WebsiteReader(chunk_size=3000, max_links=5, max_depth=1)
                     web_documents: List[Document] = scraper.read(input_url)
                     if web_documents:
-                        chat_assistant.knowledge_base.load_documents(web_documents, upsert=True)
+                        chat_assistant.knowledge_base.load_documents(
+                            web_documents, upsert=True
+                        )
                     else:
                         st.sidebar.error("Could not read website")
                     st.session_state[f"{input_url}_uploaded"] = True
@@ -132,7 +151,9 @@ def main() -> None:
             st.session_state["file_uploader_key"] = 100
 
         uploaded_file = st.sidebar.file_uploader(
-            "Add a PDF :page_facing_up:", type="pdf", key=st.session_state["file_uploader_key"]
+            "Add a PDF :page_facing_up:",
+            type="pdf",
+            key=st.session_state["file_uploader_key"],
         )
         if uploaded_file is not None:
             alert = st.sidebar.info("Processing PDF...", icon="ℹ️")
@@ -141,17 +162,24 @@ def main() -> None:
                 reader = PDFReader(chunk_size=3000)
                 pdf_documents: List[Document] = reader.read(uploaded_file)
                 if pdf_documents:
-                    chat_assistant.knowledge_base.load_documents(documents=pdf_documents, upsert=True)
+                    chat_assistant.knowledge_base.load_documents(
+                        documents=pdf_documents, upsert=True
+                    )
                 else:
                     st.sidebar.error("Could not read PDF")
                 st.session_state[f"{pdf_name}_uploaded"] = True
             alert.empty()
-            st.sidebar.success(":information_source: If the PDF throws an error, try uploading it again")
+            st.sidebar.success(
+                ":information_source: If the PDF throws an error, try uploading it again"
+            )
 
     if chat_assistant.storage:
         assistant_run_ids: List[str] = chat_assistant.storage.get_all_run_ids()
         new_assistant_run_id = st.sidebar.selectbox("Run ID", options=assistant_run_ids)
-        if new_assistant_run_id is not None and st.session_state["chat_assistant_run_id"] != new_assistant_run_id:
+        if (
+            new_assistant_run_id is not None
+            and st.session_state["chat_assistant_run_id"] != new_assistant_run_id
+        ):
             logger.info(f"---*--- Loading run: {new_assistant_run_id} ---*---")
             st.session_state["chat_assistant"] = get_rag_chat_assistant(
                 model=model,

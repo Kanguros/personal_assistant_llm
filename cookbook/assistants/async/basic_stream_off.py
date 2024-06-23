@@ -8,4 +8,8 @@ assistant = Assistant(
     instructions=["Recipes should be under 5 ingredients"],
 )
 # -*- Print a response to the cli
-asyncio.run(assistant.async_print_response("Share a breakfast recipe.", markdown=True, stream=False))
+asyncio.run(
+    assistant.async_print_response(
+        "Share a breakfast recipe.", markdown=True, stream=False
+    )
+)

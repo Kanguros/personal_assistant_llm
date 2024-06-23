@@ -13,5 +13,7 @@ pprint("============== World ==============")
 pprint(world)
 pprint("============== World ==============")
 
-world_explorer = get_world_explorer(model=model, temperature=temperature, world=world, debug_mode=False)
+world_explorer = get_world_explorer(
+    model=model, temperature=temperature, world=world, debug_mode=False
+)
 world_explorer.cli_app(markdown=True)

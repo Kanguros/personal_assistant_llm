@@ -51,4 +51,6 @@ duckdb_assistant = Assistant(
     debug_mode=True,
 )
 
-duckdb_assistant.print_response("What is the average rating of movies? Show me the SQL.", markdown=True)
+duckdb_assistant.print_response(
+    "What is the average rating of movies? Show me the SQL.", markdown=True
+)

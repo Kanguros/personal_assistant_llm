@@ -18,7 +18,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("AI Research Workflow")
-st.markdown("##### :orange_heart: built by [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built by [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def main() -> None:
@@ -40,7 +42,11 @@ def main() -> None:
     search_google_scholar = st.sidebar.checkbox("Google Scholar Search", disabled=True)  # noqa
     use_cache = st.sidebar.toggle("Use Cache", value=False, disabled=True)  # noqa
     num_search_terms = st.sidebar.number_input(
-        "Number of Search Terms", value=1, min_value=1, max_value=3, help="This will increase latency."
+        "Number of Search Terms",
+        value=1,
+        min_value=1,
+        max_value=3,
+        help="This will increase latency.",
     )
 
     st.sidebar.markdown("---")
@@ -64,11 +70,18 @@ def main() -> None:
         with st.status("Generating Search Terms", expanded=True) as status:
             with st.container():
                 search_terms_container = st.empty()
-                search_generator_input = {"topic": report_topic, "num_terms": num_search_terms}
-                search_terms = search_term_generator.run(json.dumps(search_generator_input))
+                search_generator_input = {
+                    "topic": report_topic,
+                    "num_terms": num_search_terms,
+                }
+                search_terms = search_term_generator.run(
+                    json.dumps(search_generator_input)
+                )
                 if search_terms:
                     search_terms_container.json(search_terms.model_dump())
-            status.update(label="Search Terms Generated", state="complete", expanded=False)
+            status.update(
+                label="Search Terms Generated", state="complete", expanded=False
+            )
 
         if not search_terms:
             st.write("Sorry report generation failed. Please try again.")
@@ -81,33 +94,53 @@ def main() -> None:
             with st.status("Searching Exa", expanded=True) as status:
                 with st.container():
                     exa_container = st.empty()
-                    exa_search_results = exa_search_assistant.run(search_terms.model_dump_json(indent=4))
+                    exa_search_results = exa_search_assistant.run(
+                        search_terms.model_dump_json(indent=4)
+                    )
                     if exa_search_results and len(exa_search_results.results) > 0:
                         exa_content = exa_search_results.model_dump_json(indent=4)
                         exa_container.json(exa_search_results.results)
-                status.update(label="Exa Search Complete Complete", state="complete", expanded=False)
+                status.update(
+                    label="Exa Search Complete Complete",
+                    state="complete",
+                    expanded=False,
+                )
 
         if search_arxiv:
-            with st.status("Searching ArXiv (this takes a while)", expanded=True) as status:
+            with st.status(
+                "Searching ArXiv (this takes a while)", expanded=True
+            ) as status:
                 with st.container():
                     arxiv_container = st.empty()
-                    arxiv_search_results = arxiv_search_assistant.run(search_terms.model_dump_json(indent=4))
+                    arxiv_search_results = arxiv_search_assistant.run(
+                        search_terms.model_dump_json(indent=4)
+                    )
                     if arxiv_search_results and len(arxiv_search_results.results) > 0:
                         arxiv_container.json(arxiv_search_results.results)
-                status.update(label="ArXiv Search Complete", state="complete", expanded=False)
+                status.update(
+                    label="ArXiv Search Complete", state="complete", expanded=False
+                )
 
             if arxiv_search_results and len(arxiv_search_results) > 0:
                 arxiv_paper_ids = []
                 for search_result in arxiv_search_results:
-                    arxiv_paper_ids.extend([result.id for result in search_result.results])
+                    arxiv_paper_ids.extend(
+                        [result.id for result in search_result.results]
+                    )
 
                 if len(arxiv_paper_ids) > 0:
                     with st.status("Reading ArXiv Papers", expanded=True) as status:
                         with st.container():
                             arxiv_paper_ids_container = st.empty()
-                            arxiv_content = arxiv_toolkit.read_arxiv_papers(arxiv_paper_ids, pages_to_read=2)
+                            arxiv_content = arxiv_toolkit.read_arxiv_papers(
+                                arxiv_paper_ids, pages_to_read=2
+                            )
                             arxiv_paper_ids_container.json(arxiv_paper_ids)
-                        status.update(label="Reading ArXiv Papers Complete", state="complete", expanded=False)
+                        status.update(
+                            label="Reading ArXiv Papers Complete",
+                            state="complete",
+                            expanded=False,
+                        )
 
         report_input = ""
         report_input += f"# Topic: {report_topic}\n\n"

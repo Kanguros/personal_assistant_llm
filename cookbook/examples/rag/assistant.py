@@ -8,7 +8,9 @@ from resources import vector_db  # type: ignore
 # the `ai.recipes` table when`knowledge_base.load()` is called.
 knowledge_base = PDFUrlKnowledgeBase(
     urls=["https://phi-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
-    vector_db=PgVector2(collection="recipes", db_url=vector_db.get_db_connection_local()),
+    vector_db=PgVector2(
+        collection="recipes", db_url=vector_db.get_db_connection_local()
+    ),
 )
 knowledge_base.load(recreate=False)
 

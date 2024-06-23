@@ -20,7 +20,9 @@ stock_analyst = Assistant(
     name="Stock Analyst",
     role="Get current stock price, analyst recommendations and news for a company.",
     tools=[
-        YFinanceTools(stock_price=True, analyst_recommendations=True, company_news=True),
+        YFinanceTools(
+            stock_price=True, analyst_recommendations=True, company_news=True
+        ),
         Newspaper4k(),
         FileTools(base_dir=reports_dir),
     ],

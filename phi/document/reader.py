@@ -47,7 +47,12 @@ class Reader(BaseModel):
 
             # Ensure we're not splitting a word in half
             if end < content_length:
-                while end > start and cleaned_content[end] not in [" ", "\n", "\r", "\t"]:
+                while end > start and cleaned_content[end] not in [
+                    " ",
+                    "\n",
+                    "\r",
+                    "\t",
+                ]:
                     end -= 1
 
             # If the entire chunk is a word, then just split it at self.chunk_size

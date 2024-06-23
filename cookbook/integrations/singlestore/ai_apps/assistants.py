@@ -25,7 +25,9 @@ PORT = getenv("SINGLESTORE_PORT")
 DATABASE = getenv("SINGLESTORE_DATABASE")
 SSL_CERT = getenv("SINGLESTORE_SSL_CERT", None)
 # -*- SingleStore DB URL
-db_url = f"mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}?charset=utf8mb4"
+db_url = (
+    f"mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}?charset=utf8mb4"
+)
 if SSL_CERT:
     db_url += f"&ssl_ca={SSL_CERT}&ssl_verify_cert=true"
 # -*- single_store_db_engine
@@ -55,7 +57,9 @@ def get_rag_assistant(
                     collection="rag_documents_openai",
                     schema=DATABASE,
                     db_engine=db_engine,
-                    embedder=OpenAIEmbedder(model="text-embedding-3-small", dimensions=1536),
+                    embedder=OpenAIEmbedder(
+                        model="text-embedding-3-small", dimensions=1536
+                    ),
                 ),
                 num_documents=num_documents,
             ),
@@ -156,7 +160,9 @@ def get_research_assistant(
                 collection="research_documents_openai",
                 schema=DATABASE,
                 db_engine=db_engine,
-                embedder=OpenAIEmbedder(model="text-embedding-3-small", dimensions=1536),
+                embedder=OpenAIEmbedder(
+                    model="text-embedding-3-small", dimensions=1536
+                ),
             ),
             num_documents=num_documents,
         )

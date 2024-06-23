@@ -21,7 +21,9 @@ class Function(BaseModel):
     sanitize_arguments: bool = True
 
     def to_dict(self) -> Dict[str, Any]:
-        return self.model_dump(exclude_none=True, include={"name", "description", "parameters"})
+        return self.model_dump(
+            exclude_none=True, include={"name", "description", "parameters"}
+        )
 
     @classmethod
     def from_callable(cls, c: Callable) -> "Function":

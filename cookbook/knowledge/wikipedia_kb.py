@@ -23,4 +23,6 @@ assistant = Assistant(
 )
 
 # Ask the assistant about the knowledge base
-assistant.print_response("Which team is objectively better, Manchester United or Real Madrid?")
+assistant.print_response(
+    "Which team is objectively better, Manchester United or Real Madrid?"
+)

@@ -33,7 +33,9 @@ def average_rating() -> AssistantResponse:
         # debug_mode=True,
     )
 
-    response: AssistantResponse = python_assistant.run("What is the average rating of movies?")  # type: ignore
+    response: AssistantResponse = python_assistant.run(
+        "What is the average rating of movies?"
+    )  # type: ignore
     return response
 
 

@@ -3,7 +3,7 @@ from phi.knowledge.pdf import PDFUrlKnowledgeBase
 from phi.vectordb.lancedb.lancedb import LanceDb
 from phi.embedder.ollama import OllamaEmbedder
 from phi.assistant import Assistant
-from phi.storage.assistant.sqllite import SqlAssistantStorage
+from phi.storage.sqllite import SqlAssistantStorage
 from phi.llm.ollama import Ollama
 
 # Define the database URL where the vector database will be stored
@@ -52,4 +52,7 @@ assistant = Assistant(
 )
 
 # Use the assistant to generate and print a response to a query, formatted in Markdown
-assistant.print_response("What is the first step of making Gluai Buat Chi from the knowledge base?", markdown=True)
+assistant.print_response(
+    "What is the first step of making Gluai Buat Chi from the knowledge base?",
+    markdown=True,
+)

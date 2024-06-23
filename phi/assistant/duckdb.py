@@ -12,7 +12,9 @@ from phi.utils.log import logger
 try:
     import duckdb
 except ImportError:
-    raise ImportError("`duckdb` not installed. Please install using `pip install duckdb`.")
+    raise ImportError(
+        "`duckdb` not installed. Please install using `pip install duckdb`."
+    )
 
 
 class DuckDbAssistant(Assistant):
@@ -184,7 +186,8 @@ class DuckDbAssistant(Assistant):
         # -*- Build the default system prompt
         # First add the Assistant description
         _system_prompt = (
-            self.description or "You are a Data Engineering assistant designed to perform tasks using DuckDb."
+            self.description
+            or "You are a Data Engineering assistant designed to perform tasks using DuckDb."
         )
         _system_prompt += "\n"
 

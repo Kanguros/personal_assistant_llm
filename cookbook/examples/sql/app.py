@@ -12,7 +12,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("SQL Assistant")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)"
+)
 with st.expander(":rainbow[:point_down: Example Questions]"):
     st.markdown("- Which driver has the most race wins?")
     st.markdown("- Which team won the most Constructors Championships?")
@@ -21,10 +23,18 @@ with st.expander(":rainbow[:point_down: Example Questions]"):
 def main() -> None:
     # Get the assistant
     sql_assistant: Assistant
-    if "sql_assistant" not in st.session_state or st.session_state["sql_assistant"] is None:
-        if "sql_assistant_run_id" in st.session_state and st.session_state["sql_assistant_run_id"] is not None:
+    if (
+        "sql_assistant" not in st.session_state
+        or st.session_state["sql_assistant"] is None
+    ):
+        if (
+            "sql_assistant_run_id" in st.session_state
+            and st.session_state["sql_assistant_run_id"] is not None
+        ):
             logger.info("---*--- Reading SQL Assistant ---*---")
-            sql_assistant = get_sql_assistant(run_id=st.session_state["sql_assistant_run_id"])
+            sql_assistant = get_sql_assistant(
+                run_id=st.session_state["sql_assistant_run_id"]
+            )
         else:
             logger.info("---*--- Creating new SQL Assistant ---*---")
             sql_assistant = get_sql_assistant()
@@ -42,7 +52,9 @@ def main() -> None:
         st.session_state["messages"] = assistant_chat_history
     else:
         logger.debug("No chat history found")
-        st.session_state["messages"] = [{"role": "assistant", "content": "Ask me about F1 data from 1950 to 2020."}]
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": "Ask me about F1 data from 1950 to 2020."}
+        ]
 
     # Prompt for user input
     if prompt := st.chat_input():
@@ -99,7 +111,9 @@ def main() -> None:
                 for delta in sql_assistant.run(question):
                     response += delta  # type: ignore
                     resp_container.markdown(response)
-                st.session_state["messages"].append({"role": "assistant", "content": response})
+                st.session_state["messages"].append(
+                    {"role": "assistant", "content": response}
+                )
 
     st.sidebar.markdown("---")
 
@@ -111,7 +125,9 @@ def main() -> None:
 
     if sql_assistant.storage:
         sql_assistant_run_ids: List[str] = sql_assistant.storage.get_all_run_ids()
-        new_sql_assistant_run_id = st.sidebar.selectbox("Run ID", options=sql_assistant_run_ids)
+        new_sql_assistant_run_id = st.sidebar.selectbox(
+            "Run ID", options=sql_assistant_run_ids
+        )
         if st.session_state["sql_assistant_run_id"] != new_sql_assistant_run_id:
             logger.info(f"Loading run {new_sql_assistant_run_id}")
             st.session_state["sql_assistant"] = get_sql_assistant(

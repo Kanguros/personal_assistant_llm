@@ -105,7 +105,9 @@ def get_llm_os(
             base_dir=scratch_dir,
         )
         team.append(_python_assistant)
-        extra_instructions.append("To write and run python code, delegate the task to the `Python Assistant`.")
+        extra_instructions.append(
+            "To write and run python code, delegate the task to the `Python Assistant`."
+        )
     if research_assistant:
         _research_assistant = Assistant(
             name="Research Assistant",
@@ -208,7 +210,14 @@ def get_llm_os(
             </report_format>
             """
             ),
-            tools=[YFinanceTools(stock_price=True, company_info=True, analyst_recommendations=True, company_news=True)],
+            tools=[
+                YFinanceTools(
+                    stock_price=True,
+                    company_info=True,
+                    analyst_recommendations=True,
+                    company_news=True,
+                )
+            ],
             # This setting tells the LLM to format messages in markdown
             markdown=True,
             add_datetime_to_instructions=True,
@@ -260,7 +269,9 @@ def get_llm_os(
             vector_db=PgVector2(
                 db_url=db_url,
                 collection="llm_os_documents",
-                embedder=OpenAIEmbedder(model="text-embedding-3-small", dimensions=1536),
+                embedder=OpenAIEmbedder(
+                    model="text-embedding-3-small", dimensions=1536
+                ),
             ),
             # 3 references are added to the prompt when searching the knowledge base
             num_documents=3,

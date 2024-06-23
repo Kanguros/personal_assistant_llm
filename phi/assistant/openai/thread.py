@@ -103,7 +103,11 @@ class Thread(BaseModel):
         self.get_from_openai()
         return self
 
-    def get_or_create(self, use_cache: bool = True, messages: Optional[List[Union[Message, Dict]]] = None) -> "Thread":
+    def get_or_create(
+        self,
+        use_cache: bool = True,
+        messages: Optional[List[Union[Message, Dict]]] = None,
+    ) -> "Thread":
         try:
             return self.get(use_cache=use_cache)
         except ThreadIdNotSet:
@@ -186,7 +190,11 @@ class Thread(BaseModel):
 
         _run = run or Run()
         return _run.run(
-            thread_id=_thread_id, assistant=_assistant, assistant_id=_assistant_id, wait=wait, callback=callback
+            thread_id=_thread_id,
+            assistant=_assistant,
+            assistant_id=_assistant_id,
+            wait=wait,
+            callback=callback,
         )
 
     def get_messages(self) -> List[Message]:
@@ -204,7 +212,9 @@ class Thread(BaseModel):
         return [Message.from_openai(message=message) for message in thread_messages]
 
     def to_dict(self) -> Dict[str, Any]:
-        return self.model_dump(exclude_none=True, include={"id", "object", "messages", "metadata"})
+        return self.model_dump(
+            exclude_none=True, include={"id", "object", "messages", "metadata"}
+        )
 
     def pprint(self):
         """Pretty print using rich"""
@@ -240,11 +250,19 @@ class Thread(BaseModel):
         console.print(table)
 
     def print_response(
-        self, message: str, assistant: OpenAIAssistant, current_message_only: bool = False, markdown: bool = False
+        self,
+        message: str,
+        assistant: OpenAIAssistant,
+        current_message_only: bool = False,
+        markdown: bool = False,
     ) -> None:
         from rich.progress import Progress, SpinnerColumn, TextColumn
 
-        with Progress(SpinnerColumn(spinner_name="dots"), TextColumn("{task.description}"), transient=True) as progress:
+        with Progress(
+            SpinnerColumn(spinner_name="dots"),
+            TextColumn("{task.description}"),
+            transient=True,
+        ) as progress:
             progress.add_task("Working...")
             self.run(
                 message=message,
@@ -263,7 +281,8 @@ class Thread(BaseModel):
             total_messages = len(response_messages)
             for idx, response_message in enumerate(response_messages[::-1], start=1):
                 response_message.pprint(
-                    title=f"[bold] :robot: OpenAIAssistant ({idx}/{total_messages}) [/bold]", markdown=markdown
+                    title=f"[bold] :robot: OpenAIAssistant ({idx}/{total_messages}) [/bold]",
+                    markdown=markdown,
                 )
         else:
             for m in self.messages[::-1]:

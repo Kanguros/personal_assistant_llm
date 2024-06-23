@@ -132,20 +132,26 @@ class Ollama(LLM):
         try:
             if response_content is not None:
                 _tool_call_content = response_content.strip()
-                if _tool_call_content.startswith("{") and _tool_call_content.endswith("}"):
+                if _tool_call_content.startswith("{") and _tool_call_content.endswith(
+                    "}"
+                ):
                     _tool_call_content_json = json.loads(_tool_call_content)
                     if "tool_calls" in _tool_call_content_json:
                         assistant_tool_calls = _tool_call_content_json.get("tool_calls")
                         if isinstance(assistant_tool_calls, list):
                             # Build tool calls
                             tool_calls: List[Dict[str, Any]] = []
-                            logger.debug(f"Building tool calls from {assistant_tool_calls}")
+                            logger.debug(
+                                f"Building tool calls from {assistant_tool_calls}"
+                            )
                             for tool_call in assistant_tool_calls:
                                 tool_call_name = tool_call.get("name")
                                 tool_call_args = tool_call.get("arguments")
                                 _function_def = {"name": tool_call_name}
                                 if tool_call_args is not None:
-                                    _function_def["arguments"] = json.dumps(tool_call_args)
+                                    _function_def["arguments"] = json.dumps(
+                                        tool_call_args
+                                    )
                                 tool_calls.append(
                                     {
                                         "type": "function",
@@ -155,7 +161,9 @@ class Ollama(LLM):
                             assistant_message.tool_calls = tool_calls
                             assistant_message.role = "assistant"
         except Exception:
-            logger.warning(f"Could not parse tool calls from response: {response_content}")
+            logger.warning(
+                f"Could not parse tool calls from response: {response_content}"
+            )
             pass
 
         # -*- Update usage metrics
@@ -174,9 +182,13 @@ class Ollama(LLM):
             final_response = ""
             function_calls_to_run: List[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
-                _function_call = get_function_call_for_tool_call(tool_call, self.functions)
+                _function_call = get_function_call_for_tool_call(
+                    tool_call, self.functions
+                )
                 if _function_call is None:
-                    messages.append(Message(role="user", content="Could not find function to call."))
+                    messages.append(
+                        Message(role="user", content="Could not find function to call.")
+                    )
                     continue
                 if _function_call.error is not None:
                     messages.append(Message(role="user", content=_function_call.error))
@@ -185,14 +197,18 @@ class Ollama(LLM):
 
             if self.show_tool_calls:
                 if len(function_calls_to_run) == 1:
-                    final_response += f"\n - Running: {function_calls_to_run[0].get_call_str()}\n\n"
+                    final_response += (
+                        f"\n - Running: {function_calls_to_run[0].get_call_str()}\n\n"
+                    )
                 elif len(function_calls_to_run) > 1:
                     final_response += "\nRunning:"
                     for _f in function_calls_to_run:
                         final_response += f"\n - {_f.get_call_str()}"
                     final_response += "\n\n"
 
-            function_call_results = self.run_function_calls(function_calls_to_run, role="user")
+            function_call_results = self.run_function_calls(
+                function_calls_to_run, role="user"
+            )
             if len(function_call_results) > 0:
                 messages.extend(function_call_results)
                 # Reconfigure messages so the LLM is reminded of the original task
@@ -236,7 +252,9 @@ class Ollama(LLM):
             # logger.info(f"Ollama partial response: {response}")
             # logger.info(f"Ollama partial response type: {type(response)}")
             response_message: Optional[dict] = response.get("message")
-            response_content = response_message.get("content") if response_message else None
+            response_content = (
+                response_message.get("content") if response_message else None
+            )
             # logger.info(f"Ollama partial response content: {response_content}")
 
             # Add response content to assistant message
@@ -245,7 +263,10 @@ class Ollama(LLM):
 
             # Strip out tool calls from the response
             # If the response is a tool call, it will start with a {
-            if not response_is_tool_call and assistant_message_content.strip().startswith("{"):
+            if (
+                not response_is_tool_call
+                and assistant_message_content.strip().startswith("{")
+            ):
                 response_is_tool_call = True
 
             # If the response is a tool call, count the number of brackets
@@ -274,8 +295,12 @@ class Ollama(LLM):
         response_timer.stop()
         logger.debug(f"Tokens generated: {completion_tokens}")
         if completion_tokens > 0:
-            logger.debug(f"Time per output token: {response_timer.elapsed / completion_tokens:.4f}s")
-            logger.debug(f"Throughput: {completion_tokens / response_timer.elapsed:.4f} tokens/s")
+            logger.debug(
+                f"Time per output token: {response_timer.elapsed / completion_tokens:.4f}s"
+            )
+            logger.debug(
+                f"Throughput: {completion_tokens / response_timer.elapsed:.4f} tokens/s"
+            )
         logger.debug(f"Time to generate response: {response_timer.elapsed:.4f}s")
 
         # -*- Create assistant message
@@ -287,20 +312,26 @@ class Ollama(LLM):
         try:
             if response_is_tool_call and assistant_message_content != "":
                 _tool_call_content = assistant_message_content.strip()
-                if _tool_call_content.startswith("{") and _tool_call_content.endswith("}"):
+                if _tool_call_content.startswith("{") and _tool_call_content.endswith(
+                    "}"
+                ):
                     _tool_call_content_json = json.loads(_tool_call_content)
                     if "tool_calls" in _tool_call_content_json:
                         assistant_tool_calls = _tool_call_content_json.get("tool_calls")
                         if isinstance(assistant_tool_calls, list):
                             # Build tool calls
                             tool_calls: List[Dict[str, Any]] = []
-                            logger.debug(f"Building tool calls from {assistant_tool_calls}")
+                            logger.debug(
+                                f"Building tool calls from {assistant_tool_calls}"
+                            )
                             for tool_call in assistant_tool_calls:
                                 tool_call_name = tool_call.get("name")
                                 tool_call_args = tool_call.get("arguments")
                                 _function_def = {"name": tool_call_name}
                                 if tool_call_args is not None:
-                                    _function_def["arguments"] = json.dumps(tool_call_args)
+                                    _function_def["arguments"] = json.dumps(
+                                        tool_call_args
+                                    )
                                 tool_calls.append(
                                     {
                                         "type": "function",
@@ -309,16 +340,22 @@ class Ollama(LLM):
                                 )
                             assistant_message.tool_calls = tool_calls
         except Exception:
-            logger.warning(f"Could not parse tool calls from response: {assistant_message_content}")
+            logger.warning(
+                f"Could not parse tool calls from response: {assistant_message_content}"
+            )
             pass
 
         # -*- Update usage metrics
         # Add response time to metrics
         assistant_message.metrics["time"] = f"{response_timer.elapsed:.4f}"
         if time_to_first_token is not None:
-            assistant_message.metrics["time_to_first_token"] = f"{time_to_first_token:.4f}s"
+            assistant_message.metrics["time_to_first_token"] = (
+                f"{time_to_first_token:.4f}s"
+            )
         if completion_tokens > 0:
-            assistant_message.metrics["time_per_output_token"] = f"{response_timer.elapsed / completion_tokens:.4f}s"
+            assistant_message.metrics["time_per_output_token"] = (
+                f"{response_timer.elapsed / completion_tokens:.4f}s"
+            )
         if "response_times" not in self.metrics:
             self.metrics["response_times"] = []
         self.metrics["response_times"].append(response_timer.elapsed)
@@ -329,7 +366,9 @@ class Ollama(LLM):
         if completion_tokens > 0:
             if "tokens_per_second" not in self.metrics:
                 self.metrics["tokens_per_second"] = []
-            self.metrics["tokens_per_second"].append(f"{completion_tokens / response_timer.elapsed:.4f}")
+            self.metrics["tokens_per_second"].append(
+                f"{completion_tokens / response_timer.elapsed:.4f}"
+            )
 
         # -*- Add assistant message to messages
         messages.append(assistant_message)
@@ -339,9 +378,13 @@ class Ollama(LLM):
         if assistant_message.tool_calls is not None and self.run_tools:
             function_calls_to_run: List[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
-                _function_call = get_function_call_for_tool_call(tool_call, self.functions)
+                _function_call = get_function_call_for_tool_call(
+                    tool_call, self.functions
+                )
                 if _function_call is None:
-                    messages.append(Message(role="user", content="Could not find function to call."))
+                    messages.append(
+                        Message(role="user", content="Could not find function to call.")
+                    )
                     continue
                 if _function_call.error is not None:
                     messages.append(Message(role="user", content=_function_call.error))
@@ -357,7 +400,9 @@ class Ollama(LLM):
                         yield f"\n - {_f.get_call_str()}"
                     yield "\n\n"
 
-            function_call_results = self.run_function_calls(function_calls_to_run, role="user")
+            function_call_results = self.run_function_calls(
+                function_calls_to_run, role="user"
+            )
             # Add results of the function calls to the messages
             if len(function_call_results) > 0:
                 messages.extend(function_call_results)

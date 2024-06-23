@@ -133,7 +133,10 @@ class Hermes(LLM):
         # Check if the response contains a tool call
         try:
             if response_content is not None:
-                if "<tool_call>" in response_content and "</tool_call>" in response_content:
+                if (
+                    "<tool_call>" in response_content
+                    and "</tool_call>" in response_content
+                ):
                     # List of tool calls added to the assistant message
                     tool_calls: List[Dict[str, Any]] = []
                     # Break the response into tool calls
@@ -143,15 +146,22 @@ class Hermes(LLM):
                         if tool_call_response != tool_call_responses[-1]:
                             tool_call_response += "</tool_call>"
 
-                        if "<tool_call>" in tool_call_response and "</tool_call>" in tool_call_response:
+                        if (
+                            "<tool_call>" in tool_call_response
+                            and "</tool_call>" in tool_call_response
+                        ):
                             # Extract tool call string from response
-                            tool_call_content = extract_tool_call_from_string(tool_call_response)
+                            tool_call_content = extract_tool_call_from_string(
+                                tool_call_response
+                            )
                             # Convert the extracted string to a dictionary
                             try:
                                 logger.debug(f"Tool call content: {tool_call_content}")
                                 tool_call_dict = json.loads(tool_call_content)
                             except json.JSONDecodeError:
-                                raise ValueError(f"Could not parse tool call from: {tool_call_content}")
+                                raise ValueError(
+                                    f"Could not parse tool call from: {tool_call_content}"
+                                )
 
                             tool_call_name = tool_call_dict.get("name")
                             tool_call_args = tool_call_dict.get("arguments")
@@ -186,12 +196,18 @@ class Hermes(LLM):
         # -*- Parse and run function call
         if assistant_message.tool_calls is not None and self.run_tools:
             # Remove the tool call from the response content
-            final_response = remove_tool_calls_from_string(assistant_message.get_content_string())
+            final_response = remove_tool_calls_from_string(
+                assistant_message.get_content_string()
+            )
             function_calls_to_run: List[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
-                _function_call = get_function_call_for_tool_call(tool_call, self.functions)
+                _function_call = get_function_call_for_tool_call(
+                    tool_call, self.functions
+                )
                 if _function_call is None:
-                    messages.append(Message(role="user", content="Could not find function to call."))
+                    messages.append(
+                        Message(role="user", content="Could not find function to call.")
+                    )
                     continue
                 if _function_call.error is not None:
                     messages.append(Message(role="user", content=_function_call.error))
@@ -200,28 +216,46 @@ class Hermes(LLM):
 
             if self.show_tool_calls:
                 if len(function_calls_to_run) == 1:
-                    final_response += f" - Running: {function_calls_to_run[0].get_call_str()}\n\n"
+                    final_response += (
+                        f" - Running: {function_calls_to_run[0].get_call_str()}\n\n"
+                    )
                 elif len(function_calls_to_run) > 1:
                     final_response += "Running:"
                     for _f in function_calls_to_run:
                         final_response += f"\n - {_f.get_call_str()}"
                     final_response += "\n\n"
 
-            function_call_results = self.run_function_calls(function_calls_to_run, role="user")
+            function_call_results = self.run_function_calls(
+                function_calls_to_run, role="user"
+            )
             if len(function_call_results) > 0:
                 fc_responses = []
                 for _fc_message in function_call_results:
                     fc_responses.append(
-                        json.dumps({"name": _fc_message.tool_call_name, "content": _fc_message.content})
+                        json.dumps(
+                            {
+                                "name": _fc_message.tool_call_name,
+                                "content": _fc_message.content,
+                            }
+                        )
                     )
 
-                tool_response_message_content = "<tool_response>\n" + "\n".join(fc_responses) + "\n</tool_response>"
-                messages.append(Message(role="user", content=tool_response_message_content))
+                tool_response_message_content = (
+                    "<tool_response>\n" + "\n".join(fc_responses) + "\n</tool_response>"
+                )
+                messages.append(
+                    Message(role="user", content=tool_response_message_content)
+                )
 
                 for _fc_message in function_call_results:
                     _fc_message.content = (
                         "<tool_response>\n"
-                        + json.dumps({"name": _fc_message.tool_call_name, "content": _fc_message.content})
+                        + json.dumps(
+                            {
+                                "name": _fc_message.tool_call_name,
+                                "content": _fc_message.content,
+                            }
+                        )
                         + "\n</tool_response>"
                     )
                     messages.append(_fc_message)
@@ -258,7 +292,9 @@ class Hermes(LLM):
             # logger.info(f"Ollama partial response: {response}")
             # logger.info(f"Ollama partial response type: {type(response)}")
             response_message: Optional[dict] = response.get("message")
-            response_content = response_message.get("content") if response_message else None
+            response_content = (
+                response_message.get("content") if response_message else None
+            )
             # logger.info(f"Ollama partial response content: {response_content}")
 
             # Add response content to assistant message
@@ -308,7 +344,10 @@ class Hermes(LLM):
         )
         # Check if the response is a tool call
         try:
-            if "<tool_call>" in assistant_message_content and "</tool_call>" in assistant_message_content:
+            if (
+                "<tool_call>" in assistant_message_content
+                and "</tool_call>" in assistant_message_content
+            ):
                 # List of tool calls added to the assistant message
                 tool_calls: List[Dict[str, Any]] = []
                 # Break the response into tool calls
@@ -318,15 +357,22 @@ class Hermes(LLM):
                     if tool_call_response != tool_call_responses[-1]:
                         tool_call_response += "</tool_call>"
 
-                    if "<tool_call>" in tool_call_response and "</tool_call>" in tool_call_response:
+                    if (
+                        "<tool_call>" in tool_call_response
+                        and "</tool_call>" in tool_call_response
+                    ):
                         # Extract tool call string from response
-                        tool_call_content = extract_tool_call_from_string(tool_call_response)
+                        tool_call_content = extract_tool_call_from_string(
+                            tool_call_response
+                        )
                         # Convert the extracted string to a dictionary
                         try:
                             logger.debug(f"Tool call content: {tool_call_content}")
                             tool_call_dict = json.loads(tool_call_content)
                         except json.JSONDecodeError:
-                            raise ValueError(f"Could not parse tool call from: {tool_call_content}")
+                            raise ValueError(
+                                f"Could not parse tool call from: {tool_call_content}"
+                            )
 
                         tool_call_name = tool_call_dict.get("name")
                         tool_call_args = tool_call_dict.get("arguments")
@@ -344,7 +390,9 @@ class Hermes(LLM):
                 if len(tool_calls) > 0:
                     assistant_message.tool_calls = tool_calls
         except Exception:
-            logger.warning(f"Could not parse tool calls from response: {assistant_message_content}")
+            logger.warning(
+                f"Could not parse tool calls from response: {assistant_message_content}"
+            )
             pass
 
         # -*- Update usage metrics
@@ -362,9 +410,13 @@ class Hermes(LLM):
         if assistant_message.tool_calls is not None and self.run_tools:
             function_calls_to_run: List[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
-                _function_call = get_function_call_for_tool_call(tool_call, self.functions)
+                _function_call = get_function_call_for_tool_call(
+                    tool_call, self.functions
+                )
                 if _function_call is None:
-                    messages.append(Message(role="user", content="Could not find function to call."))
+                    messages.append(
+                        Message(role="user", content="Could not find function to call.")
+                    )
                     continue
                 if _function_call.error is not None:
                     messages.append(Message(role="user", content=_function_call.error))
@@ -380,17 +432,28 @@ class Hermes(LLM):
                         yield f"\n - {_f.get_call_str()}"
                     yield "\n\n"
 
-            function_call_results = self.run_function_calls(function_calls_to_run, role="user")
+            function_call_results = self.run_function_calls(
+                function_calls_to_run, role="user"
+            )
             # Add results of the function calls to the messages
             if len(function_call_results) > 0:
                 fc_responses = []
                 for _fc_message in function_call_results:
                     fc_responses.append(
-                        json.dumps({"name": _fc_message.tool_call_name, "content": _fc_message.content})
+                        json.dumps(
+                            {
+                                "name": _fc_message.tool_call_name,
+                                "content": _fc_message.content,
+                            }
+                        )
                     )
 
-                tool_response_message_content = "<tool_response>\n" + "\n".join(fc_responses) + "\n</tool_response>"
-                messages.append(Message(role="user", content=tool_response_message_content))
+                tool_response_message_content = (
+                    "<tool_response>\n" + "\n".join(fc_responses) + "\n</tool_response>"
+                )
+                messages.append(
+                    Message(role="user", content=tool_response_message_content)
+                )
                 # Reconfigure messages so the LLM is reminded of the original task
                 if self.add_user_message_after_tool_call:
                     messages = self.add_original_user_message(messages)

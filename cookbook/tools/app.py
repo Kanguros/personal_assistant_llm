@@ -13,7 +13,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("Tool Calling Demo")
-st.markdown("##### :orange_heart: built with [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built with [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def clear_assistant():
@@ -21,11 +23,16 @@ def clear_assistant():
 
 
 def create_assistant(
-    web_search: bool = False, exa_search: bool = False, yfinance: bool = False, debug_mode: bool = False
+    web_search: bool = False,
+    exa_search: bool = False,
+    yfinance: bool = False,
+    debug_mode: bool = False,
 ) -> Assistant:
     logger.info("---*--- Creating Assistant ---*---")
 
-    introduction = "Hi, I'm an AI Assistant that uses function calling to answer questions.\n"
+    introduction = (
+        "Hi, I'm an AI Assistant that uses function calling to answer questions.\n"
+    )
     introduction += "Select the tools from the sidebar and ask me questions."
 
     description = dedent(
@@ -50,7 +57,11 @@ def create_assistant(
     if exa_search:
         tools.append(ExaTools())
     if yfinance:
-        tools.append(YFinanceTools(stock_price=True, stock_fundamentals=True, analyst_recommendations=True))
+        tools.append(
+            YFinanceTools(
+                stock_price=True, stock_fundamentals=True, analyst_recommendations=True
+            )
+        )
 
     assistant = Assistant(
         description=description,
@@ -70,8 +81,12 @@ def main() -> None:
     st.sidebar.markdown("### Select Tools")
     st.session_state["selected_tools"] = []
 
-    web_search = st.sidebar.checkbox("Web Search", value=True, on_change=clear_assistant)
-    exa_search = st.sidebar.checkbox("Exa Search", value=False, on_change=clear_assistant)
+    web_search = st.sidebar.checkbox(
+        "Web Search", value=True, on_change=clear_assistant
+    )
+    exa_search = st.sidebar.checkbox(
+        "Exa Search", value=False, on_change=clear_assistant
+    )
     yfinance = st.sidebar.checkbox("YFinance", value=False, on_change=clear_assistant)
 
     if not web_search and not exa_search and not yfinance:
@@ -104,7 +119,9 @@ def main() -> None:
         st.session_state["messages"] = assistant_chat_history
     else:
         logger.debug("No chat history found")
-        st.session_state["messages"] = [{"role": "assistant", "content": "Ask me anything..."}]
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": "Ask me anything..."}
+        ]
 
     # Prompt for user input
     if prompt := st.chat_input():
@@ -128,7 +145,9 @@ def main() -> None:
                 response += delta  # type: ignore
                 resp_container.markdown(response)
 
-            st.session_state["messages"].append({"role": "assistant", "content": response})
+            st.session_state["messages"].append(
+                {"role": "assistant", "content": response}
+            )
 
     st.sidebar.markdown("---")
     if st.sidebar.button("New Run"):

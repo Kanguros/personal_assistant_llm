@@ -82,17 +82,31 @@ class Workflow(BaseModel):
 
             if len(executed_tasks) > 0:
                 previous_task_outputs = []
-                for previous_task_idx, previous_task in enumerate(executed_tasks, start=1):
+                for previous_task_idx, previous_task in enumerate(
+                    executed_tasks, start=1
+                ):
                     previous_task_output = previous_task.get_task_output_as_str()
                     if previous_task_output is not None:
                         previous_task_outputs.append(
-                            (previous_task_idx, previous_task.description, previous_task_output)
+                            (
+                                previous_task_idx,
+                                previous_task.description,
+                                previous_task_output,
+                            )
                         )
 
                 if len(previous_task_outputs) > 0:
-                    task_input.append("\nHere are previous tasks and and their results:\n---")
-                    for previous_task_idx, previous_task_description, previous_task_output in previous_task_outputs:
-                        task_input.append(f"Task {previous_task_idx}: {previous_task_description}")
+                    task_input.append(
+                        "\nHere are previous tasks and and their results:\n---"
+                    )
+                    for (
+                        previous_task_idx,
+                        previous_task_description,
+                        previous_task_output,
+                    ) in previous_task_outputs:
+                        task_input.append(
+                            f"Task {previous_task_idx}: {previous_task_description}"
+                        )
                         task_input.append(previous_task_output)
                     task_input.append("---")
 
@@ -100,11 +114,15 @@ class Workflow(BaseModel):
             task_output = ""
             input_for_current_task = "\n".join(task_input)
             if stream and task.streamable:
-                for chunk in task.run(message=input_for_current_task, stream=True, **kwargs):
+                for chunk in task.run(
+                    message=input_for_current_task, stream=True, **kwargs
+                ):
                     task_output += chunk if isinstance(chunk, str) else ""
                     yield chunk if isinstance(chunk, str) else ""
             else:
-                task_output = task.run(message=input_for_current_task, stream=False, **kwargs)  # type: ignore
+                task_output = task.run(
+                    message=input_for_current_task, stream=False, **kwargs
+                )  # type: ignore
 
             executed_tasks.append(task)
             workflow_output.append(task_output)
@@ -116,7 +134,10 @@ class Workflow(BaseModel):
         if self.save_output_to_file is not None:
             try:
                 fn = self.save_output_to_file.format(
-                    name=self.name, run_id=self.run_id, user_id=self.user_id, message=message
+                    name=self.name,
+                    run_id=self.run_id,
+                    user_id=self.user_id,
+                    message=message,
                 )
                 with open(fn, "w") as f:
                     f.write("\n".join(workflow_output))
@@ -172,14 +193,18 @@ class Workflow(BaseModel):
                         table.show_header = True
                         table.add_column("Message")
                         table.add_column(get_text_from_message(message))
-                    table.add_row(f"Response\n({response_timer.elapsed:.1f}s)", _response)  # type: ignore
+                    table.add_row(
+                        f"Response\n({response_timer.elapsed:.1f}s)", _response
+                    )  # type: ignore
                     live_log.update(table)
                 response_timer.stop()
         else:
             response_timer = Timer()
             response_timer.start()
             with Progress(
-                SpinnerColumn(spinner_name="dots"), TextColumn("{task.description}"), transient=True
+                SpinnerColumn(spinner_name="dots"),
+                TextColumn("{task.description}"),
+                transient=True,
             ) as progress:
                 progress.add_task("Working...")
                 response = self.run(message=message, stream=False, **kwargs)  # type: ignore

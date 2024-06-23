@@ -17,12 +17,17 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("AI Agents")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def main() -> None:
     # Get LLM Model
-    llm_id = st.sidebar.selectbox("Select LLM", options=["gpt-4o", "gpt-4-turbo"]) or "gpt-4o"
+    llm_id = (
+        st.sidebar.selectbox("Select LLM", options=["gpt-4o", "gpt-4-turbo"])
+        or "gpt-4o"
+    )
     # Set llm_id in session state
     if "llm_id" not in st.session_state:
         st.session_state["llm_id"] = llm_id
@@ -40,7 +45,9 @@ def main() -> None:
     # Get calculator_enabled from session state if set
     calculator_enabled = st.session_state["calculator_enabled"]
     # Checkbox for enabling calculator
-    calculator = st.sidebar.checkbox("Calculator", value=calculator_enabled, help="Enable calculator.")
+    calculator = st.sidebar.checkbox(
+        "Calculator", value=calculator_enabled, help="Enable calculator."
+    )
     if calculator_enabled != calculator:
         st.session_state["calculator_enabled"] = calculator
         calculator_enabled = calculator
@@ -52,7 +59,9 @@ def main() -> None:
     # Get file_tools_enabled from session state if set
     file_tools_enabled = st.session_state["file_tools_enabled"]
     # Checkbox for enabling shell tools
-    file_tools = st.sidebar.checkbox("File Tools", value=file_tools_enabled, help="Enable file tools.")
+    file_tools = st.sidebar.checkbox(
+        "File Tools", value=file_tools_enabled, help="Enable file tools."
+    )
     if file_tools_enabled != file_tools:
         st.session_state["file_tools_enabled"] = file_tools
         file_tools_enabled = file_tools
@@ -64,7 +73,11 @@ def main() -> None:
     # Get ddg_search_enabled from session state if set
     ddg_search_enabled = st.session_state["ddg_search_enabled"]
     # Checkbox for enabling web search
-    ddg_search = st.sidebar.checkbox("Web Search", value=ddg_search_enabled, help="Enable web search using DuckDuckGo.")
+    ddg_search = st.sidebar.checkbox(
+        "Web Search",
+        value=ddg_search_enabled,
+        help="Enable web search using DuckDuckGo.",
+    )
     if ddg_search_enabled != ddg_search:
         st.session_state["ddg_search_enabled"] = ddg_search
         ddg_search_enabled = ddg_search
@@ -76,7 +89,9 @@ def main() -> None:
     # Get finance_tools_enabled from session state if set
     finance_tools_enabled = st.session_state["finance_tools_enabled"]
     # Checkbox for enabling shell tools
-    finance_tools = st.sidebar.checkbox("Yahoo Finance", value=finance_tools_enabled, help="Enable finance tools.")
+    finance_tools = st.sidebar.checkbox(
+        "Yahoo Finance", value=finance_tools_enabled, help="Enable finance tools."
+    )
     if finance_tools_enabled != finance_tools:
         st.session_state["finance_tools_enabled"] = finance_tools
         finance_tools_enabled = finance_tools
@@ -182,7 +197,9 @@ def main() -> None:
         st.session_state["messages"] = assistant_chat_history
     else:
         logger.debug("No chat history found")
-        st.session_state["messages"] = [{"role": "assistant", "content": "Ask me questions..."}]
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": "Ask me questions..."}
+        ]
 
     # Prompt for user input
     if prompt := st.chat_input():
@@ -205,7 +222,9 @@ def main() -> None:
             for delta in agent.run(question):
                 response += delta  # type: ignore
                 resp_container.markdown(response)
-            st.session_state["messages"].append({"role": "assistant", "content": response})
+            st.session_state["messages"].append(
+                {"role": "assistant", "content": response}
+            )
 
     # Load Agent knowledge base
     if agent.knowledge_base:
@@ -214,7 +233,9 @@ def main() -> None:
             st.session_state["url_scrape_key"] = 0
 
         input_url = st.sidebar.text_input(
-            "Add URL to Knowledge Base", type="default", key=st.session_state["url_scrape_key"]
+            "Add URL to Knowledge Base",
+            type="default",
+            key=st.session_state["url_scrape_key"],
         )
         add_url_button = st.sidebar.button("Add URL")
         if add_url_button:
@@ -235,7 +256,9 @@ def main() -> None:
             st.session_state["file_uploader_key"] = 100
 
         uploaded_file = st.sidebar.file_uploader(
-            "Add a PDF :page_facing_up:", type="pdf", key=st.session_state["file_uploader_key"]
+            "Add a PDF :page_facing_up:",
+            type="pdf",
+            key=st.session_state["file_uploader_key"],
         )
         if uploaded_file is not None:
             alert = st.sidebar.info("Processing PDF...", icon="🧠")
@@ -259,10 +282,14 @@ def main() -> None:
     if agent.team and len(agent.team) > 0:
         for team_member in agent.team:
             if len(team_member.memory.chat_history) > 0:
-                with st.status(f"{team_member.name} Memory", expanded=False, state="complete"):
+                with st.status(
+                    f"{team_member.name} Memory", expanded=False, state="complete"
+                ):
                     with st.container():
                         _team_member_memory_container = st.empty()
-                        _team_member_memory_container.json(team_member.memory.get_llm_messages())
+                        _team_member_memory_container.json(
+                            team_member.memory.get_llm_messages()
+                        )
 
     if agent.storage:
         agent_run_ids: List[str] = agent.storage.get_all_run_ids()

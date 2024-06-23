@@ -8,13 +8,16 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("Youtube Video Summaries powered by Groq")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def main() -> None:
     # Get model
     llm_model = st.sidebar.selectbox(
-        "Select Model", options=["llama3-70b-8192", "llama3-8b-8192", "mixtral-8x7b-32768"]
+        "Select Model",
+        options=["llama3-70b-8192", "llama3-8b-8192", "mixtral-8x7b-32768"],
     )
     # Set assistant_type in session state
     if "llm_model" not in st.session_state:
@@ -76,7 +79,9 @@ def main() -> None:
             status.update(label="Captions processed", state="complete", expanded=False)
 
         if not video_captions:
-            st.write("Sorry could not parse video. Please try again or use a different video.")
+            st.write(
+                "Sorry could not parse video. Please try again or use a different video."
+            )
             return
 
         chunks = []
@@ -99,7 +104,11 @@ def main() -> None:
                         chunk_summary += delta  # type: ignore
                         chunk_container.markdown(chunk_summary)
                     chunk_summaries.append(chunk_summary)
-                    status.update(label=f"Chunk {i+1} summarized", state="complete", expanded=False)
+                    status.update(
+                        label=f"Chunk {i+1} summarized",
+                        state="complete",
+                        expanded=False,
+                    )
 
             with st.spinner("Generating Summary"):
                 summary = ""

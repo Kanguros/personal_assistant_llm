@@ -32,7 +32,11 @@ class PhiTools(Toolkit):
         :param workspace_name: (required) The name of the workspace to create for the new application.
         :return: Status of the function or next steps.
         """
-        from phi.workspace.operator import create_workspace, TEMPLATE_TO_NAME_MAP, WorkspaceStarterTemplate
+        from phi.workspace.operator import (
+            create_workspace,
+            TEMPLATE_TO_NAME_MAP,
+            WorkspaceStarterTemplate,
+        )
 
         ws_template: Optional[WorkspaceStarterTemplate] = None
         if template.lower() in WorkspaceStarterTemplate.__members__.values():
@@ -58,7 +62,9 @@ class PhiTools(Toolkit):
 
         logger.info(f"Creating: {template} at {ws_dir_name}")
         try:
-            create_successful = create_workspace(name=ws_dir_name, template=ws_template.value)
+            create_successful = create_workspace(
+                name=ws_dir_name, template=ws_template.value
+            )
             if create_successful:
                 return (
                     f"Successfully created a {ws_template.value} at {ws_dir_name}. "
@@ -91,16 +97,24 @@ class PhiTools(Toolkit):
 
         if workspace_name is None:
             if active_ws_config is None:
-                return "Error: No active workspace found. Please create a workspace first."
+                return (
+                    "Error: No active workspace found. Please create a workspace first."
+                )
             workspace_config_to_start = active_ws_config
         else:
-            workspace_config_by_name: Optional[WorkspaceConfig] = phi_config.get_ws_config_by_dir_name(workspace_name)
+            workspace_config_by_name: Optional[WorkspaceConfig] = (
+                phi_config.get_ws_config_by_dir_name(workspace_name)
+            )
             if workspace_config_by_name is None:
                 return f"Error: Could not find a workspace with name: {workspace_name}"
             workspace_config_to_start = workspace_config_by_name
 
             # Set the active workspace to the workspace to start
-            if active_ws_config is not None and active_ws_config.ws_root_path != workspace_config_by_name.ws_root_path:
+            if (
+                active_ws_config is not None
+                and active_ws_config.ws_root_path
+                != workspace_config_by_name.ws_root_path
+            ):
                 phi_config.set_active_ws_dir(workspace_config_by_name.ws_root_path)
                 active_ws_config = workspace_config_by_name
 

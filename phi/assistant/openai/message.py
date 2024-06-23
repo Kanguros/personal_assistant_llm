@@ -9,7 +9,10 @@ from phi.utils.log import logger
 
 try:
     from openai import OpenAI
-    from openai.types.beta.threads.thread_message import ThreadMessage as OpenAIThreadMessage, Content
+    from openai.types.beta.threads.thread_message import (
+        ThreadMessage as OpenAIThreadMessage,
+        Content,
+    )
 except ImportError:
     logger.error("`openai` not installed")
     raise
@@ -129,7 +132,9 @@ class Message(BaseModel):
         self.get_from_openai(thread_id=thread_id)
         return self
 
-    def get_or_create(self, use_cache: bool = True, thread_id: Optional[str] = None) -> "Message":
+    def get_or_create(
+        self, use_cache: bool = True, thread_id: Optional[str] = None
+    ) -> "Message":
         try:
             return self.get(use_cache=use_cache)
         except MessageIdNotSet:
@@ -167,7 +172,9 @@ class Message(BaseModel):
             return self.content
 
         content_str = ""
-        content_list = self.content or (self.openai_message.content if self.openai_message else None)
+        content_list = self.content or (
+            self.openai_message.content if self.openai_message else None
+        )
         if content_list is not None:
             for content in content_list:
                 if content.type == "text":
@@ -180,7 +187,9 @@ class Message(BaseModel):
             return self.content
 
         content_str = ""
-        content_list = self.content or (self.openai_message.content if self.openai_message else None)
+        content_list = self.content or (
+            self.openai_message.content if self.openai_message else None
+        )
         if content_list is not None:
             for content in content_list:
                 if content.type == "text":
@@ -200,8 +209,12 @@ class Message(BaseModel):
 
         try:
             logger.debug(f"Downloading file: {file_id}")
-            response = self.client.files.with_raw_response.retrieve_content(file_id=file_id)
-            with NamedTemporaryFile(delete=False, mode="wb", suffix=".png") as temp_file:
+            response = self.client.files.with_raw_response.retrieve_content(
+                file_id=file_id
+            )
+            with NamedTemporaryFile(
+                delete=False, mode="wb", suffix=".png"
+            ) as temp_file:
                 temp_file.write(response.content)
                 temp_file_path = temp_file.name
             return temp_file_path

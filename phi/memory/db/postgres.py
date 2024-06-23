@@ -82,7 +82,10 @@ class PgMemoryDb(MemoryDb):
                 return result is not None
 
     def read_memories(
-        self, user_id: Optional[str] = None, limit: Optional[int] = None, sort: Optional[str] = None
+        self,
+        user_id: Optional[str] = None,
+        limit: Optional[int] = None,
+        sort: Optional[str] = None,
     ) -> List[MemoryRow]:
         memories: List[MemoryRow] = []
         with self.Session() as sess, sess.begin():
@@ -148,7 +151,9 @@ class PgMemoryDb(MemoryDb):
     def table_exists(self) -> bool:
         logger.debug(f"Checking if table exists: {self.table.name}")
         try:
-            return inspect(self.db_engine).has_table(self.table.name, schema=self.schema)
+            return inspect(self.db_engine).has_table(
+                self.table.name, schema=self.schema
+            )
         except Exception as e:
             logger.error(e)
             return False

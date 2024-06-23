@@ -16,4 +16,8 @@ data_analyst = DuckDbAssistant(
     ),
 )
 
-asyncio.run(data_analyst.async_print_response("What is the average rating of movies? Show me the SQL.", markdown=True))
+asyncio.run(
+    data_analyst.async_print_response(
+        "What is the average rating of movies? Show me the SQL.", markdown=True
+    )
+)

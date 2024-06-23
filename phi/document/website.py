@@ -12,7 +12,9 @@ import httpx
 try:
     from bs4 import BeautifulSoup  # noqa: F401
 except ImportError:
-    raise ImportError("The `bs4` package is not installed. Please install it via `pip install beautifulsoup4`.")
+    raise ImportError(
+        "The `bs4` package is not installed. Please install it via `pip install beautifulsoup4`."
+    )
 
 
 class WebsiteReader(Reader):
@@ -124,9 +126,13 @@ class WebsiteReader(Reader):
                     full_url = urljoin(current_url, link["href"])
                     parsed_url = urlparse(full_url)
                     if parsed_url.netloc.endswith(primary_domain) and not any(
-                        parsed_url.path.endswith(ext) for ext in [".pdf", ".jpg", ".png"]
+                        parsed_url.path.endswith(ext)
+                        for ext in [".pdf", ".jpg", ".png"]
                     ):
-                        if full_url not in self._visited and (full_url, current_depth + 1) not in self._urls_to_crawl:
+                        if (
+                            full_url not in self._visited
+                            and (full_url, current_depth + 1) not in self._urls_to_crawl
+                        ):
                             self._urls_to_crawl.append((full_url, current_depth + 1))
 
             except Exception as e:
@@ -154,7 +160,10 @@ class WebsiteReader(Reader):
                 documents.extend(
                     self.chunk_document(
                         Document(
-                            name=url, id=str(crawled_url), meta_data={"url": str(crawled_url)}, content=crawled_content
+                            name=url,
+                            id=str(crawled_url),
+                            meta_data={"url": str(crawled_url)},
+                            content=crawled_content,
                         )
                     )
                 )

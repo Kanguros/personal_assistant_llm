@@ -32,7 +32,9 @@ class UrlFile(File):
                 with TemporaryDirectory() as temp_dir:
                     file_name = self.get_filename()
                     if file_name is None:
-                        raise ValueError("Could not determine a file name, please set `name`")
+                        raise ValueError(
+                            "Could not determine a file name, please set `name`"
+                        )
 
                     file_path = Path(temp_dir).joinpath(file_name)
 

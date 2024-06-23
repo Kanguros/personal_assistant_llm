@@ -4,7 +4,11 @@ from typing_extensions import Literal
 from pydantic import BaseModel, ConfigDict, model_validator
 
 from phi.assistant.openai.assistant import OpenAIAssistant
-from phi.assistant.openai.exceptions import ThreadIdNotSet, AssistantIdNotSet, RunIdNotSet
+from phi.assistant.openai.exceptions import (
+    ThreadIdNotSet,
+    AssistantIdNotSet,
+    RunIdNotSet,
+)
 from phi.tools import Tool, Toolkit
 from phi.tools.function import Function
 from phi.utils.functions import get_function_call
@@ -17,7 +21,9 @@ try:
         RequiredAction,
         LastError,
     )
-    from openai.types.beta.threads.required_action_function_tool_call import RequiredActionFunctionToolCall
+    from openai.types.beta.threads.required_action_function_tool_call import (
+        RequiredActionFunctionToolCall,
+    )
     from openai.types.beta.threads.run_submit_tool_outputs_params import ToolOutput
 except ImportError:
     logger.error("`openai` not installed")
@@ -41,7 +47,16 @@ class Run(BaseModel):
     # The status of the run, which can be either
     # queued, in_progress, requires_action, cancelling, cancelled, failed, completed, or expired.
     status: Optional[
-        Literal["queued", "in_progress", "requires_action", "cancelling", "cancelled", "failed", "completed", "expired"]
+        Literal[
+            "queued",
+            "in_progress",
+            "requires_action",
+            "cancelling",
+            "cancelled",
+            "failed",
+            "completed",
+            "expired",
+        ]
     ] = None
 
     # Details on the action required to continue the run. Will be null if no action is required.
@@ -106,7 +121,9 @@ class Run(BaseModel):
                     self.functions = {}
                 if isinstance(tool, Toolkit):
                     self.functions.update(tool.functions)
-                    logger.debug(f"Functions from {tool.name} added to OpenAIAssistant.")
+                    logger.debug(
+                        f"Functions from {tool.name} added to OpenAIAssistant."
+                    )
                 elif isinstance(tool, Function):
                     self.functions[tool.name] = tool
                     logger.debug(f"Function {tool.name} added to OpenAIAssistant.")
@@ -163,7 +180,11 @@ class Run(BaseModel):
 
         _assistant_id = assistant.get_id() if assistant is not None else assistant_id
         if _assistant_id is None:
-            _assistant_id = self.assistant.get_id() if self.assistant is not None else self.assistant_id
+            _assistant_id = (
+                self.assistant.get_id()
+                if self.assistant is not None
+                else self.assistant_id
+            )
         if _assistant_id is None:
             raise AssistantIdNotSet("OpenAIAssistant.id not set")
 
@@ -220,7 +241,9 @@ class Run(BaseModel):
         try:
             return self.get(use_cache=use_cache)
         except RunIdNotSet:
-            return self.create(thread_id=thread_id, assistant=assistant, assistant_id=assistant_id)
+            return self.create(
+                thread_id=thread_id, assistant=assistant, assistant_id=assistant_id
+            )
 
     def update(self, thread_id: Optional[str] = None) -> "Run":
         try:
@@ -253,7 +276,14 @@ class Run(BaseModel):
     ) -> bool:
         import time
 
-        status_to_wait = status or ["requires_action", "cancelling", "cancelled", "failed", "completed", "expired"]
+        status_to_wait = status or [
+            "requires_action",
+            "cancelling",
+            "cancelled",
+            "failed",
+            "completed",
+            "expired",
+        ]
         start_time = time.time()
         while True:
             logger.debug(f"Waiting for run {self.id} to complete")
@@ -292,7 +322,9 @@ class Run(BaseModel):
             # -*- Check if run requires action
             if self.status == "requires_action":
                 if self.assistant is None:
-                    logger.warning("OpenAIAssistant not available to complete required_action")
+                    logger.warning(
+                        "OpenAIAssistant not available to complete required_action"
+                    )
                     return self
                 if self.required_action is not None:
                     if self.required_action.type == "submit_tool_outputs":
@@ -315,24 +347,36 @@ class Run(BaseModel):
                                     functions=run_functions,
                                 )
                                 if function_call is None:
-                                    logger.error(f"Function {tool_call.function.name} not found")
+                                    logger.error(
+                                        f"Function {tool_call.function.name} not found"
+                                    )
                                     continue
 
                                 # -*- Run function call
                                 success = function_call.execute()
                                 if not success:
-                                    logger.error(f"Function {tool_call.function.name} failed")
+                                    logger.error(
+                                        f"Function {tool_call.function.name} failed"
+                                    )
                                     continue
 
-                                output = str(function_call.result) if function_call.result is not None else ""
-                                tool_outputs.append(ToolOutput(tool_call_id=tool_call.id, output=output))
+                                output = (
+                                    str(function_call.result)
+                                    if function_call.result is not None
+                                    else ""
+                                )
+                                tool_outputs.append(
+                                    ToolOutput(tool_call_id=tool_call.id, output=output)
+                                )
 
                         # -*- Submit tool outputs
                         _oai_run = cast(OpenAIRun, self.openai_run)
-                        self.openai_run = self.client.beta.threads.runs.submit_tool_outputs(
-                            thread_id=_oai_run.thread_id,
-                            run_id=_oai_run.id,
-                            tool_outputs=tool_outputs,
+                        self.openai_run = (
+                            self.client.beta.threads.runs.submit_tool_outputs(
+                                thread_id=_oai_run.thread_id,
+                                run_id=_oai_run.id,
+                                tool_outputs=tool_outputs,
+                            )
                         )
 
                         self.load_from_openai(self.openai_run)

@@ -3,9 +3,12 @@ from phi.llm.ollama import Ollama
 from phi.tools.duckdb import DuckDbTools
 
 
-duckdb_tools = DuckDbTools(create_tables=False, export_tables=False, summarize_tables=False)
+duckdb_tools = DuckDbTools(
+    create_tables=False, export_tables=False, summarize_tables=False
+)
 duckdb_tools.create_table_from_path(
-    path="https://phidata-public.s3.amazonaws.com/demo_data/IMDB-Movie-Data.csv", table="movies"
+    path="https://phidata-public.s3.amazonaws.com/demo_data/IMDB-Movie-Data.csv",
+    table="movies",
 )
 
 assistant = Assistant(

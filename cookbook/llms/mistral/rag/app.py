@@ -15,7 +15,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("Mistral RAG with PgVector")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def restart_assistant():
@@ -32,7 +34,12 @@ def main() -> None:
     # Get model
     mistral_model = st.sidebar.selectbox(
         "Select Model",
-        options=["open-mixtral-8x22b", "mistral-large-latest", "open-mixtral-8x7b", "mistral-medium-latest"],
+        options=[
+            "open-mixtral-8x22b",
+            "mistral-large-latest",
+            "open-mixtral-8x7b",
+            "mistral-medium-latest",
+        ],
     )
     # Set assistant_type in session state
     if "mistral_model" not in st.session_state:
@@ -44,7 +51,10 @@ def main() -> None:
 
     # Get the assistant
     mistral_assistant: Assistant
-    if "mistral_assistant" not in st.session_state or st.session_state["mistral_assistant"] is None:
+    if (
+        "mistral_assistant" not in st.session_state
+        or st.session_state["mistral_assistant"] is None
+    ):
         logger.info(f"---*--- Creating {mistral_model} Assistant ---*---")
         mistral_assistant = get_mistral_assistant(
             model=mistral_model,
@@ -67,7 +77,9 @@ def main() -> None:
         st.session_state["messages"] = assistant_chat_history
     else:
         logger.debug("No chat history found")
-        st.session_state["messages"] = [{"role": "assistant", "content": "Upload a doc and ask me questions..."}]
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": "Upload a doc and ask me questions..."}
+        ]
 
     # Prompt for user input
     if prompt := st.chat_input():
@@ -90,7 +102,9 @@ def main() -> None:
             for delta in mistral_assistant.run(question):
                 response += delta  # type: ignore
                 resp_container.markdown(response)
-            st.session_state["messages"].append({"role": "assistant", "content": response})
+            st.session_state["messages"].append(
+                {"role": "assistant", "content": response}
+            )
 
     # Load knowledge base
     if mistral_assistant.knowledge_base:
@@ -99,7 +113,9 @@ def main() -> None:
             st.session_state["url_scrape_key"] = 0
 
         input_url = st.sidebar.text_input(
-            "Add URL to Knowledge Base", type="default", key=st.session_state["url_scrape_key"]
+            "Add URL to Knowledge Base",
+            type="default",
+            key=st.session_state["url_scrape_key"],
         )
         add_url_button = st.sidebar.button("Add URL")
         if add_url_button:
@@ -109,7 +125,9 @@ def main() -> None:
                     scraper = WebsiteReader(max_links=10, max_depth=2)
                     web_documents: List[Document] = scraper.read(input_url)
                     if web_documents:
-                        mistral_assistant.knowledge_base.load_documents(web_documents, upsert=True)
+                        mistral_assistant.knowledge_base.load_documents(
+                            web_documents, upsert=True
+                        )
                     else:
                         st.sidebar.error("Could not read website")
                     st.session_state[f"{input_url}_uploaded"] = True
@@ -120,7 +138,9 @@ def main() -> None:
             st.session_state["file_uploader_key"] = 100
 
         uploaded_file = st.sidebar.file_uploader(
-            "Add a PDF :page_facing_up:", type="pdf", key=st.session_state["file_uploader_key"]
+            "Add a PDF :page_facing_up:",
+            type="pdf",
+            key=st.session_state["file_uploader_key"],
         )
         if uploaded_file is not None:
             alert = st.sidebar.info("Processing PDF...", icon="🧠")
@@ -129,7 +149,9 @@ def main() -> None:
                 reader = PDFReader()
                 mistral_rag_documents: List[Document] = reader.read(uploaded_file)
                 if mistral_rag_documents:
-                    mistral_assistant.knowledge_base.load_documents(mistral_rag_documents, upsert=True)
+                    mistral_assistant.knowledge_base.load_documents(
+                        mistral_rag_documents, upsert=True
+                    )
                 else:
                     st.sidebar.error("Could not read PDF")
                 st.session_state[f"{mistral_rag_name}_uploaded"] = True
@@ -142,10 +164,16 @@ def main() -> None:
             st.sidebar.success("Knowledge base cleared")
 
     if mistral_assistant.storage:
-        mistral_assistant_run_ids: List[str] = mistral_assistant.storage.get_all_run_ids()
-        new_mistral_assistant_run_id = st.sidebar.selectbox("Run ID", options=mistral_assistant_run_ids)
+        mistral_assistant_run_ids: List[str] = (
+            mistral_assistant.storage.get_all_run_ids()
+        )
+        new_mistral_assistant_run_id = st.sidebar.selectbox(
+            "Run ID", options=mistral_assistant_run_ids
+        )
         if st.session_state["mistral_assistant_run_id"] != new_mistral_assistant_run_id:
-            logger.info(f"---*--- Loading {mistral_model} run: {new_mistral_assistant_run_id} ---*---")
+            logger.info(
+                f"---*--- Loading {mistral_model} run: {new_mistral_assistant_run_id} ---*---"
+            )
             st.session_state["mistral_assistant"] = get_mistral_assistant(
                 model=mistral_model, run_id=new_mistral_assistant_run_id
             )

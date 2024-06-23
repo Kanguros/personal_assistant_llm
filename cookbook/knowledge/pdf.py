@@ -24,4 +24,6 @@ assistant = Assistant(
 )
 
 # Ask the assistant about the knowledge base
-assistant.print_response("Ask me about something from the knowledge base", markdown=True)
+assistant.print_response(
+    "Ask me about something from the knowledge base", markdown=True
+)

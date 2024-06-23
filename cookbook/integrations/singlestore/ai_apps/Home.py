@@ -8,7 +8,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("SingleStore AI Apps")
-st.markdown("##### :orange_heart: Built with [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: Built with [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def main() -> None:

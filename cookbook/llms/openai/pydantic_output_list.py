@@ -7,17 +7,24 @@ from phi.llm.openai import OpenAIChat
 
 # Define the pydantic model you want the LLM to generate
 class MovieScript(BaseModel):
-    setting: str = Field(..., description="Provide a nice setting for a blockbuster movie.")
-    genre: str = Field(..., description="Genre of the movie. If not available, select action comedy.")
+    setting: str = Field(
+        ..., description="Provide a nice setting for a blockbuster movie."
+    )
+    genre: str = Field(
+        ..., description="Genre of the movie. If not available, select action comedy."
+    )
     name: str = Field(..., description="Give a name to this movie")
     characters: List[str] = Field(..., description="Name of characters for this movie.")
-    storyline: str = Field(..., description="2 sentence storyline for the movie. Make it punchy!")
+    storyline: str = Field(
+        ..., description="2 sentence storyline for the movie. Make it punchy!"
+    )
 
 
 # Generate a list of pydantic models
 class MovieScripts(BaseModel):
     movie_scripts: List[MovieScript] = Field(
-        ..., description="List of movie scripts for the given theme. Provide 3 different scripts."
+        ...,
+        description="List of movie scripts for the given theme. Provide 3 different scripts.",
     )
 
 

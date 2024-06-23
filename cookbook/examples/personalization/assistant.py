@@ -55,7 +55,12 @@ def get_personalized_assistant(
         tools.append(DuckDuckGo(fixed_max_results=3))
     if finance_tools:
         tools.append(
-            YFinanceTools(stock_price=True, company_info=True, analyst_recommendations=True, company_news=True)
+            YFinanceTools(
+                stock_price=True,
+                company_info=True,
+                analyst_recommendations=True,
+                company_news=True,
+            )
         )
     if file_tools:
         tools.append(FileTools(base_dir=cwd))
@@ -74,7 +79,9 @@ def get_personalized_assistant(
             base_dir=scratch_dir,
         )
         team.append(_python_assistant)
-        extra_instructions.append("To write and run python code, delegate the task to the `Python Assistant`.")
+        extra_instructions.append(
+            "To write and run python code, delegate the task to the `Python Assistant`."
+        )
     if research_assistant:
         _research_assistant = Assistant(
             name="Research Assistant",
@@ -143,13 +150,17 @@ def get_personalized_assistant(
             ),
         ),
         # Store runs in a database
-        storage=PgAssistantStorage(table_name="personalized_assistant_storage", db_url=db_url),
+        storage=PgAssistantStorage(
+            table_name="personalized_assistant_storage", db_url=db_url
+        ),
         # Store knowledge in a vector database
         knowledge_base=AssistantKnowledge(
             vector_db=PgVector2(
                 db_url=db_url,
                 collection="personalized_assistant_documents",
-                embedder=OpenAIEmbedder(model="text-embedding-3-small", dimensions=1536),
+                embedder=OpenAIEmbedder(
+                    model="text-embedding-3-small", dimensions=1536
+                ),
             ),
             # 3 references are added to the prompt
             num_documents=3,

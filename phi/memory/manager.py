@@ -31,7 +31,8 @@ class MemoryManager(BaseModel):
             except ModuleNotFoundError as e:
                 logger.exception(e)
                 logger.error(
-                    "phidata uses `openai` as the default LLM. " "Please provide an `llm` or install `openai`."
+                    "phidata uses `openai` as the default LLM. "
+                    "Please provide an `llm` or install `openai`."
                 )
                 exit(1)
 
@@ -57,7 +58,12 @@ class MemoryManager(BaseModel):
         try:
             if self.db:
                 self.db.upsert_memory(
-                    MemoryRow(user_id=self.user_id, memory=Memory(memory=memory, input=self.input_message).to_dict())
+                    MemoryRow(
+                        user_id=self.user_id,
+                        memory=Memory(
+                            memory=memory, input=self.input_message
+                        ).to_dict(),
+                    )
                 )
             return "Memory added successfully"
         except Exception as e:
@@ -91,7 +97,11 @@ class MemoryManager(BaseModel):
             if self.db:
                 self.db.upsert_memory(
                     MemoryRow(
-                        id=id, user_id=self.user_id, memory=Memory(memory=memory, input=self.input_message).to_dict()
+                        id=id,
+                        user_id=self.user_id,
+                        memory=Memory(
+                            memory=memory, input=self.input_message
+                        ).to_dict(),
                     )
                 )
             return "Memory updated successfully"
@@ -136,7 +146,12 @@ class MemoryManager(BaseModel):
                 [
                     "\nExisting memories:",
                     "<existing_memories>\n"
-                    + "\n".join([f"  - id: {m.id} | memory: {m.memory}" for m in existing_memories])
+                    + "\n".join(
+                        [
+                            f"  - id: {m.id} | memory: {m.memory}"
+                            for m in existing_memories
+                        ]
+                    )
                     + "\n</existing_memories>",
                 ]
             )
@@ -160,7 +175,9 @@ class MemoryManager(BaseModel):
         llm_messages.append(system_prompt_message)
 
         # Create the user prompt message
-        user_prompt_message = Message(role="user", content=message, **kwargs) if message else None
+        user_prompt_message = (
+            Message(role="user", content=message, **kwargs) if message else None
+        )
         if user_prompt_message is not None:
             llm_messages += [user_prompt_message]
 

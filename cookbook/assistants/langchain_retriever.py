@@ -19,7 +19,9 @@ def load_vector_store():
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
     documents = text_splitter.split_documents(raw_documents)
     # -*- Embed each chunk and load it into the vector store
-    Chroma.from_documents(documents, OpenAIEmbeddings(), persist_directory=str(chroma_db_dir))
+    Chroma.from_documents(
+        documents, OpenAIEmbeddings(), persist_directory=str(chroma_db_dir)
+    )
 
 
 # -*- Load the vector store
@@ -32,5 +34,7 @@ retriever = db.as_retriever()
 # -*- Create a knowledge base from the vector store
 knowledge_base = LangChainKnowledgeBase(retriever=retriever)
 
-conv = Assistant(knowledge_base=knowledge_base, debug_mode=True, add_references_to_prompt=True)
+conv = Assistant(
+    knowledge_base=knowledge_base, debug_mode=True, add_references_to_prompt=True
+)
 conv.print_response("What did the president say about technology?", markdown=True)

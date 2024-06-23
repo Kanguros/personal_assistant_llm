@@ -8,7 +8,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("Local Video Summaries")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def main() -> None:
@@ -77,7 +79,9 @@ def main() -> None:
             status.update(label="Captions processed", state="complete", expanded=False)
 
         if not video_captions:
-            st.write("Sorry could not parse video. Please try again or use a different video.")
+            st.write(
+                "Sorry could not parse video. Please try again or use a different video."
+            )
             return
 
         chunks = []
@@ -100,7 +104,11 @@ def main() -> None:
                         chunk_summary += delta  # type: ignore
                         chunk_container.markdown(chunk_summary)
                     chunk_summaries.append(chunk_summary)
-                    status.update(label=f"Chunk {i+1} summarized", state="complete", expanded=False)
+                    status.update(
+                        label=f"Chunk {i+1} summarized",
+                        state="complete",
+                        expanded=False,
+                    )
 
             with st.spinner("Generating Summary"):
                 summary = ""

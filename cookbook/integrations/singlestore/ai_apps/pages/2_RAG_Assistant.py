@@ -15,7 +15,9 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("RAG Assistant")
-st.markdown("##### :orange_heart: Built with [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: Built with [phidata](https://github.com/phidatahq/phidata)"
+)
 
 
 def restart_assistant():
@@ -33,7 +35,14 @@ def main() -> None:
     # Get LLM Model
     llm_model = (
         st.sidebar.selectbox(
-            "Select LLM", options=["llama3-70b-8192", "llama3", "phi3", "gpt-4-turbo", "gpt-3.5-turbo"]
+            "Select LLM",
+            options=[
+                "llama3-70b-8192",
+                "llama3",
+                "phi3",
+                "gpt-4-turbo",
+                "gpt-3.5-turbo",
+            ],
         )
         or "gpt-4-turbo"
     )
@@ -52,7 +61,10 @@ def main() -> None:
     max_references = 10 if llm_model.startswith("gpt") else 4
     default_references = 5 if llm_model.startswith("gpt") else 3
     num_documents = st.sidebar.number_input(
-        "Number of References", value=default_references, min_value=1, max_value=max_references
+        "Number of References",
+        value=default_references,
+        min_value=1,
+        max_value=max_references,
     )
     if "prev_num_documents" not in st.session_state:
         st.session_state["prev_num_documents"] = num_documents
@@ -62,7 +74,10 @@ def main() -> None:
 
     # Get the assistant
     rag_assistant: Assistant
-    if "rag_assistant" not in st.session_state or st.session_state["rag_assistant"] is None:
+    if (
+        "rag_assistant" not in st.session_state
+        or st.session_state["rag_assistant"] is None
+    ):
         logger.info(f"---*--- Creating {llm_model} Assistant ---*---")
         rag_assistant = get_rag_assistant(
             llm_model=llm_model,
@@ -86,7 +101,9 @@ def main() -> None:
         st.session_state["messages"] = rag_assistant_chat_history
     else:
         logger.debug("No chat history found")
-        st.session_state["messages"] = [{"role": "assistant", "content": "Upload a doc and ask me questions..."}]
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": "Upload a doc and ask me questions..."}
+        ]
 
     # Prompt for user input
     if prompt := st.chat_input():
@@ -109,7 +126,9 @@ def main() -> None:
             for delta in rag_assistant.run(question):
                 response += delta  # type: ignore
                 resp_container.markdown(response)
-            st.session_state["messages"].append({"role": "assistant", "content": response})
+            st.session_state["messages"].append(
+                {"role": "assistant", "content": response}
+            )
 
     # Load knowledge base
     if rag_assistant.knowledge_base:
@@ -118,17 +137,23 @@ def main() -> None:
             st.session_state["url_scrape_key"] = 0
 
         input_url = st.sidebar.text_input(
-            "Add URL to Knowledge Base", type="default", key=st.session_state["url_scrape_key"]
+            "Add URL to Knowledge Base",
+            type="default",
+            key=st.session_state["url_scrape_key"],
         )
         add_url_button = st.sidebar.button("Add URL")
         if add_url_button:
             if input_url is not None:
                 alert = st.sidebar.info("Processing URLs...", icon="ℹ️")
                 if f"{input_url}_scraped" not in st.session_state:
-                    scraper = WebsiteReader(chunk_size=chunk_size, max_links=5, max_depth=1)
+                    scraper = WebsiteReader(
+                        chunk_size=chunk_size, max_links=5, max_depth=1
+                    )
                     web_documents: List[Document] = scraper.read(input_url)
                     if web_documents:
-                        rag_assistant.knowledge_base.load_documents(web_documents, upsert=True)
+                        rag_assistant.knowledge_base.load_documents(
+                            web_documents, upsert=True
+                        )
                     else:
                         st.sidebar.error("Could not read website")
                     st.session_state[f"{input_url}_uploaded"] = True
@@ -139,7 +164,9 @@ def main() -> None:
             st.session_state["file_uploader_key"] = 100
 
         uploaded_file = st.sidebar.file_uploader(
-            "Add a PDF :page_facing_up:", type="pdf", key=st.session_state["file_uploader_key"]
+            "Add a PDF :page_facing_up:",
+            type="pdf",
+            key=st.session_state["file_uploader_key"],
         )
         if uploaded_file is not None:
             alert = st.sidebar.info("Processing PDF...", icon="ℹ️")
@@ -148,17 +175,24 @@ def main() -> None:
                 reader = PDFReader(chunk_size=chunk_size)
                 pdf_documents: List[Document] = reader.read(uploaded_file)
                 if pdf_documents:
-                    rag_assistant.knowledge_base.load_documents(documents=pdf_documents, upsert=True)
+                    rag_assistant.knowledge_base.load_documents(
+                        documents=pdf_documents, upsert=True
+                    )
                 else:
                     st.sidebar.error("Could not read PDF")
                 st.session_state[f"{pdf_name}_uploaded"] = True
             alert.empty()
-            st.sidebar.success(":information_source: If the PDF throws an error, try uploading it again")
+            st.sidebar.success(
+                ":information_source: If the PDF throws an error, try uploading it again"
+            )
 
     if rag_assistant.storage:
         assistant_run_ids: List[str] = rag_assistant.storage.get_all_run_ids()
         new_assistant_run_id = st.sidebar.selectbox("Run ID", options=assistant_run_ids)
-        if new_assistant_run_id is not None and st.session_state["rag_assistant_run_id"] != new_assistant_run_id:
+        if (
+            new_assistant_run_id is not None
+            and st.session_state["rag_assistant_run_id"] != new_assistant_run_id
+        ):
             logger.info(f"---*--- Loading run: {new_assistant_run_id} ---*---")
             st.session_state["rag_assistant"] = get_rag_assistant(
                 llm_model=llm_model,

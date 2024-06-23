@@ -5,7 +5,11 @@ from phi.tools.openbb_tools import OpenBBTools
 
 assistant = Assistant(
     llm=Groq(model="llama3-70b-8192"),
-    tools=[OpenBBTools(obb=obb, company_profile=True, company_news=True, price_targets=True)],
+    tools=[
+        OpenBBTools(
+            obb=obb, company_profile=True, company_news=True, price_targets=True
+        )
+    ],
     show_tool_calls=True,
 )
 

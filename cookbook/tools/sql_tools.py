@@ -12,4 +12,7 @@ assistant = Assistant(
     show_tool_calls=True,
 )
 
-assistant.print_response("List the tables in the database. Tell me about contents of one of the tables", markdown=True)
+assistant.print_response(
+    "List the tables in the database. Tell me about contents of one of the tables",
+    markdown=True,
+)

@@ -28,7 +28,9 @@ def get_groq_assistant(
     )
     # Define the embeddings table based on the embeddings model
     embeddings_table = (
-        "groq_rag_documents_ollama" if embeddings_model == "nomic-embed-text" else "groq_rag_documents_openai"
+        "groq_rag_documents_ollama"
+        if embeddings_model == "nomic-embed-text"
+        else "groq_rag_documents_openai"
     )
 
     return Assistant(

@@ -13,7 +13,9 @@ st.set_page_config(
     page_icon=":ringed_planet:",
 )
 st.title("World Building using OpenHermes and Ollama")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.markdown(
+    "##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)"
+)
 with st.expander(":rainbow[:point_down: How to use]"):
     st.markdown("- Generate a new world by providing a brief description")
     st.markdown("- Ask questions about the world and explore it")
@@ -39,7 +41,9 @@ def main() -> None:
         restart_assistant()
 
     # Get temperature
-    temperature = st.sidebar.slider("Temperature", min_value=0.0, max_value=1.0, value=0.1, step=0.1)
+    temperature = st.sidebar.slider(
+        "Temperature", min_value=0.0, max_value=1.0, value=0.1, step=0.1
+    )
     # Set temperature in session state
     if "temperature" not in st.session_state:
         st.session_state["temperature"] = temperature
@@ -49,7 +53,9 @@ def main() -> None:
         restart_assistant()
 
     # Get the world builder
-    world: Optional[World] = st.session_state["world"] if "world" in st.session_state else None
+    world: Optional[World] = (
+        st.session_state["world"] if "world" in st.session_state else None
+    )
     world_builder = get_world_builder(debug_mode=True)
     description = st.text_input(
         label="World description",
@@ -71,7 +77,9 @@ def main() -> None:
                         _v = ", ".join(value) if isinstance(value, list) else value
                         world_description += f"- **{_k}**: {_v}\n\n"
                         world_container.markdown(world_description)
-                status.update(label=":orange[World generated!]", state="complete", expanded=True)
+                status.update(
+                    label=":orange[World generated!]", state="complete", expanded=True
+                )
     else:
         world_name = world.name
         with st.expander(f":orange[{world_name}]", expanded=False):
@@ -87,7 +95,10 @@ def main() -> None:
         return
 
     # Get the world_explorer
-    if "world_explorer" not in st.session_state or st.session_state["world_explorer"] is None:
+    if (
+        "world_explorer" not in st.session_state
+        or st.session_state["world_explorer"] is None
+    ):
         logger.info("---*--- Creating World Explorer ---*---")
         world_explorer = get_world_explorer(
             model=model,
@@ -106,7 +117,9 @@ def main() -> None:
         st.session_state["messages"] = chat_history
     else:
         logger.debug("No chat history found")
-        st.session_state["messages"] = [{"role": "assistant", "content": "Lets explore this world together..."}]
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": "Lets explore this world together..."}
+        ]
 
     # Prompt for user input
     if prompt := st.chat_input():
@@ -130,7 +143,9 @@ def main() -> None:
                 response += delta  # type: ignore
                 resp_container.markdown(response)
 
-            st.session_state["messages"].append({"role": "assistant", "content": response})
+            st.session_state["messages"].append(
+                {"role": "assistant", "content": response}
+            )
 
     st.sidebar.markdown("---")
     reload_button_sidebar(text="New World")

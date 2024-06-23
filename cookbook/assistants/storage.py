@@ -3,7 +3,10 @@ from phi.tools.duckduckgo import DuckDuckGo
 from phi.storage.assistant.postgres import PgAssistantStorage
 
 assistant = Assistant(
-    storage=PgAssistantStorage(table_name="assistant_runs", db_url="postgresql+psycopg://ai:ai@localhost:5532/ai"),
+    storage=PgAssistantStorage(
+        table_name="assistant_runs",
+        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    ),
     tools=[DuckDuckGo()],
     add_chat_history_to_messages=True,
 )
