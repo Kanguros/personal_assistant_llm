@@ -93,7 +93,19 @@ indent-width = 4
 target-version = "py310"
 
 [tool.ruff.lint]
-select = ["E4", "E7", "E9", "F"]
+select = [
+    "A",  # prevent using keywords that clobber python builtins
+    "B",  # bugbear: security warnings
+    "E4", "E7", "E9",  # pycodestyle
+    "F",  # pyflakes
+    "ISC",  # implicit string concatenation
+    "S",
+    "I",
+    "N",
+    "W",
+    "UP",  # alert you when better syntax is available in your python version
+    "RUF",  # the ruff developer's own rules
+]
 ignore = []
 fixable = ["ALL"]
 unfixable = []
