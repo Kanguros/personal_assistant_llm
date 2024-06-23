@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Union, List, Iterator
 
 from phi.document import Document
-from phi.document.reader.json import JSONReader
+from phi.document.json import JSONReader
 from phi.knowledge.base import AssistantKnowledge
 
 
