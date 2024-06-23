@@ -3,7 +3,7 @@ from typing import Iterator, List, Optional
 from pydantic import model_validator
 
 from phi.document import Document
-from phi.document.reader.website import WebsiteReader
+from phi.document.website import WebsiteReader
 from phi.knowledge.base import AssistantKnowledge
 from phi.utils.log import logger
 

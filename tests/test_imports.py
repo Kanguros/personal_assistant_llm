@@ -16,13 +16,13 @@ python_files = get_package_python_files()
 
 
 @pytest.mark.parametrize(
-    "module_path",
-    [*python_files],
-    ids=[str(f) for f in python_files]
+    "module_path", [*python_files], ids=[str(f) for f in python_files]
 )
 def test_modules_import(module_path):
     try:
-        spec = importlib.util.spec_from_file_location(str(module_path.stem), str(module_path))
+        spec = importlib.util.spec_from_file_location(
+            str(module_path.stem), str(module_path)
+        )
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
     except Exception as ex:
