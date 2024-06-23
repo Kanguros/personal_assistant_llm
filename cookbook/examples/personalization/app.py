@@ -2,12 +2,12 @@ import nest_asyncio
 import streamlit as st
 from assistant import get_personalized_assistant  # type: ignore
 
-from phi.assistant import Assistant
-from phi.document import Document
-from phi.document.reader.pdf import PDFReader
-from phi.document.reader.website import WebsiteReader
-from phi.tools.streamlit.components import get_username_sidebar
-from phi.utils.log import logger
+from pas.assistant import Assistant
+from pas.knowledge.document import Document
+from pas.knowledge.document.reader import PDFReader
+from pas.knowledge.document.reader import WebsiteReader
+from pas.tools.streamlit.components import get_username_sidebar
+from pas.utils.log import logger
 
 nest_asyncio.apply()
 st.set_page_config(

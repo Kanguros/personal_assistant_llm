@@ -3,7 +3,7 @@ import asyncio
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
 
-from phi.assistant import Assistant
+from pas.assistant import Assistant
 
 
 class MovieScript(BaseModel):

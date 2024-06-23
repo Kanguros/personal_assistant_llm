@@ -7,9 +7,9 @@ from datetime import datetime
 from pathlib import Path
 from textwrap import dedent
 
-from phi.assistant import Assistant
-from phi.llm.openai import OpenAIChat
-from phi.tools.exa import ExaTools
+from pas.assistant import Assistant
+from pas.llm.openai import OpenAIChat
+from pas.tools.exa import ExaTools
 
 cwd = Path(__file__).parent.resolve()
 scratch_dir = cwd.joinpath("scratch")

@@ -1,11 +1,11 @@
 from resources import vector_db  # type: ignore
 
-from phi.assistant import Assistant
-from phi.embedder.ollama import OllamaEmbedder
-from phi.knowledge import AssistantKnowledge
-from phi.llm.ollama import Hermes
-from phi.storage.assistant.postgres import PgAssistantStorage
-from phi.vectordb.pgvector import PgVector2
+from pas.assistant import Assistant
+from pas.knowledge.embedder.ollama import OllamaEmbedder
+from pas.knowledge import AssistantKnowledge
+from pas.llm.ollama import Hermes
+from pas.storage.assistant.postgres import PgAssistantStorage
+from pas.vectordb.pgvector import PgVector2
 
 knowledge_base = AssistantKnowledge(
     vector_db=PgVector2(

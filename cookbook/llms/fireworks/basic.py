@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.llm.fireworks import Fireworks
+from pas.assistant import Assistant
+from pas.llm.fireworks import Fireworks
 
 assistant = Assistant(
     llm=Fireworks(),

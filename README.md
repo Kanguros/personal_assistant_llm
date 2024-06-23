@@ -53,8 +53,8 @@ pip install -U phidata
 Create a file `assistant.py`
 
 ```python
-from phi.assistant import Assistant
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.tools.duckduckgo import DuckDuckGo
 
 assistant = Assistant(tools=[DuckDuckGo()], show_tool_calls=True)
 assistant.print_response("Whats happening in France?", markdown=True)
@@ -75,9 +75,9 @@ python assistant.py
 Create a file `finance_assistant.py`
 
 ```python
-from phi.assistant import Assistant
-from phi.llm.openai import OpenAIChat
-from phi.tools.yfinance import YFinanceTools
+from pas.assistant import Assistant
+from pas.llm.openai import OpenAIChat
+from pas.tools.yfinance import YFinanceTools
 
 assistant = Assistant(
     llm=OpenAIChat(model="gpt-4o"),
@@ -123,8 +123,8 @@ The `PythonAssistant` can achieve tasks by writing and running python code.
 - Create a file `python_assistant.py`
 
 ```python
-from phi.assistant.python import PythonAssistant
-from phi.utils.file import CsvFile
+from pas.assistant.python import PythonAssistant
+from pas.utils.file import CsvFile
 
 python_assistant = PythonAssistant(
     files=[
@@ -162,7 +162,7 @@ The `DuckDbAssistant` can perform data analysis using SQL.
 
 ```python
 import json
-from phi.assistant.duckdb import DuckDbAssistant
+from pas.assistant.duckdb import DuckDbAssistant
 
 duckdb_assistant = DuckDbAssistant(
     semantic_model=json.dumps({
@@ -205,15 +205,18 @@ Let's create a Movie Assistant to write a `MovieScript` for us.
 from typing import List
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
-from phi.assistant import Assistant
+from pas.assistant import Assistant
+
 
 class MovieScript(BaseModel):
     setting: str = Field(..., description="Provide a nice setting for a blockbuster movie.")
     ending: str = Field(..., description="Ending of the movie. If not available, provide a happy ending.")
-    genre: str = Field(..., description="Genre of the movie. If not available, select action, thriller or romantic comedy.")
+    genre: str = Field(...,
+                       description="Genre of the movie. If not available, select action, thriller or romantic comedy.")
     name: str = Field(..., description="Give a name to this movie")
     characters: List[str] = Field(..., description="Name of characters for this movie.")
     storyline: str = Field(..., description="3 sentence storyline for the movie. Make it exciting!")
+
 
 movie_assistant = Assistant(
     description="You help write movie scripts.",
@@ -279,10 +282,10 @@ docker run -d \
 ```python
 import typer
 from typing import Optional, List
-from phi.assistant import Assistant
-from phi.storage.assistant.postgres import PgAssistantStorage
-from phi.knowledge.pdf import PDFUrlKnowledgeBase
-from phi.vectordb.pgvector import PgVector2
+from pas.assistant import Assistant
+from pas.storage.assistant.postgres import PgAssistantStorage
+from pas.knowledge.pdf import PDFUrlKnowledgeBase
+from pas.vectordb.pgvector import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 

@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.tools.resend_tools import ResendTools
+from pas.assistant import Assistant
+from pas.tools.resend_tools import ResendTools
 
 assistant = Assistant(
     tools=[ResendTools(from_email="<enter_from_email>")], debug_mode=True

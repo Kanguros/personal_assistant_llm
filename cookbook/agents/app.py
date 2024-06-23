@@ -2,11 +2,11 @@ import nest_asyncio
 import streamlit as st
 from agent import get_agent  # type: ignore
 
-from phi.assistant import Assistant
-from phi.document import Document
-from phi.document.reader.pdf import PDFReader
-from phi.document.reader.website import WebsiteReader
-from phi.utils.log import logger
+from pas.assistant import Assistant
+from pas.knowledge.document import Document
+from pas.knowledge.document.reader import PDFReader
+from pas.knowledge.document.reader import WebsiteReader
+from pas.utils.log import logger
 
 nest_asyncio.apply()
 

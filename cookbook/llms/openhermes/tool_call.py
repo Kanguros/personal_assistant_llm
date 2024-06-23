@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.llm.ollama import Ollama
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.llm.ollama import Ollama
+from pas.tools.duckduckgo import DuckDuckGo
 
 assistant = Assistant(
     llm=Ollama(model="openhermes"),

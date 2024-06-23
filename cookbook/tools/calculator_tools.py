@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.tools.calculator import Calculator
+from pas.assistant import Assistant
+from pas.tools.calculator import Calculator
 
 assistant = Assistant(
     tools=[

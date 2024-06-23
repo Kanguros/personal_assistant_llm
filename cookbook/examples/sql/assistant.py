@@ -2,16 +2,16 @@ import json
 from pathlib import Path
 from textwrap import dedent
 
-from phi.assistant import Assistant
-from phi.embedder.openai import OpenAIEmbedder
-from phi.knowledge.combined import CombinedKnowledgeBase
-from phi.knowledge.json import JSONKnowledgeBase
-from phi.knowledge.text import TextKnowledgeBase
-from phi.llm.openai import OpenAIChat
-from phi.storage.assistant.postgres import PgAssistantStorage
-from phi.tools.file import FileTools
-from phi.tools.sql import SQLTools
-from phi.vectordb.pgvector import PgVector2
+from pas.assistant import Assistant
+from pas.knowledge.embedder.openai import OpenAIEmbedder
+from pas.knowledge.combined import CombinedKnowledgeBase
+from pas.knowledge.json import JSONKnowledgeBase
+from pas.knowledge.text import TextKnowledgeBase
+from pas.llm.openai import OpenAIChat
+from pas.storage.assistant.postgres import PgAssistantStorage
+from pas.tools.file import FileTools
+from pas.tools.sql import SQLTools
+from pas.vectordb.pgvector import PgVector2
 
 # ************* Database Connection *************
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"

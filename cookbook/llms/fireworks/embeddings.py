@@ -1,4 +1,4 @@
-from phi.embedder.fireworks import FireworksEmbedder
+from pas.knowledge.embedder import FireworksEmbedder
 
 embeddings = FireworksEmbedder().get_embedding("Embed me")
 

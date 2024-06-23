@@ -3,7 +3,7 @@ from logging import getLogger
 import streamlit as st
 from assistant import World, get_world_builder, get_world_explorer  # type: ignore
 
-from phi.tools.streamlit.components import reload_button_sidebar
+from pas.tools.streamlit.components import reload_button_sidebar
 
 logger = getLogger(__name__)
 

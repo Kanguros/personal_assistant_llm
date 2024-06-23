@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.llm.openai.like import OpenAILike
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.llm.openai.like import OpenAILike
+from pas.tools.duckduckgo import DuckDuckGo
 
 assistant = Assistant(
     llm=OpenAILike(base_url="http://localhost:1234/v1"),

@@ -6,8 +6,8 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
 
-from phi.assistant import Assistant
-from phi.knowledge.langchain import LangChainKnowledgeBase
+from pas.assistant import Assistant
+from pas.knowledge.langchain import LangChainKnowledgeBase
 
 # Define the directory where the Chroma database is located
 chroma_db_dir = pathlib.Path("./chroma_db")

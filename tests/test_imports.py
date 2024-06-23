@@ -3,11 +3,11 @@ from pathlib import Path
 
 import pytest
 
-import phi
+import pas
 
 
 def get_package_python_files() -> list[Path]:
-    python_files = Path(phi.__file__).parent.rglob("**/*.py")
+    python_files = Path(pas.__file__).parent.rglob("**/*.py")
     return [file for file in python_files if file.is_file()]
 
 

@@ -1,0 +1,47 @@
+from pathlib import Path
+
+from pas.knowledge.document.base import Document
+from pas.knowledge.document.reader import Reader
+from pas.utils.log import logger
+
+
+class DocxReader(Reader):
+    """Reader for Doc/Docx files"""
+
+    def read(self, path: Path) -> list[Document]:
+        if not path:
+            raise ValueError("No path provided")
+
+        if not path.exists():
+            raise FileNotFoundError(f"Could not find file: {path}")
+
+        try:
+            import textract
+        except ImportError:
+            raise ImportError("`textract` not installed")
+
+        try:
+            logger.info(f"Reading: {path}")
+            doc_name = (
+                path.name.split("/")[-1]
+                .split(".")[0]
+                .replace("/", "_")
+                .replace(" ", "_")
+            )
+            doc_content = textract.process(path)
+            documents = [
+                Document(
+                    name=doc_name,
+                    id=doc_name,
+                    content=doc_content.decode("utf-8"),
+                )
+            ]
+            if self.chunk:
+                chunked_documents = []
+                for document in documents:
+                    chunked_documents.extend(self.chunk_document(document))
+                return chunked_documents
+            return documents
+        except Exception as e:
+            logger.error(f"Error reading: {path}: {e}")
+        return []

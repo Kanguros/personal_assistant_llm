@@ -1,7 +1,7 @@
 import streamlit as st
 from assistant import get_chunk_summarizer, get_video_summarizer  # type: ignore
 
-from phi.tools.youtube_tools import YouTubeTools
+from pas.tools.youtube_tools import YouTubeTools
 
 st.set_page_config(
     page_title="Youtube Video Summaries",

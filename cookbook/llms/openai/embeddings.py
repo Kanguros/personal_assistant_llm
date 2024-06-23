@@ -1,4 +1,4 @@
-from phi.embedder.openai import OpenAIEmbedder
+from pas.knowledge.embedder.openai import OpenAIEmbedder
 
 embeddings = OpenAIEmbedder().get_embedding("Embed me")
 

@@ -3,12 +3,12 @@ from typing import Any
 
 import streamlit as st
 
-from phi.assistant import Assistant
-from phi.llm.fireworks import Fireworks
-from phi.tools.duckduckgo import DuckDuckGo
-from phi.tools.exa import ExaTools
-from phi.tools.yfinance import YFinanceTools
-from phi.utils.log import logger
+from pas.assistant import Assistant
+from pas.llm.fireworks import Fireworks
+from pas.tools.duckduckgo import DuckDuckGo
+from pas.tools.exa import ExaTools
+from pas.tools.yfinance import YFinanceTools
+from pas.utils.log import logger
 
 st.set_page_config(
     page_title="Fireworks AI",

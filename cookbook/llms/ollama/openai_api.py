@@ -1,6 +1,6 @@
 # Please install dependencies using: pip install -U ollama phidata openai
-from phi.assistant import Assistant
-from phi.llm.ollama.openai import OllamaOpenAI
+from pas.assistant import Assistant
+from pas.llm.ollama.openai import OllamaOpenAI
 
 assistant = Assistant(
     llm=OllamaOpenAI(model="tinyllama"),

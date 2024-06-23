@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.llm.openai import OpenAIChat
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.llm.openai import OpenAIChat
+from pas.tools.duckduckgo import DuckDuckGo
 
 assistant = Assistant(
     llm=OpenAIChat(model="gpt-4-turbo", max_tokens=500, temperature=0.3),

@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.tools.sql import SQLTools
+from pas.assistant import Assistant
+from pas.tools.sql import SQLTools
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 

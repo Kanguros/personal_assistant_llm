@@ -1,7 +1,7 @@
 import asyncio
 import json
 
-from phi.assistant.duckdb import DuckDbAssistant
+from pas.assistant.duckdb import DuckDbAssistant
 
 data_analyst = DuckDbAssistant(
     semantic_model=json.dumps(

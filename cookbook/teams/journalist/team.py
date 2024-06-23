@@ -1,8 +1,8 @@
 from textwrap import dedent
 
-from phi.assistant import Assistant
-from phi.tools.newspaper_toolkit import NewspaperToolkit
-from phi.tools.serpapi_tools import SerpApiTools
+from pas.assistant import Assistant
+from pas.tools.newspaper_toolkit import NewspaperToolkit
+from pas.tools.serpapi_tools import SerpApiTools
 
 searcher = Assistant(
     name="Searcher",

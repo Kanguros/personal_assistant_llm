@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.llm.together import Together
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.llm.together import Together
+from pas.tools.duckduckgo import DuckDuckGo
 
 assistant = Assistant(llm=Together(), tools=[DuckDuckGo()], show_tool_calls=True)
 assistant.print_response(

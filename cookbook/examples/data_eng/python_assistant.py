@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from phi.assistant.python import PythonAssistant
-from phi.utils.file import CsvFile
+from pas.assistant.python import PythonAssistant
+from pas.utils.file import CsvFile
 
 python_assistant = PythonAssistant(
     files=[

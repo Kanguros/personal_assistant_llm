@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
 
-from phi.assistant import Assistant
-from phi.llm.cohere import CohereChat
+from pas.assistant import Assistant
+from pas.llm.cohere import CohereChat
 
 
 class MovieScript(BaseModel):

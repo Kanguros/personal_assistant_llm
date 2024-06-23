@@ -3,17 +3,17 @@ from textwrap import dedent
 
 from sqlalchemy.engine import create_engine
 
-from phi.assistant import Assistant
-from phi.embedder.ollama import OllamaEmbedder
-from phi.embedder.openai import OpenAIEmbedder
-from phi.knowledge import AssistantKnowledge
-from phi.llm import LLM
-from phi.llm.groq import Groq
-from phi.llm.ollama import Ollama
-from phi.llm.openai import OpenAIChat
-from phi.storage.assistant.singlestore import S2AssistantStorage  # noqa
-from phi.utils.log import logger
-from phi.vectordb.singlestore import S2VectorDb
+from pas.assistant import Assistant
+from pas.knowledge.embedder.ollama import OllamaEmbedder
+from pas.knowledge.embedder.openai import OpenAIEmbedder
+from pas.knowledge import AssistantKnowledge
+from pas.llm import LLM
+from pas.llm.groq import Groq
+from pas.llm.ollama import Ollama
+from pas.llm.openai import OpenAIChat
+from pas.storage.assistant.singlestore import S2AssistantStorage  # noqa
+from pas.utils.log import logger
+from pas.vectordb.singlestore import S2VectorDb
 
 # ************** Create SingleStore Database Engine **************
 # -*- SingleStore Configuration -*-

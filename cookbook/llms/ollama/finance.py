@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.llm.ollama import OllamaTools
-from phi.tools.yfinance import YFinanceTools
+from pas.assistant import Assistant
+from pas.llm.ollama import OllamaTools
+from pas.tools.yfinance import YFinanceTools
 
 print("============= llama3 finance assistant =============")
 assistant = Assistant(

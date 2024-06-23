@@ -3,10 +3,10 @@ from textwrap import dedent
 
 from pydantic import BaseModel, Field
 
-from phi.assistant.team import Assistant
-from phi.tools.arxiv_toolkit import ArxivToolkit
-from phi.tools.duckduckgo import DuckDuckGo
-from phi.tools.exa import ExaTools
+from pas.assistant.team import Assistant
+from pas.tools.arxiv_toolkit import ArxivToolkit
+from pas.tools.duckduckgo import DuckDuckGo
+from pas.tools.exa import ExaTools
 
 arxiv_toolkit = ArxivToolkit(
     download_dir=Path(__file__).parent.parent.parent.parent.joinpath(

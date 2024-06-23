@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.llm.cohere import CohereChat
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.llm.cohere import CohereChat
+from pas.tools.duckduckgo import DuckDuckGo
 
 assistant = Assistant(
     llm=CohereChat(model="command-r"),

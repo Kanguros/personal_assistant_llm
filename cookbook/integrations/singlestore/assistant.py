@@ -3,9 +3,9 @@ from os import getenv
 import typer
 from sqlalchemy.engine import create_engine
 
-from phi.assistant import Assistant
-from phi.knowledge.pdf import PDFUrlKnowledgeBase
-from phi.vectordb.singlestore import S2VectorDb
+from pas.assistant import Assistant
+from pas.knowledge.pdf import PDFUrlKnowledgeBase
+from pas.vectordb.singlestore import S2VectorDb
 
 USERNAME = getenv("SINGLESTORE_USERNAME")
 PASSWORD = getenv("SINGLESTORE_PASSWORD")

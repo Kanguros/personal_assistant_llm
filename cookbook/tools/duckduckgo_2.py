@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.tools.duckduckgo import DuckDuckGo
 
 news_assistant = Assistant(
     tools=[DuckDuckGo()],

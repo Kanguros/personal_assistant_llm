@@ -1,7 +1,7 @@
 import json
 
-from phi.assistant.duckdb import DuckDbAssistant
-from phi.llm.fireworks import Fireworks
+from pas.assistant.duckdb import DuckDbAssistant
+from pas.llm.fireworks import Fireworks
 
 duckdb_assistant = DuckDbAssistant(
     llm=Fireworks(),

@@ -1,7 +1,7 @@
 import streamlit as st
 from assistant import get_research_assistant  # type: ignore
 
-from phi.tools.tavily import TavilyTools
+from pas.tools.tavily import TavilyTools
 
 st.set_page_config(
     page_title="Research Assistant",

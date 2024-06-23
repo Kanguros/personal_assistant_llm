@@ -1,4 +1,4 @@
-from phi.assistant import Assistant
+from pas.assistant import Assistant
 
 
 def multiply(first_int: int, second_int: int) -> str:

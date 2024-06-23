@@ -2,10 +2,10 @@ import typer
 from resources import vector_db  # type: ignore
 from rich.prompt import Prompt
 
-from phi.assistant import Assistant
-from phi.knowledge.pdf import PDFUrlKnowledgeBase
-from phi.storage.assistant.postgres import PgAssistantStorage
-from phi.vectordb.pgvector import PgVector2
+from pas.assistant import Assistant
+from pas.knowledge.pdf import PDFUrlKnowledgeBase
+from pas.storage.assistant.postgres import PgAssistantStorage
+from pas.vectordb.pgvector import PgVector2
 
 knowledge_base = PDFUrlKnowledgeBase(
     urls=["https://phi-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],

@@ -1,7 +1,7 @@
 import os
 
-from phi.assistant import Assistant
-from phi.tools.zendesk import ZendeskTools
+from pas.assistant import Assistant
+from pas.tools.zendesk import ZendeskTools
 
 # Retrieve Zendesk credentials from environment variables
 zd_username = os.getenv("ZENDESK_USERNAME")

@@ -4,8 +4,8 @@ import yfinance as yf
 from assistants import get_invstment_research_assistant  # type: ignore
 from duckduckgo_search import DDGS
 
-from phi.assistant import Assistant
-from phi.utils.log import logger
+from pas.assistant import Assistant
+from pas.utils.log import logger
 
 nest_asyncio.apply()
 st.set_page_config(

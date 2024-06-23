@@ -9,10 +9,10 @@ from textwrap import dedent
 
 from pydantic import BaseModel, Field
 
-from phi.assistant import Assistant
-from phi.tools.duckduckgo import DuckDuckGo
-from phi.tools.newspaper4k import Newspaper4k
-from phi.workflow import Task, Workflow
+from pas.assistant import Assistant
+from pas.tools.duckduckgo import DuckDuckGo
+from pas.tools.newspaper4k import Newspaper4k
+from pas.workflow import Task, Workflow
 
 articles_dir = Path(__file__).parent.parent.parent.joinpath("wip", "articles")
 if articles_dir.exists():

@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.storage.assistant.postgres import PgAssistantStorage
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.storage.assistant.postgres import PgAssistantStorage
+from pas.tools.duckduckgo import DuckDuckGo
 
 assistant = Assistant(
     storage=PgAssistantStorage(

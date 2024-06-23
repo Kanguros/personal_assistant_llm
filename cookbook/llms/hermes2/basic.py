@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.llm.ollama import Hermes
+from pas.assistant import Assistant
+from pas.llm.ollama import Hermes
 
 assistant = Assistant(
     llm=Hermes(model="adrienbrault/nous-hermes2pro:Q8_0"),

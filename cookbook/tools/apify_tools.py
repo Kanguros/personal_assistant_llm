@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.tools.apify import ApifyTools
+from pas.assistant import Assistant
+from pas.tools.apify import ApifyTools
 
 assistant = Assistant(tools=[ApifyTools()], show_tool_calls=True)
 assistant.print_response(

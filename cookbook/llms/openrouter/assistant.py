@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.llm.openrouter import OpenRouter
+from pas.assistant import Assistant
+from pas.llm.openrouter import OpenRouter
 
 assistant = Assistant(
     llm=OpenRouter(model="mistralai/mistral-7b-instruct:free"),

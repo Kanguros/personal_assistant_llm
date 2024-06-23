@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
 
-from phi.assistant import Assistant
-from phi.llm.anthropic import Claude
+from pas.assistant import Assistant
+from pas.llm.anthropic import Claude
 
 
 class MovieScript(BaseModel):

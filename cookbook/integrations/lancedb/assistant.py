@@ -1,9 +1,9 @@
 import typer
 from rich.prompt import Prompt
 
-from phi.assistant import Assistant
-from phi.knowledge.pdf import PDFUrlKnowledgeBase
-from phi.vectordb.lancedb.lancedb import LanceDb
+from pas.assistant import Assistant
+from pas.knowledge.pdf import PDFUrlKnowledgeBase
+from pas.vectordb.lancedb.lancedb import LanceDb
 
 # type: ignore
 db_url = "/tmp/lancedb"

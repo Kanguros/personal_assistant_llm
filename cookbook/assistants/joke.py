@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.llm.openai import OpenAIChat
+from pas.assistant import Assistant
+from pas.llm.openai import OpenAIChat
 
 topic = "ice cream"
 assistant = Assistant(llm=OpenAIChat(model="gpt-3.5-turbo"))

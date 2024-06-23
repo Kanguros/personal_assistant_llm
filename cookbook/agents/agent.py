@@ -2,21 +2,21 @@ import json
 from pathlib import Path
 from textwrap import dedent
 
-from phi.assistant import Assistant
-from phi.assistant.duckdb import DuckDbAssistant
-from phi.assistant.python import PythonAssistant
-from phi.embedder.openai import OpenAIEmbedder
-from phi.knowledge import AssistantKnowledge
-from phi.llm.openai import OpenAIChat
-from phi.storage.assistant.postgres import PgAssistantStorage
-from phi.tools import Toolkit
-from phi.tools.calculator import Calculator
-from phi.tools.duckduckgo import DuckDuckGo
-from phi.tools.exa import ExaTools
-from phi.tools.file import FileTools
-from phi.tools.yfinance import YFinanceTools
-from phi.utils.log import logger
-from phi.vectordb.pgvector import PgVector2
+from pas.assistant import Assistant
+from pas.assistant.duckdb import DuckDbAssistant
+from pas.assistant.python import PythonAssistant
+from pas.knowledge.embedder.openai import OpenAIEmbedder
+from pas.knowledge import AssistantKnowledge
+from pas.llm.openai import OpenAIChat
+from pas.storage.assistant.postgres import PgAssistantStorage
+from pas.tools import Toolkit
+from pas.tools.calculator import Calculator
+from pas.tools.duckduckgo import DuckDuckGo
+from pas.tools.exa import ExaTools
+from pas.tools.file import FileTools
+from pas.tools.yfinance import YFinanceTools
+from pas.utils.log import logger
+from pas.vectordb.pgvector import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 cwd = Path(__file__).parent.resolve()

@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.llm.together import Together
+from pas.assistant import Assistant
+from pas.llm.together import Together
 
 assistant = Assistant(
     llm=Together(model="mistralai/Mixtral-8x7B-Instruct-v0.1"),

@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.llm.openrouter import OpenRouter
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.llm.openrouter import OpenRouter
+from pas.tools.duckduckgo import DuckDuckGo
 
 assistant = Assistant(
     llm=OpenRouter(model="openai/gpt-3.5-turbo"),

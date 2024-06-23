@@ -2,8 +2,8 @@ import json
 
 import httpx
 
-from phi.assistant import Assistant
-from phi.llm.together import Together
+from pas.assistant import Assistant
+from pas.llm.together import Together
 
 
 def get_top_hackernews_stories(num_stories: int = 10) -> str:

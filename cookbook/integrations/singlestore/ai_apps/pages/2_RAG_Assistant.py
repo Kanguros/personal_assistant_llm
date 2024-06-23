@@ -1,12 +1,12 @@
 import streamlit as st
 from assistants import get_rag_assistant  # type: ignore
 
-from phi.assistant import Assistant
-from phi.document import Document
-from phi.document.reader.pdf import PDFReader
-from phi.document.reader.website import WebsiteReader
-from phi.tools.streamlit.components import reload_button_sidebar
-from phi.utils.log import logger
+from pas.assistant import Assistant
+from pas.knowledge.document import Document
+from pas.knowledge.document.reader import PDFReader
+from pas.knowledge.document.reader import WebsiteReader
+from pas.tools.streamlit.components import reload_button_sidebar
+from pas.utils.log import logger
 
 st.set_page_config(
     page_title="RAG Assistant",

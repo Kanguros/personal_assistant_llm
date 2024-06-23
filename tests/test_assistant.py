@@ -1,6 +1,6 @@
 import pytest
 
-from phi.assistant import Assistant
+from pas.assistant import Assistant
 
 
 @pytest.mark.parametrize(

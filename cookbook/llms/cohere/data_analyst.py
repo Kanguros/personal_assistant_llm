@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.llm.cohere import CohereChat
-from phi.tools.duckdb import DuckDbTools
+from pas.assistant import Assistant
+from pas.llm.cohere import CohereChat
+from pas.tools.duckdb import DuckDbTools
 
 duckdb_tools = DuckDbTools(
     create_tables=False, export_tables=False, summarize_tables=False

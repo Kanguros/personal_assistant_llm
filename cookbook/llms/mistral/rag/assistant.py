@@ -1,9 +1,9 @@
-from phi.assistant import Assistant
-from phi.embedder.mistral import MistralEmbedder
-from phi.knowledge import AssistantKnowledge
-from phi.llm.mistral import Mistral
-from phi.storage.assistant.postgres import PgAssistantStorage
-from phi.vectordb.pgvector import PgVector2
+from pas.assistant import Assistant
+from pas.knowledge.embedder import MistralEmbedder
+from pas.knowledge import AssistantKnowledge
+from pas.llm.mistral import Mistral
+from pas.storage.assistant.postgres import PgAssistantStorage
+from pas.vectordb.pgvector import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 

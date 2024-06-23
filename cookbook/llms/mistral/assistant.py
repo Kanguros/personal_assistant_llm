@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.llm.mistral import Mistral
+from pas.assistant import Assistant
+from pas.llm.mistral import Mistral
 
 assistant = Assistant(
     llm=Mistral(model="open-mixtral-8x22b"),

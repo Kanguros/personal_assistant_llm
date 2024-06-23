@@ -15,8 +15,8 @@ from llama_index.core import (
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.retrievers import VectorIndexRetriever
 
-from phi.assistant import Assistant
-from phi.knowledge.llamaindex import LlamaIndexKnowledgeBase
+from pas.assistant import Assistant
+from pas.knowledge.llamaindex import LlamaIndexKnowledgeBase
 
 data_dir = Path(__file__).parent.parent.parent.joinpath("wip", "data", "paul_graham")
 if data_dir.is_dir():

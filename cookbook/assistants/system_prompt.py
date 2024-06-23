@@ -1,4 +1,4 @@
-from phi.assistant import Assistant
+from pas.assistant import Assistant
 
 assistant = Assistant(
     system_prompt="Share a 2 sentence story about",

@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.llm.openai import OpenAIChat
+from pas.assistant import Assistant
+from pas.llm.openai import OpenAIChat
 
 assistant = Assistant(llm=OpenAIChat(model="gpt-4-turbo"))
 

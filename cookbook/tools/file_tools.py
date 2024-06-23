@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.tools.file import FileTools
+from pas.assistant import Assistant
+from pas.tools.file import FileTools
 
 assistant = Assistant(tools=[FileTools()], show_tool_calls=True)
 assistant.print_response(

@@ -1,6 +1,6 @@
 from rich.pretty import pprint
 
-from phi.assistant import Assistant, AssistantMemory
+from pas.assistant import Assistant, AssistantMemory
 
 assistant = Assistant()
 

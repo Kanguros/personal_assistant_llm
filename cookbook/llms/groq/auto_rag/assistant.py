@@ -1,11 +1,11 @@
-from phi.assistant import Assistant
-from phi.embedder.ollama import OllamaEmbedder
-from phi.embedder.openai import OpenAIEmbedder
-from phi.knowledge import AssistantKnowledge
-from phi.llm.groq import Groq
-from phi.storage.assistant.postgres import PgAssistantStorage
-from phi.tools.duckduckgo import DuckDuckGo
-from phi.vectordb.pgvector import PgVector2
+from pas.assistant import Assistant
+from pas.knowledge.embedder.ollama import OllamaEmbedder
+from pas.knowledge.embedder.openai import OpenAIEmbedder
+from pas.knowledge import AssistantKnowledge
+from pas.llm.groq import Groq
+from pas.storage.assistant.postgres import PgAssistantStorage
+from pas.tools.duckduckgo import DuckDuckGo
+from pas.vectordb.pgvector import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 

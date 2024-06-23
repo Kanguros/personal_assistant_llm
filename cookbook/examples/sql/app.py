@@ -1,8 +1,8 @@
 import streamlit as st
 from assistant import get_sql_assistant
 
-from phi.assistant import Assistant
-from phi.utils.log import logger
+from pas.assistant import Assistant
+from pas.utils.log import logger
 
 st.set_page_config(
     page_title="SQL Assistant",

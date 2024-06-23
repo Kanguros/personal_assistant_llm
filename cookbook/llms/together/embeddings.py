@@ -1,4 +1,4 @@
-from phi.embedder.together import TogetherEmbedder
+from pas.knowledge.embedder import TogetherEmbedder
 
 embeddings = TogetherEmbedder().get_embedding("Embed me")
 

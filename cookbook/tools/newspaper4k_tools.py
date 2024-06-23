@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.tools.newspaper4k import Newspaper4k
+from pas.assistant import Assistant
+from pas.tools.newspaper4k import Newspaper4k
 
 assistant = Assistant(tools=[Newspaper4k()], debug_mode=True, show_tool_calls=True)
 

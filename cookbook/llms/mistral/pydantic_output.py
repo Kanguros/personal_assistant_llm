@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
 
-from phi.assistant import Assistant
-from phi.llm.mistral import Mistral
+from pas.assistant import Assistant
+from pas.llm.mistral import Mistral
 
 
 class MovieScript(BaseModel):

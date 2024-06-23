@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from phi.assistant.python import PythonAssistant
-from phi.llm.openai import OpenAIChat
-from phi.utils.file import CsvFile
+from pas.assistant.python import PythonAssistant
+from pas.llm.openai import OpenAIChat
+from pas.utils.file import CsvFile
 
 cwd = Path(__file__).parent.resolve()
 scratch_dir = cwd.joinpath("scratch")

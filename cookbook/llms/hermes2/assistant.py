@@ -1,6 +1,6 @@
-from phi.assistant import Assistant
-from phi.llm.ollama import Hermes
-from phi.tools.duckduckgo import DuckDuckGo
+from pas.assistant import Assistant
+from pas.llm.ollama import Hermes
+from pas.tools.duckduckgo import DuckDuckGo
 
 assistant = Assistant(
     llm=Hermes(model="adrienbrault/nous-hermes2pro:Q8_0"),

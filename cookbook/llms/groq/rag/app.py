@@ -1,11 +1,11 @@
 import streamlit as st
 from assistant import get_groq_assistant  # type: ignore
 
-from phi.assistant import Assistant
-from phi.document import Document
-from phi.document.reader.pdf import PDFReader
-from phi.document.reader.website import WebsiteReader
-from phi.utils.log import logger
+from pas.assistant import Assistant
+from pas.knowledge.document import Document
+from pas.knowledge.document.reader import PDFReader
+from pas.knowledge.document.reader import WebsiteReader
+from pas.utils.log import logger
 
 st.set_page_config(
     page_title="Groq RAG",

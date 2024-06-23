@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
 
-from phi.assistant import Assistant
-from phi.llm.openai import OpenAIChat
+from pas.assistant import Assistant
+from pas.llm.openai import OpenAIChat
 
 
 # Define the pydantic model you want the LLM to generate

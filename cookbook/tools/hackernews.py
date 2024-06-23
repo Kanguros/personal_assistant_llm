@@ -1,5 +1,5 @@
-from phi.assistant import Assistant
-from phi.tools.hackernews import HackerNews
+from pas.assistant import Assistant
+from pas.tools.hackernews import HackerNews
 
 hn_assistant = Assistant(
     name="Hackernews Team",

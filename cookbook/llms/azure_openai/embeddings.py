@@ -1,4 +1,4 @@
-from phi.embedder.azure_openai import AzureOpenAIEmbedder
+from pas.knowledge.embedder.azure_openai import AzureOpenAIEmbedder
 
 embeddings = AzureOpenAIEmbedder().get_embedding("Embed me")
 

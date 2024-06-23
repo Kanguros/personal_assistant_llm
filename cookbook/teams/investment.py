@@ -6,10 +6,10 @@ pip install openai newspaper4k lxml_html_clean phidata
 from pathlib import Path
 from shutil import rmtree
 
-from phi.assistant import Assistant
-from phi.tools.file import FileTools
-from phi.tools.newspaper4k import Newspaper4k
-from phi.tools.yfinance import YFinanceTools
+from pas.assistant import Assistant
+from pas.tools.file import FileTools
+from pas.tools.newspaper4k import Newspaper4k
+from pas.tools.yfinance import YFinanceTools
 
 reports_dir = Path(__file__).parent.parent.parent.joinpath("junk", "reports")
 if reports_dir.exists():

@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
 
-from phi.assistant import Assistant
-from phi.llm.openai.like import OpenAILike
+from pas.assistant import Assistant
+from pas.llm.openai.like import OpenAILike
 
 
 class MovieScript(BaseModel):

@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from rich.pretty import pprint
 
-from phi.assistant import Assistant
-from phi.llm.openrouter import OpenRouter
+from pas.assistant import Assistant
+from pas.llm.openrouter import OpenRouter
 
 
 class MovieScript(BaseModel):

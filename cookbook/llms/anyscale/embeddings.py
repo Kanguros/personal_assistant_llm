@@ -1,4 +1,4 @@
-from phi.embedder.anyscale import AnyscaleEmbedder
+from pas.knowledge.embedder import AnyscaleEmbedder
 
 embeddings = AnyscaleEmbedder().get_embedding("Embed me")
 
