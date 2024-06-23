@@ -2,7 +2,7 @@ import logging
 
 from rich.logging import RichHandler
 
-LOGGER_NAME = "phi"
+LOGGER_NAME = "pas"
 
 
 def get_logger(logger_name: str) -> logging.Logger:
@@ -31,6 +31,6 @@ def get_logger(logger_name: str) -> logging.Logger:
 logger: logging.Logger = get_logger(LOGGER_NAME)
 
 
-def set_log_level_to_debug():
+def set_log_level_to_debug(level: str) -> None:
     _logger = logging.getLogger(LOGGER_NAME)
-    _logger.setLevel(logging.DEBUG)
+    _logger.setLevel(level)

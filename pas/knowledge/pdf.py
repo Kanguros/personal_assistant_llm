@@ -1,9 +1,9 @@
 from collections.abc import Iterator
 from pathlib import Path
 
-from pas.knowledge.document import Document
-from pas.knowledge.document import PDFImageReader, PDFReader
 from pas.knowledge.base import AssistantKnowledge
+from pas.knowledge.document import Document
+from pas.knowledge.document.pdf import PDFImageReader, PDFReader
 
 
 class PDFKnowledgeBase(AssistantKnowledge):

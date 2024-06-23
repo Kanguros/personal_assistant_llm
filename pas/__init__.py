@@ -1,5 +1,4 @@
 from hashlib import md5
-from typing import List
 
 from chromadb import Client as ChromaDbClient
 from chromadb import PersistentClient as PersistentChromaDbClient

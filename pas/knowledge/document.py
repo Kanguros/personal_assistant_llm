@@ -1,7 +1,7 @@
 from collections.abc import Iterator
 
-from pas.knowledge.document import Document
 from pas.knowledge.base import AssistantKnowledge
+from pas.knowledge.document import Document
 
 
 class DocumentKnowledgeBase(AssistantKnowledge):

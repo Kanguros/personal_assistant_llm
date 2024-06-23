@@ -4,7 +4,7 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict
 
 from pas.knowledge.document import Document
-from pas.knowledge.document import Reader
+from pas.knowledge.document.reader import Reader
 from pas.utils.log import logger
 from pas.vectordb import VectorDb
 

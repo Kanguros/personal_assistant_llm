@@ -14,8 +14,8 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_valida
 
 from pas.assistant.prompt_template import PromptTemplate
 from pas.assistant.run import AssistantRun
-from pas.knowledge.document import Document
 from pas.knowledge.base import AssistantKnowledge
+from pas.knowledge.document import Document
 from pas.llm.base import LLM, Message, References
 from pas.memory.assistant import AssistantMemory, Memory, MemoryRetrieval  # noqa: F401
 from pas.storage.base import AssistantStorage

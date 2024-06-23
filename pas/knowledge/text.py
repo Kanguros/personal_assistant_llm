@@ -1,9 +1,9 @@
 from collections.abc import Iterator
 from pathlib import Path
 
+from pas.knowledge.base import AssistantKnowledge
 from pas.knowledge.document import Document
 from pas.knowledge.document.text import TextReader
-from pas.knowledge.base import AssistantKnowledge
 
 
 class TextKnowledgeBase(AssistantKnowledge):

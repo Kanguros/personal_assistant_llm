@@ -1,9 +1,9 @@
 from collections.abc import Iterator
 from pathlib import Path
 
-from pas.knowledge.document import Document
-from pas.knowledge.document import DocxReader
 from pas.knowledge.base import AssistantKnowledge
+from pas.knowledge.document import Document
+from pas.knowledge.document.docx import DocxReader
 
 
 class DocxKnowledgeBase(AssistantKnowledge):

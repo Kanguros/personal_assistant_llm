@@ -12,9 +12,7 @@ def read_yaml_file(file_path: Path | None) -> dict[str, Any] | None:
         data_from_file = yaml.safe_load(file_path.read_text())
         if data_from_file is not None and isinstance(data_from_file, dict):
             return data_from_file
-        else:
-            logger.error(f"Invalid file: {file_path}")
-    return None
+    raise FileExistsError(f"Failed to load YAML file {file_path=}")
 
 
 def write_yaml_file(
