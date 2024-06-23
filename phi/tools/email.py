@@ -3,6 +3,13 @@ from typing import Optional
 from phi.tools import Toolkit
 from phi.utils.log import logger
 
+try:
+    import smtplib
+    from email.message import EmailMessage
+except ImportError:
+    logger.error("`smtplib` not installed")
+    raise
+
 
 class EmailTools(Toolkit):
     def __init__(
@@ -26,13 +33,6 @@ class EmailTools(Toolkit):
         :param body: The body of the email.
         :return: "success" if the email was sent successfully, "error: [error message]" otherwise.
         """
-        try:
-            import smtplib
-            from email.message import EmailMessage
-        except ImportError:
-            logger.error("`smtplib` not installed")
-            raise
-
         if not self.receiver_email:
             return "error: No receiver email provided"
         if not self.sender_name:

@@ -4,7 +4,7 @@ from typing import List, Any, Optional, Dict, Iterator, Union
 from pydantic import BaseModel, ConfigDict, field_validator, Field
 
 from phi.llm.base import LLM
-from phi.task.task import Task
+from phi.assistant.task import Task
 from phi.utils.log import logger, set_log_level_to_debug
 from phi.utils.message import get_text_from_message
 from phi.utils.timer import Timer

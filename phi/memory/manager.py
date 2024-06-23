@@ -2,8 +2,7 @@ from typing import List, Any, Optional, cast
 
 from pydantic import BaseModel, ConfigDict
 
-from phi.llm.base import LLM
-from phi.llm.message import Message
+from phi.llm.base import LLM, Message
 from phi.memory.memory import Memory
 from phi.memory.db import MemoryDb
 from phi.memory.row import MemoryRow
@@ -25,18 +24,6 @@ class MemoryManager(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def update_llm(self) -> None:
-        if self.llm is None:
-            try:
-                from phi.llm.openai import OpenAIChat
-            except ModuleNotFoundError as e:
-                logger.exception(e)
-                logger.error(
-                    "phidata uses `openai` as the default LLM. "
-                    "Please provide an `llm` or install `openai`."
-                )
-                exit(1)
-
-            self.llm = OpenAIChat()
         self.llm.add_tool(self.add_memory)
         self.llm.add_tool(self.update_memory)
         self.llm.add_tool(self.delete_memory)

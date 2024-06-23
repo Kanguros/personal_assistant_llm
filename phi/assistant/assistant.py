@@ -22,11 +22,9 @@ from pydantic import BaseModel, ConfigDict, field_validator, Field, ValidationEr
 from phi.document import Document
 from phi.assistant.run import AssistantRun
 from phi.knowledge.base import AssistantKnowledge
-from phi.llm.base import LLM
-from phi.llm.message import Message
-from phi.llm.references import References  # noqa: F401
+from phi.llm.base import LLM, Message, References
 from phi.memory.assistant import AssistantMemory, MemoryRetrieval, Memory  # noqa: F401
-from phi.prompt.template import PromptTemplate
+from phi.assistant.prompt_template import PromptTemplate
 from phi.storage.base import AssistantStorage
 from phi.utils.format_str import remove_indent
 from phi.tools import Tool, Toolkit, Function

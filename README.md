@@ -124,7 +124,7 @@ The `PythonAssistant` can achieve tasks by writing and running python code.
 
 ```python
 from phi.assistant.python import PythonAssistant
-from phi.file.local.csv import CsvFile
+from phi.utils.file import CsvFile
 
 python_assistant = PythonAssistant(
     files=[

@@ -1,7 +1,17 @@
-from typing import Any
-
-from phi.file import File
+from typing import List, Optional, Any
 from phi.utils.log import logger
+from pydantic import BaseModel
+
+
+class File(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    columns: Optional[List[str]] = None
+    path: Optional[str] = None
+    type: str = "FILE"
+
+    def get_metadata(self) -> dict[str, Any]:
+        return self.model_dump(exclude_none=True)
 
 
 class CsvFile(File):
@@ -26,4 +36,16 @@ class CsvFile(File):
             except Exception as e:
                 logger.debug(f"Error getting columns from file: {e}")
 
+        return self.model_dump(exclude_none=True)
+
+
+class TextFile(File):
+    path: str
+    type: str = "TEXT"
+
+    def get_metadata(self) -> dict[str, Any]:
+        if self.name is None:
+            from pathlib import Path
+
+            self.name = Path(self.path).name
         return self.model_dump(exclude_none=True)
