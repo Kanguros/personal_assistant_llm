@@ -16,7 +16,7 @@ def rmdir_recursive(dir_path: Path) -> bool:
     elif dir_path.is_file():
         dir_path.unlink(missing_ok=True)
 
-    return True if not dir_path.exists() else False
+    return bool(not dir_path.exists())
 
 
 def delete_files_in_dir(dir: Path) -> None:
@@ -34,6 +34,5 @@ def delete_from_fs(path_to_del: Path) -> bool:
         return True
     if path_to_del.is_dir():
         return rmdir_recursive(path_to_del)
-    else:
-        path_to_del.unlink()
-    return True if not path_to_del.exists() else False
+    path_to_del.unlink()
+    return bool(not path_to_del.exists())

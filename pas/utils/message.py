@@ -13,13 +13,9 @@ def get_text_from_message(message: list | dict | str) -> str:
                 m_type = m.get("type")
                 if m_type is not None and isinstance(m_type, str):
                     m_value = m.get(m_type)
-                    if m_value is not None and isinstance(m_value, str):
+                    if m_value is not None and isinstance(m_value, str):  # nq: SIM102
                         if m_type == "text":
                             text_messages.append(m_value)
-                        # if m_type == "image_url":
-                        #     text_messages.append(f"Image: {m_value}")
-                        # else:
-                        #     text_messages.append(f"{m_type}: {m_value}")
         elif "role" in message[0]:
             for m in message:
                 m_role = m.get("role")

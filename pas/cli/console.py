@@ -60,7 +60,7 @@ def confirm_yes_no(question, default: str = "yes") -> bool:
     choice = console.input(prompt=(question + prompt)).lower()
     if default is not None and choice == "":
         return inp_to_result_map[default]
-    elif choice in inp_to_result_map:
+    if choice in inp_to_result_map:
         return inp_to_result_map[choice]
     logger.error(f"{choice} invalid")
     return False

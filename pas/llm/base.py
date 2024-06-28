@@ -210,13 +210,13 @@ class LLM(BaseModel):
             self.tools = []
 
         # If the tool is a Tool or Dict, add it directly to the LLM
-        if isinstance(tool, Tool) or isinstance(tool, dict):
+        if isinstance(tool, (Tool, dict)):
             if tool not in self.tools:
                 self.tools.append(tool)
                 logger.debug(f"Added tool {tool} to LLM.")
 
         # If the tool is a Callable or Toolkit, add its functions to the LLM
-        elif callable(tool) or isinstance(tool, Toolkit) or isinstance(tool, Function):
+        elif callable(tool) or isinstance(tool, (Toolkit, Function)):
             if self.functions is None:
                 self.functions = {}
 

@@ -263,7 +263,7 @@ class Assistant(BaseModel):
 
     def update_llm(self) -> None:
         if self.llm is None:
-            raise ValueError(f"Please provide an `llm` argument")
+            raise ValueError("Please provide an `llm` argument")
 
         # Set response_format if it is not set on the llm
         if self.output_model is not None and self.llm.response_format is None:
@@ -1324,14 +1324,13 @@ class Assistant(BaseModel):
                 **kwargs,
             )
             return resp
-        else:
-            resp = self._arun(
-                message=message,
-                messages=messages,
-                stream=False,
-                **kwargs,
-            )
-            return await resp.__anext__()
+        resp = self._arun(
+            message=message,
+            messages=messages,
+            stream=False,
+            **kwargs,
+        )
+        return await resp.__anext__()
 
     def chat(
         self,

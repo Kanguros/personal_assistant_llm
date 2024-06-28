@@ -7,7 +7,7 @@ from pas.utils.log import logger
 
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, o):
-        if isinstance(o, datetime) or isinstance(o, date):
+        if isinstance(o, (datetime, date)):
             return o.isoformat()
 
         if isinstance(o, Path):

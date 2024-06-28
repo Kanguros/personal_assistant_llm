@@ -119,7 +119,11 @@ ignore = [
     "PLR0912",
     "PLR0915",
     "B904",
-    "A002"  # Argument `{name}` is shadowing a Python builtin
+    "A002",  # Argument `{name}` is shadowing a Python builtin
+    "PLW2901",  #  `for` loop variable `` overwritten by assignment target
+    "N818", # Exception name `{name}` should be named with an Error suffix
+    "N805",  # First argument of a method should be named `self`
+
 ]
 fixable = ["ALL"]
 unfixable = []
@@ -127,6 +131,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.pylint]
 max-args = 10
+max-returns = 7
 
 
 [tool.ruff.format]

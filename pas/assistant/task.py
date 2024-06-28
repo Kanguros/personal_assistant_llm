@@ -36,6 +36,7 @@ class Task(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     @field_validator("task_id", mode="before")
+    @classmethod
     def set_task_id(cls, v: str | None) -> str:
         return v if v is not None else str(uuid4())
 
@@ -108,6 +109,5 @@ class Task(BaseModel):
         if stream and self.streamable:
             resp = self._run(message=message, stream=True, **kwargs)
             return resp
-        else:
-            resp = self._run(message=message, stream=False, **kwargs)
-            return next(resp)
+        resp = self._run(message=message, stream=False, **kwargs)
+        return next(resp)
