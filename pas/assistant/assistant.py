@@ -263,17 +263,7 @@ class Assistant(BaseModel):
 
     def update_llm(self) -> None:
         if self.llm is None:
-            try:
-                from pas.llm.openai import OpenAIChat
-            except ModuleNotFoundError as e:
-                logger.exception(e)
-                logger.error(
-                    "phidata uses `openai` as the default LLM. "
-                    "Please provide an `llm` or install `openai`.",
-                )
-                exit(1)
-
-            self.llm = OpenAIChat()
+            raise ValueError(f"Please provide an `llm` argument")
 
         # Set response_format if it is not set on the llm
         if self.output_model is not None and self.llm.response_format is None:

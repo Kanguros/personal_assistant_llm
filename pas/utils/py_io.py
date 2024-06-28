@@ -17,5 +17,4 @@ def get_python_objects_from_module(module_path: Path) -> dict:
         module = importlib.util.module_from_spec(module_spec)
         module_spec.loader.exec_module(module)  # type: ignore
         return module.__dict__
-    else:
-        return {}
+    return {}

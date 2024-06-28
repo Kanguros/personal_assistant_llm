@@ -102,7 +102,6 @@ select = [
     "PIE", # flake8-pie
     "RET", # flake8-return
     "SIM", # flake8-simplify
-    "PTH", # flake8-use-pathlib
     "PL", # Pylint
     "RUF", # Ruff-specific rules
     "B", # flake8-bugbear
@@ -118,14 +117,16 @@ select = [
 ignore = [
     "RUF012",
     "PLR0912",
-    "PLR0915"
+    "PLR0915",
+    "B904",
+    "A002"  # Argument `{name}` is shadowing a Python builtin
 ]
 fixable = ["ALL"]
 unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.pylint]
-max-args = 9
+max-args = 10
 
 
 [tool.ruff.format]

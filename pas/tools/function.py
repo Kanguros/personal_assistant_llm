@@ -93,13 +93,12 @@ class Function(BaseModel):
         if return_type is not None:
             returns = self.get_type_name(return_type)
 
-        function_info = {
+        return {
             "name": self.name,
             "description": self.description,
             "arguments": self.parameters.get("properties", {}),
             "returns": returns,
         }
-        return function_info
 
 
 class FunctionCall(BaseModel):

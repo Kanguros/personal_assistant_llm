@@ -162,8 +162,7 @@ class Workflow(BaseModel):
         if stream:
             resp = self._run(message=message, stream=True, **kwargs)
             return resp
-        else:
-            return "".join(self._run(message=message, stream=False, **kwargs))
+        return "".join(self._run(message=message, stream=False, **kwargs))
 
     def print_response(
         self,

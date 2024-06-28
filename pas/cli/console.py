@@ -62,6 +62,5 @@ def confirm_yes_no(question, default: str = "yes") -> bool:
         return inp_to_result_map[default]
     elif choice in inp_to_result_map:
         return inp_to_result_map[choice]
-    else:
-        logger.error(f"{choice} invalid")
-        return False
+    logger.error(f"{choice} invalid")
+    return False
