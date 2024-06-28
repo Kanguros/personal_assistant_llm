@@ -1094,21 +1094,19 @@ class Assistant(BaseModel):
 
             return self.output or json_resp
         elif stream and self.streamable:
-            resp = self._run(
+            return self._run(
                 message=message,
                 messages=messages,
                 stream=True,
                 **kwargs,
             )
-            return resp
-        else:
-            resp = self._run(
-                message=message,
-                messages=messages,
-                stream=False,
-                **kwargs,
-            )
-            return next(resp)
+        resp = self._run(
+            message=message,
+            messages=messages,
+            stream=False,
+            **kwargs,
+        )
+        return next(resp)
 
     async def _arun(
         self,
@@ -1540,10 +1538,9 @@ class Assistant(BaseModel):
     def convert_response_to_string(self, response: Any) -> str:
         if isinstance(response, str):
             return response
-        elif isinstance(response, BaseModel):
+        if isinstance(response, BaseModel):
             return response.model_dump_json(exclude_none=True, indent=4)
-        else:
-            return json.dumps(response, indent=4)
+        return json.dumps(response, indent=4)
 
     def print_response(
         self,

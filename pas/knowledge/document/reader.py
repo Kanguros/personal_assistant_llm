@@ -30,7 +30,7 @@ class Reader(BaseModel):
         # Replace multiple vertical tabs with a single vertical tab
         cleaned_text = re.sub(r"\v+", "\v", cleaned_text)
 
-        return cleaned_text  # noqa: RET504
+        return cleaned_text
 
     def chunk_document(self, document: Document) -> list[Document]:
         """Chunk the document content into smaller documents"""

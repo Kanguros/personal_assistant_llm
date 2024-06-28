@@ -59,8 +59,6 @@ class Task(BaseModel):
             return json.dumps(self.output, indent=2)
         except Exception:
             return str(self.output)
-        finally:
-            return None
 
     def get_assistant(self) -> Assistant:
         if self._assistant is None:
