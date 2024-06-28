@@ -14,11 +14,11 @@ def get_json_type_for_py_type(arg: str) -> str:
     # logger.info(f"Getting JSON type for: {arg}")
     if arg in ("int", "float"):
         return "number"
-    elif arg == "str":
+    if arg == "str":
         return "string"
-    elif arg == "bool":
+    if arg == "bool":
         return "boolean"
-    elif arg in ("NoneType", "None"):
+    if arg in ("NoneType", "None"):
         return "null"
     return arg
 

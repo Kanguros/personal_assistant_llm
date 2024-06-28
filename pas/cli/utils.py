@@ -5,8 +5,10 @@ from pas.llm.ollama import Ollama
 
 def get_assistant_from_config(config: AssistantConfig) -> Assistant:
     llm = Ollama(model=config.model)
-    return Assistant(name=config.name,
-                     description=config.description,
-                     instructions=config.instructions,
-                     llm=llm,
-                     markdown=config.markdown)
+    return Assistant(
+        name=config.name,
+        description=config.description,
+        instructions=config.instructions,
+        llm=llm,
+        markdown=config.markdown,
+    )

@@ -130,6 +130,8 @@ ignore = [
     "C408",  # Unnecessary `dict` call (rewrite as a literal)
     "SIM102",  # Use a single `if` statement instead of nested `if` statements
     "B008",  # Do not perform function call `{name}` in argument defaults
+    "RET504",  #  Unnecessary assignment to `{name}` before `return` statement
+    "SIM108",  # Use ternary operator `path = f"{table}.{format}" if path is None else f"{path}/{table}.{format}"` instead of `if`-`else`-block
 
 ]
 fixable = ["ALL"]

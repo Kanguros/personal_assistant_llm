@@ -3,10 +3,7 @@ from typing import Any
 
 def isinstanceany(obj: Any, class_list: list[type]) -> bool:
     """Returns True if obj is an instance of the classes in class_list"""
-    for cls in class_list:
-        if isinstance(obj, cls):
-            return True
-    return False
+    return any(isinstance(obj, cls) for cls in class_list)
 
 
 def str_to_int(inp: str | None) -> int | None:
@@ -19,10 +16,8 @@ def str_to_int(inp: str | None) -> int | None:
     """
     if inp is None:
         return None
-
     try:
-        val = int(inp)
-        return val
+        return int(inp)
     except Exception:
         return None
 

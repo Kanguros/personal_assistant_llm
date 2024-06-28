@@ -77,11 +77,11 @@ def confirm_yes_no(question, default: str = "yes") -> bool:
 
 def set_log_level(ctx: Context, param: CallbackParam, value: str):
     if ctx.resilient_parsing:
-        return None
+        return
     if not value:
-        return None
+        return
     if param.name == "verbose":
         set_log_level_to_debug("DEBUG")
     elif param.name == "quiet":
         set_log_level_to_debug("ERROR")
-    return None
+    return

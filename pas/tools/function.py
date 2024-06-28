@@ -57,8 +57,7 @@ class Function(BaseModel):
         name = str(t)
         if "list" in name or "dict" in name:
             return name
-        else:
-            return t.__name__
+        return t.__name__
 
     def get_definition_for_prompt(self) -> str | None:
         """Returns a function definition that can be used in a prompt."""

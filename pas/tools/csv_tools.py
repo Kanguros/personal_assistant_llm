@@ -79,10 +79,9 @@ class CsvTools(Toolkit):
             _row_limit = row_limit or self.row_limit
             with open(str(file_path), newline="") as csvfile:
                 reader = csv.DictReader(csvfile)
+                csv_data = list(reader)
                 if _row_limit is not None:
-                    csv_data = [row for row in reader][:_row_limit]
-                else:
-                    csv_data = [row for row in reader]
+                    csv_data = csv_data[:_row_limit]
             return json.dumps(csv_data)
         except Exception as e:
             logger.error(f"Error reading csv: {e}")
