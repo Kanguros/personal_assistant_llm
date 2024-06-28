@@ -12,7 +12,7 @@ try:
     from bs4 import BeautifulSoup
 except ImportError:
     raise ImportError(
-        "The `bs4` package is not installed. Please install it via `pip install beautifulsoup4`."
+        "The `bs4` package is not installed. Please install it via `pip install beautifulsoup4`.",
     )
 
 
@@ -136,7 +136,6 @@ class WebsiteReader(Reader):
 
             except Exception as e:
                 logger.debug(f"Failed to crawl: {current_url}: {e}")
-                pass
 
         return crawler_result
 
@@ -163,8 +162,8 @@ class WebsiteReader(Reader):
                             id=str(crawled_url),
                             meta_data={"url": str(crawled_url)},
                             content=crawled_content,
-                        )
-                    )
+                        ),
+                    ),
                 )
             else:
                 documents.append(
@@ -173,6 +172,6 @@ class WebsiteReader(Reader):
                         id=str(crawled_url),
                         meta_data={"url": str(crawled_url)},
                         content=crawled_content,
-                    )
+                    ),
                 )
         return documents

@@ -7,7 +7,7 @@ def run_shell_command(args: list[str], tail: int = 100) -> str:
     import subprocess
 
     try:
-        result = subprocess.run(args, capture_output=True, text=True)
+        result = subprocess.run(args, capture_output=True, text=True, check=False)
         logger.debug(f"Result: {result}")
         logger.debug(f"Return code: {result.returncode}")
         if result.returncode != 0:

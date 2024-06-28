@@ -152,7 +152,7 @@ class OllamaTools(LLM):
                         ):
                             # Extract tool call string from response
                             tool_call_content = extract_tool_call_from_string(
-                                tool_call_response
+                                tool_call_response,
                             )
                             # Convert the extracted string to a dictionary
                             try:
@@ -160,7 +160,7 @@ class OllamaTools(LLM):
                                 tool_call_dict = json.loads(tool_call_content)
                             except json.JSONDecodeError:
                                 raise ValueError(
-                                    f"Could not parse tool call from: {tool_call_content}"
+                                    f"Could not parse tool call from: {tool_call_content}",
                                 )
 
                             tool_call_name = tool_call_dict.get("name")
@@ -172,7 +172,7 @@ class OllamaTools(LLM):
                                 {
                                     "type": "function",
                                     "function": function_def,
-                                }
+                                },
                             )
 
                     # If tool call parsing is successful, add tool calls to the assistant message
@@ -180,7 +180,6 @@ class OllamaTools(LLM):
                         assistant_message.tool_calls = tool_calls
         except Exception as e:
             logger.warning(e)
-            pass
 
         # -*- Update usage metrics
         # Add response time to metrics
@@ -197,16 +196,19 @@ class OllamaTools(LLM):
         if assistant_message.tool_calls is not None and self.run_tools:
             # Remove the tool call from the response content
             final_response = remove_tool_calls_from_string(
-                assistant_message.get_content_string()
+                assistant_message.get_content_string(),
             )
             function_calls_to_run: list[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
                 _function_call = get_function_call_for_tool_call(
-                    tool_call, self.functions
+                    tool_call,
+                    self.functions,
                 )
                 if _function_call is None:
                     messages.append(
-                        Message(role="user", content="Could not find function to call.")
+                        Message(
+                            role="user", content="Could not find function to call."
+                        ),
                     )
                     continue
                 if _function_call.error is not None:
@@ -226,7 +228,8 @@ class OllamaTools(LLM):
                     final_response += "\n\n"
 
             function_call_results = self.run_function_calls(
-                function_calls_to_run, role="user"
+                function_calls_to_run,
+                role="user",
             )
             if len(function_call_results) > 0:
                 fc_responses = []
@@ -236,15 +239,15 @@ class OllamaTools(LLM):
                             {
                                 "name": _fc_message.tool_call_name,
                                 "content": _fc_message.content,
-                            }
-                        )
+                            },
+                        ),
                     )
 
                 tool_response_message_content = (
                     "<tool_response>\n" + "\n".join(fc_responses) + "\n</tool_response>"
                 )
                 messages.append(
-                    Message(role="user", content=tool_response_message_content)
+                    Message(role="user", content=tool_response_message_content),
                 )
 
                 for _fc_message in function_call_results:
@@ -254,7 +257,7 @@ class OllamaTools(LLM):
                             {
                                 "name": _fc_message.tool_call_name,
                                 "content": _fc_message.content,
-                            }
+                            },
                         )
                         + "\n</tool_response>"
                     )
@@ -373,7 +376,7 @@ class OllamaTools(LLM):
                     ):
                         # Extract tool call string from response
                         tool_call_content = extract_tool_call_from_string(
-                            tool_call_response
+                            tool_call_response,
                         )
                         # Convert the extracted string to a dictionary
                         try:
@@ -381,7 +384,7 @@ class OllamaTools(LLM):
                             tool_call_dict = json.loads(tool_call_content)
                         except json.JSONDecodeError as e:
                             raise InvalidToolCallException(
-                                f"Error parsing tool call: {tool_call_content}. Error: {e}"
+                                f"Error parsing tool call: {tool_call_content}. Error: {e}",
                             )
 
                         tool_call_name = tool_call_dict.get("name")
@@ -393,7 +396,7 @@ class OllamaTools(LLM):
                             {
                                 "type": "function",
                                 "function": function_def,
-                            }
+                            },
                         )
 
                 # If tool call parsing is successful, add tool calls to the assistant message
@@ -402,7 +405,6 @@ class OllamaTools(LLM):
         except Exception as e:
             yield str(e)
             logger.warning(e)
-            pass
 
         assistant_message.log()
 
@@ -411,11 +413,14 @@ class OllamaTools(LLM):
             function_calls_to_run: list[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
                 _function_call = get_function_call_for_tool_call(
-                    tool_call, self.functions
+                    tool_call,
+                    self.functions,
                 )
                 if _function_call is None:
                     messages.append(
-                        Message(role="user", content="Could not find function to call.")
+                        Message(
+                            role="user", content="Could not find function to call."
+                        ),
                     )
                     continue
                 if _function_call.error is not None:
@@ -433,7 +438,8 @@ class OllamaTools(LLM):
                     yield "\n\n"
 
             function_call_results = self.run_function_calls(
-                function_calls_to_run, role="user"
+                function_calls_to_run,
+                role="user",
             )
             # Add results of the function calls to the messages
             if len(function_call_results) > 0:
@@ -444,15 +450,15 @@ class OllamaTools(LLM):
                             {
                                 "name": _fc_message.tool_call_name,
                                 "content": _fc_message.content,
-                            }
-                        )
+                            },
+                        ),
                     )
 
                 tool_response_message_content = (
                     "<tool_response>\n" + "\n".join(fc_responses) + "\n</tool_response>"
                 )
                 messages.append(
-                    Message(role="user", content=tool_response_message_content)
+                    Message(role="user", content=tool_response_message_content),
                 )
                 # Reconfigure messages so the LLM is reminded of the original task
                 if self.add_user_message_after_tool_call:
@@ -502,7 +508,7 @@ class OllamaTools(LLM):
             Do not make assumptions about tool results if <tool_response> XML tags are not present since the function is not yet executed.
             Analyze the results once you get them and call another function if needed.
             Your final response should directly answer the user query with an analysis or summary of the results of function calls.
-            """
+            """,
             )
             tool_call_prompt += "\nHere are the available tools:"
             tool_call_prompt += "\n<tools>\n"
@@ -520,7 +526,7 @@ class OllamaTools(LLM):
             <tool_call>
             {"arguments": <args-dict>, "name": <function-name>}
             </tool_call>\n
-            """
+            """,
             )
             return tool_call_prompt
         return None

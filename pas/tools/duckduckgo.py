@@ -8,7 +8,7 @@ try:
     from duckduckgo_search import DDGS
 except ImportError:
     raise ImportError(
-        "`duckduckgo-search` not installed. Please install using `pip install duckduckgo-search`"
+        "`duckduckgo-search` not installed. Please install using `pip install duckduckgo-search`",
     )
 
 
@@ -54,7 +54,8 @@ class DuckDuckGo(Toolkit):
         )
         return json.dumps(
             ddgs.text(
-                keywords=query, max_results=(self.fixed_max_results or max_results)
+                keywords=query,
+                max_results=(self.fixed_max_results or max_results),
             ),
             indent=2,
         )
@@ -78,7 +79,8 @@ class DuckDuckGo(Toolkit):
         )
         return json.dumps(
             ddgs.news(
-                keywords=query, max_results=(self.fixed_max_results or max_results)
+                keywords=query,
+                max_results=(self.fixed_max_results or max_results),
             ),
             indent=2,
         )

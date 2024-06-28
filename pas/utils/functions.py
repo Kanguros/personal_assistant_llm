@@ -37,7 +37,7 @@ def get_function_call(
             _arguments = json.loads(arguments)
         except Exception as e:
             logger.error(
-                f"Unable to decode function arguments:\n{arguments}\nError: {e}"
+                f"Unable to decode function arguments:\n{arguments}\nError: {e}",
             )
             function_call.error = f"Error while decoding function arguments: {e}\n\n Please make sure we can json.loads() the arguments and retry."
             return function_call
@@ -66,7 +66,7 @@ def get_function_call(
             function_call.arguments = clean_arguments
         except Exception as e:
             logger.error(
-                f"Unable to parsing function arguments:\n{arguments}\nError: {e}"
+                f"Unable to parsing function arguments:\n{arguments}\nError: {e}",
             )
             function_call.error = (
                 f"Error while parsing function arguments: {e}\n\n Please fix and retry."

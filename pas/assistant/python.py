@@ -41,11 +41,10 @@ class PythonAssistant(Assistant):
 
         add_python_tools = False
 
-        if self.tools is None:
+        if self.tools is None or not any(
+            isinstance(tool, PythonTools) for tool in self.tools
+        ):
             add_python_tools = True
-        else:
-            if not any(isinstance(tool, PythonTools) for tool in self.tools):
-                add_python_tools = True
 
         if add_python_tools:
             self._python_tools = PythonTools(
@@ -133,18 +132,18 @@ class PythonAssistant(Assistant):
                 ]
 
         _instructions += [
-            'After you have all the functions, create a python script that runs the functions guarded by a `if __name__ == "__main__"` block.'
+            'After you have all the functions, create a python script that runs the functions guarded by a `if __name__ == "__main__"` block.',
         ]
 
         if self.save_and_run:
             _instructions += [
                 "After the script is ready, save and run it using the `save_to_file_and_run` function."
                 "If the python script needs to return the answer to you, specify the `variable_to_return` parameter correctly"
-                "Give the file a `.py` extension and share it with the user."
+                "Give the file a `.py` extension and share it with the user.",
             ]
         if self.run_code:
             _instructions += [
-                "After the script is ready, run it using the `run_python_code` function."
+                "After the script is ready, run it using the `run_python_code` function.",
             ]
         _instructions += ["Continue till you have accomplished the task."]
 
@@ -183,7 +182,7 @@ class PythonAssistant(Assistant):
                 """\
             YOU MUST FOLLOW THESE INSTRUCTIONS CAREFULLY.
             <instructions>
-            """
+            """,
             )
             for i, instruction in enumerate(_instructions):
                 _system_prompt += f"{i + 1}. {instruction}\n"
@@ -203,7 +202,7 @@ class PythonAssistant(Assistant):
             - **REMEMBER TO ONLY RUN SAFE CODE**
             - **NEVER, EVER RUN CODE TO DELETE DATA OR ABUSE THE LOCAL SYSTEM**
             </rules>
-            """
+            """,
         )
 
         if self.files is not None:
@@ -211,7 +210,7 @@ class PythonAssistant(Assistant):
                 """
             The following `files` are available for you to use:
             <files>
-            """
+            """,
             )
             _system_prompt += self.get_file_metadata()
             _system_prompt += "\n</files>\n"
@@ -222,7 +221,7 @@ class PythonAssistant(Assistant):
             <files>
             {self.file_information}
             </files>
-            """
+            """,
             )
 
         if self.followups:
@@ -233,7 +232,7 @@ class PythonAssistant(Assistant):
             2. Was the result okay, would you like me to fix any problems? If the user says yes, get the previous code using the `get_tool_call_history(num_calls=3)` function and fix the problems.
             3. Shall I add this result to the knowledge base? If the user says yes, add the result to the knowledge base using the `add_to_knowledge_base` function.
             Let the user choose using number or text or continue the conversation.
-            """
+            """,
             )
 
         _system_prompt += (

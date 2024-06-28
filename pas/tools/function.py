@@ -24,7 +24,8 @@ class Function(BaseModel):
 
     def to_dict(self) -> dict[str, Any]:
         return self.model_dump(
-            exclude_none=True, include={"name", "description", "parameters"}
+            exclude_none=True,
+            include={"name", "description", "parameters"},
         )
 
     @classmethod

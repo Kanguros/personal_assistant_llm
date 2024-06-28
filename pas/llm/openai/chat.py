@@ -121,7 +121,9 @@ class OpenAIChat(LLM):
             _client_params["http_client"] = self.http_client
         else:
             _client_params["http_client"] = httpx.AsyncClient(
-                limits=httpx.Limits(max_connections=1000, max_keepalive_connections=100)
+                limits=httpx.Limits(
+                    max_connections=1000, max_keepalive_connections=100
+                ),
             )
         if self.client_params:
             _client_params.update(self.client_params)
@@ -239,7 +241,8 @@ class OpenAIChat(LLM):
             yield chunk
 
     def run_function(
-        self, function_call: dict[str, Any]
+        self,
+        function_call: dict[str, Any],
     ) -> tuple[Message, FunctionCall | None]:
         _function_name = function_call.get("name")
         _function_arguments_str = function_call.get("arguments")
@@ -252,11 +255,13 @@ class OpenAIChat(LLM):
             )
             if _function_call is None:
                 return Message(
-                    role="function", content="Could not find function to call."
+                    role="function",
+                    content="Could not find function to call.",
                 ), None
             if _function_call.error is not None:
                 return Message(
-                    role="function", content=_function_call.error
+                    role="function",
+                    content=_function_call.error,
                 ), _function_call
 
             if self.function_call_stack is None:
@@ -287,7 +292,7 @@ class OpenAIChat(LLM):
             if _function_call.function.name not in self.metrics["function_call_times"]:
                 self.metrics["function_call_times"][_function_call.function.name] = []
             self.metrics["function_call_times"][_function_call.function.name].append(
-                _function_call_timer.elapsed
+                _function_call_timer.elapsed,
             )
             return _function_call_message, _function_call
         return Message(role="function", content="Function name is None."), None
@@ -376,7 +381,7 @@ class OpenAIChat(LLM):
         if need_to_run_functions and self.run_tools:
             if assistant_message.function_call is not None:
                 function_call_message, function_call = self.run_function(
-                    function_call=assistant_message.function_call
+                    function_call=assistant_message.function_call,
                 )
                 messages.append(function_call_message)
                 # -*- Get new response using result of function call
@@ -393,7 +398,8 @@ class OpenAIChat(LLM):
                 for tool_call in assistant_message.tool_calls:
                     _tool_call_id = tool_call.get("id")
                     _function_call = get_function_call_for_tool_call(
-                        tool_call, self.functions
+                        tool_call,
+                        self.functions,
                     )
                     if _function_call is None:
                         messages.append(
@@ -401,7 +407,7 @@ class OpenAIChat(LLM):
                                 role="tool",
                                 tool_call_id=_tool_call_id,
                                 content="Could not find function to call.",
-                            )
+                            ),
                         )
                         continue
                     if _function_call.error is not None:
@@ -410,7 +416,7 @@ class OpenAIChat(LLM):
                                 role="tool",
                                 tool_call_id=_tool_call_id,
                                 content=_function_call.error,
-                            )
+                            ),
                         )
                         continue
                     function_calls_to_run.append(_function_call)
@@ -520,7 +526,7 @@ class OpenAIChat(LLM):
         if need_to_run_functions and self.run_tools:
             if assistant_message.function_call is not None:
                 function_call_message, function_call = self.run_function(
-                    function_call=assistant_message.function_call
+                    function_call=assistant_message.function_call,
                 )
                 messages.append(function_call_message)
                 # -*- Get new response using result of function call
@@ -537,7 +543,8 @@ class OpenAIChat(LLM):
                 for tool_call in assistant_message.tool_calls:
                     _tool_call_id = tool_call.get("id")
                     _function_call = get_function_call_for_tool_call(
-                        tool_call, self.functions
+                        tool_call,
+                        self.functions,
                     )
                     if _function_call is None:
                         messages.append(
@@ -545,7 +552,7 @@ class OpenAIChat(LLM):
                                 role="tool",
                                 tool_call_id=_tool_call_id,
                                 content="Could not find function to call.",
-                            )
+                            ),
                         )
                         continue
                     if _function_call.error is not None:
@@ -554,7 +561,7 @@ class OpenAIChat(LLM):
                                 role="tool",
                                 tool_call_id=_tool_call_id,
                                 content=_function_call.error,
-                            )
+                            ),
                         )
                         continue
                     function_calls_to_run.append(_function_call)
@@ -716,10 +723,10 @@ class OpenAIChat(LLM):
         logger.debug(f"Time to generate response: {response_timer.elapsed:.4f}s")
         if completion_tokens > 0:
             logger.debug(
-                f"Time per output token: {response_timer.elapsed / completion_tokens:.4f}s"
+                f"Time per output token: {response_timer.elapsed / completion_tokens:.4f}s",
             )
             logger.debug(
-                f"Throughput: {completion_tokens / response_timer.elapsed:.4f} tokens/s"
+                f"Throughput: {completion_tokens / response_timer.elapsed:.4f} tokens/s",
             )
 
         # -*- Create assistant message
@@ -820,7 +827,7 @@ class OpenAIChat(LLM):
             if "tokens_per_second" not in self.metrics:
                 self.metrics["tokens_per_second"] = []
             self.metrics["tokens_per_second"].append(
-                f"{completion_tokens / response_timer.elapsed:.4f}"
+                f"{completion_tokens / response_timer.elapsed:.4f}",
             )
 
         # Add token usage to metrics
@@ -856,7 +863,7 @@ class OpenAIChat(LLM):
         if need_to_run_functions and self.run_tools:
             if assistant_message.function_call is not None:
                 function_call_message, function_call = self.run_function(
-                    function_call=assistant_message.function_call
+                    function_call=assistant_message.function_call,
                 )
                 messages.append(function_call_message)
                 if self.show_tool_calls and function_call is not None:
@@ -868,7 +875,8 @@ class OpenAIChat(LLM):
                 for tool_call in assistant_message.tool_calls:
                     _tool_call_id = tool_call.get("id")
                     _function_call = get_function_call_for_tool_call(
-                        tool_call, self.functions
+                        tool_call,
+                        self.functions,
                     )
                     if _function_call is None:
                         messages.append(
@@ -876,7 +884,7 @@ class OpenAIChat(LLM):
                                 role="tool",
                                 tool_call_id=_tool_call_id,
                                 content="Could not find function to call.",
-                            )
+                            ),
                         )
                         continue
                     if _function_call.error is not None:
@@ -885,7 +893,7 @@ class OpenAIChat(LLM):
                                 role="tool",
                                 tool_call_id=_tool_call_id,
                                 content=_function_call.error,
-                            )
+                            ),
                         )
                         continue
                     function_calls_to_run.append(_function_call)
@@ -1076,7 +1084,7 @@ class OpenAIChat(LLM):
         if need_to_run_functions and self.run_tools:
             if assistant_message.function_call is not None:
                 function_call_message, function_call = self.run_function(
-                    function_call=assistant_message.function_call
+                    function_call=assistant_message.function_call,
                 )
                 messages.append(function_call_message)
                 if self.show_tool_calls and function_call is not None:
@@ -1091,7 +1099,8 @@ class OpenAIChat(LLM):
                 for tool_call in assistant_message.tool_calls:
                     _tool_call_id = tool_call.get("id")
                     _function_call = get_function_call_for_tool_call(
-                        tool_call, self.functions
+                        tool_call,
+                        self.functions,
                     )
                     if _function_call is None:
                         messages.append(
@@ -1099,7 +1108,7 @@ class OpenAIChat(LLM):
                                 role="tool",
                                 tool_call_id=_tool_call_id,
                                 content="Could not find function to call.",
-                            )
+                            ),
                         )
                         continue
                     if _function_call.error is not None:
@@ -1108,7 +1117,7 @@ class OpenAIChat(LLM):
                                 role="tool",
                                 tool_call_id=_tool_call_id,
                                 content=_function_call.error,
-                            )
+                            ),
                         )
                         continue
                     function_calls_to_run.append(_function_call)

@@ -89,28 +89,44 @@ exclude = [
     "cookbook"
 ]
 
+extend-exclude = ["tests"]
+
 line-length = 88
 indent-width = 4
 target-version = "py310"
 
 [tool.ruff.lint]
 select = [
-#    "A",  # prevent using keywords that clobber python builtins
-#    "B",  # bugbear: security warnings
-    "E4", "E7", "E9",  # pycodestyle
-    "F",  # pyflakes
-    "ISC",  # implicit string concatenation
-#    "S",
-    "I",
-#    "N",
-    "W",
-    "UP",  # alert you when better syntax is available in your python version
-    "RUF",  # the ruff developer's own rules
+    "E4", "E7", "E9", # pycodestyle
+    "C4", # flake8-comprehensions
+    "PIE", # flake8-pie
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "PTH", # flake8-use-pathlib
+    "PL", # Pylint
+    "RUF", # Ruff-specific rules
+    "B", # flake8-bugbear
+    "A", # flake8-builtins
+    "N", # pep8-naming
+    "F", # Pyflakes
+    "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
+    "LOG", # flake8-logging
+    #    "ANN001", # Missing type annotation for function argument {name}
+    #    "ANN201", # Missing return type annotation for public function {name}
 ]
-ignore = ["RUF012"]
+ignore = [
+    "RUF012",
+    "PLR0912",
+    "PLR0915"
+]
 fixable = ["ALL"]
 unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.pylint]
+max-args = 9
+
 
 [tool.ruff.format]
 quote-style = "double"
@@ -119,3 +135,5 @@ skip-magic-trailing-comma = false
 line-ending = "auto"
 docstring-code-format = false
 docstring-code-line-length = "dynamic"
+
+# flake8-pytest-style (PT)#

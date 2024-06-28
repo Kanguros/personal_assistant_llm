@@ -5,7 +5,8 @@ from pas.utils.functions import get_function_call
 
 
 def get_function_call_for_tool_call(
-    tool_call: dict[str, Any], functions: dict[str, Function] | None = None
+    tool_call: dict[str, Any],
+    functions: dict[str, Function] | None = None,
 ) -> FunctionCall | None:
     if tool_call.get("type") == "function":
         _tool_call_id = tool_call.get("id")
@@ -24,7 +25,9 @@ def get_function_call_for_tool_call(
 
 
 def extract_tool_call_from_string(
-    text: str, start_tag: str = "<tool_call>", end_tag: str = "</tool_call>"
+    text: str,
+    start_tag: str = "<tool_call>",
+    end_tag: str = "</tool_call>",
 ):
     start_index = text.find(start_tag) + len(start_tag)
     end_index = text.find(end_tag)
@@ -34,7 +37,9 @@ def extract_tool_call_from_string(
 
 
 def remove_tool_calls_from_string(
-    text: str, start_tag: str = "<tool_call>", end_tag: str = "</tool_call>"
+    text: str,
+    start_tag: str = "<tool_call>",
+    end_tag: str = "</tool_call>",
 ):
     """Remove multiple tool calls from a string."""
     while start_tag in text and end_tag in text:
@@ -78,7 +83,9 @@ def extract_tool_from_xml(xml_str):
 
 
 def remove_function_calls_from_string(
-    text: str, start_tag: str = "<function_calls>", end_tag: str = "</function_calls>"
+    text: str,
+    start_tag: str = "<function_calls>",
+    end_tag: str = "</function_calls>",
 ):
     """Remove multiple function calls from a string."""
     while start_tag in text and end_tag in text:

@@ -27,5 +27,5 @@ def write_json_file(file_path: Path | None, data: dict | list | None, **kwargs) 
     if file_path is not None and data is not None:
         logger.debug(f"Writing {file_path}")
         file_path.write_text(
-            json.dumps(data, cls=CustomJSONEncoder, indent=4, **kwargs)
+            json.dumps(data, cls=CustomJSONEncoder, indent=4, **kwargs),
         )

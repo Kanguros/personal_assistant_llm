@@ -9,7 +9,7 @@ from pas.utils.log import logger
 @functools.cache
 def warn() -> None:
     logger.warning(
-        "PythonTools can run arbitrary code, please provide human supervision."
+        "PythonTools can run arbitrary code, please provide human supervision.",
     )
 
 
@@ -78,7 +78,9 @@ class PythonTools(Toolkit):
             logger.info(f"Saved: {file_path}")
             logger.info(f"Running {file_path}")
             globals_after_run = runpy.run_path(
-                str(file_path), init_globals=self.safe_globals, run_name="__main__"
+                str(file_path),
+                init_globals=self.safe_globals,
+                run_name="__main__",
             )
 
             if variable_to_return:
@@ -94,7 +96,9 @@ class PythonTools(Toolkit):
             return f"Error saving and running code: {e}"
 
     def run_python_file_return_variable(
-        self, file_name: str, variable_to_return: str | None = None
+        self,
+        file_name: str,
+        variable_to_return: str | None = None,
     ) -> str:
         """This function runs code in a Python file.
         If successful, returns the value of `variable_to_return` if provided otherwise returns a success message.
@@ -110,7 +114,9 @@ class PythonTools(Toolkit):
 
             logger.info(f"Running {file_path}")
             globals_after_run = runpy.run_path(
-                str(file_path), init_globals=self.safe_globals, run_name="__main__"
+                str(file_path),
+                init_globals=self.safe_globals,
+                run_name="__main__",
             )
             if variable_to_return:
                 variable_value = globals_after_run.get(variable_to_return)
@@ -197,7 +203,7 @@ class PythonTools(Toolkit):
             import sys
 
             subprocess.check_call(
-                [sys.executable, "-m", "pip", "install", package_name]
+                [sys.executable, "-m", "pip", "install", package_name],
             )
             return f"successfully installed package {package_name}"
         except Exception as e:

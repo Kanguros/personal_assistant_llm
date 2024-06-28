@@ -143,7 +143,6 @@ class SqlAssistantStorage(AssistantStorage):
                         run_ids.append(row.run_id)
         except OperationalError:
             logger.debug(f"Table does not exist: {self.table.name}")
-            pass
         return run_ids
 
     def get_all_runs(self, user_id: str | None = None) -> list[AssistantRun]:
@@ -163,7 +162,6 @@ class SqlAssistantStorage(AssistantStorage):
                         conversations.append(AssistantRun.model_validate(row))
         except OperationalError:
             logger.debug(f"Table does not exist: {self.table.name}")
-            pass
         return conversations
 
     def upsert(self, row: AssistantRun) -> AssistantRun | None:

@@ -31,7 +31,8 @@ class Document(BaseModel):
         """Returns a dictionary representation of the document"""
 
         return self.model_dump(
-            include={"name", "meta_data", "content"}, exclude_none=True
+            include={"name", "meta_data", "content"},
+            exclude_none=True,
         )
 
     @classmethod

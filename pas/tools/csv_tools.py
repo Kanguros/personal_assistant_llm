@@ -45,7 +45,7 @@ class CsvTools(Toolkit):
                 import duckdb  # noqa: F401
             except ImportError:
                 raise ImportError(
-                    "`duckdb` not installed. Please install using `pip install duckdb`."
+                    "`duckdb` not installed. Please install using `pip install duckdb`.",
                 )
             self.register(self.query_csv_file)
 
@@ -146,7 +146,7 @@ class CsvTools(Toolkit):
 
             # Create a table from the csv file
             con.execute(
-                f"CREATE TABLE {csv_name} AS SELECT * FROM read_csv_auto('{file_path}')"
+                f"CREATE TABLE {csv_name} AS SELECT * FROM read_csv_auto('{file_path}')",
             )
 
             # -*- Format the SQL Query

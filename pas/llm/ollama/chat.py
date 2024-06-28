@@ -133,7 +133,7 @@ class Ollama(LLM):
             if response_content is not None:
                 _tool_call_content = response_content.strip()
                 if _tool_call_content.startswith("{") and _tool_call_content.endswith(
-                    "}"
+                    "}",
                 ):
                     _tool_call_content_json = json.loads(_tool_call_content)
                     if "tool_calls" in _tool_call_content_json:
@@ -142,7 +142,7 @@ class Ollama(LLM):
                             # Build tool calls
                             tool_calls: list[dict[str, Any]] = []
                             logger.debug(
-                                f"Building tool calls from {assistant_tool_calls}"
+                                f"Building tool calls from {assistant_tool_calls}",
                             )
                             for tool_call in assistant_tool_calls:
                                 tool_call_name = tool_call.get("name")
@@ -150,21 +150,20 @@ class Ollama(LLM):
                                 _function_def = {"name": tool_call_name}
                                 if tool_call_args is not None:
                                     _function_def["arguments"] = json.dumps(
-                                        tool_call_args
+                                        tool_call_args,
                                     )
                                 tool_calls.append(
                                     {
                                         "type": "function",
                                         "function": _function_def,
-                                    }
+                                    },
                                 )
                             assistant_message.tool_calls = tool_calls
                             assistant_message.role = "assistant"
         except Exception:
             logger.warning(
-                f"Could not parse tool calls from response: {response_content}"
+                f"Could not parse tool calls from response: {response_content}",
             )
-            pass
 
         # -*- Update usage metrics
         # Add response time to metrics
@@ -183,11 +182,14 @@ class Ollama(LLM):
             function_calls_to_run: list[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
                 _function_call = get_function_call_for_tool_call(
-                    tool_call, self.functions
+                    tool_call,
+                    self.functions,
                 )
                 if _function_call is None:
                     messages.append(
-                        Message(role="user", content="Could not find function to call.")
+                        Message(
+                            role="user", content="Could not find function to call."
+                        ),
                     )
                     continue
                 if _function_call.error is not None:
@@ -207,7 +209,8 @@ class Ollama(LLM):
                     final_response += "\n\n"
 
             function_call_results = self.run_function_calls(
-                function_calls_to_run, role="user"
+                function_calls_to_run,
+                role="user",
             )
             if len(function_call_results) > 0:
                 messages.extend(function_call_results)
@@ -296,10 +299,10 @@ class Ollama(LLM):
         logger.debug(f"Tokens generated: {completion_tokens}")
         if completion_tokens > 0:
             logger.debug(
-                f"Time per output token: {response_timer.elapsed / completion_tokens:.4f}s"
+                f"Time per output token: {response_timer.elapsed / completion_tokens:.4f}s",
             )
             logger.debug(
-                f"Throughput: {completion_tokens / response_timer.elapsed:.4f} tokens/s"
+                f"Throughput: {completion_tokens / response_timer.elapsed:.4f} tokens/s",
             )
         logger.debug(f"Time to generate response: {response_timer.elapsed:.4f}s")
 
@@ -313,7 +316,7 @@ class Ollama(LLM):
             if response_is_tool_call and assistant_message_content != "":
                 _tool_call_content = assistant_message_content.strip()
                 if _tool_call_content.startswith("{") and _tool_call_content.endswith(
-                    "}"
+                    "}",
                 ):
                     _tool_call_content_json = json.loads(_tool_call_content)
                     if "tool_calls" in _tool_call_content_json:
@@ -322,7 +325,7 @@ class Ollama(LLM):
                             # Build tool calls
                             tool_calls: list[dict[str, Any]] = []
                             logger.debug(
-                                f"Building tool calls from {assistant_tool_calls}"
+                                f"Building tool calls from {assistant_tool_calls}",
                             )
                             for tool_call in assistant_tool_calls:
                                 tool_call_name = tool_call.get("name")
@@ -330,20 +333,19 @@ class Ollama(LLM):
                                 _function_def = {"name": tool_call_name}
                                 if tool_call_args is not None:
                                     _function_def["arguments"] = json.dumps(
-                                        tool_call_args
+                                        tool_call_args,
                                     )
                                 tool_calls.append(
                                     {
                                         "type": "function",
                                         "function": _function_def,
-                                    }
+                                    },
                                 )
                             assistant_message.tool_calls = tool_calls
         except Exception:
             logger.warning(
-                f"Could not parse tool calls from response: {assistant_message_content}"
+                f"Could not parse tool calls from response: {assistant_message_content}",
             )
-            pass
 
         # -*- Update usage metrics
         # Add response time to metrics
@@ -367,7 +369,7 @@ class Ollama(LLM):
             if "tokens_per_second" not in self.metrics:
                 self.metrics["tokens_per_second"] = []
             self.metrics["tokens_per_second"].append(
-                f"{completion_tokens / response_timer.elapsed:.4f}"
+                f"{completion_tokens / response_timer.elapsed:.4f}",
             )
 
         # -*- Add assistant message to messages
@@ -379,11 +381,14 @@ class Ollama(LLM):
             function_calls_to_run: list[FunctionCall] = []
             for tool_call in assistant_message.tool_calls:
                 _function_call = get_function_call_for_tool_call(
-                    tool_call, self.functions
+                    tool_call,
+                    self.functions,
                 )
                 if _function_call is None:
                     messages.append(
-                        Message(role="user", content="Could not find function to call.")
+                        Message(
+                            role="user", content="Could not find function to call."
+                        ),
                     )
                     continue
                 if _function_call.error is not None:
@@ -401,7 +406,8 @@ class Ollama(LLM):
                     yield "\n\n"
 
             function_call_results = self.run_function_calls(
-                function_calls_to_run, role="user"
+                function_calls_to_run,
+                role="user",
             )
             # Add results of the function calls to the messages
             if len(function_call_results) > 0:
@@ -447,7 +453,7 @@ class Ollama(LLM):
                             "arguments": <parameters for the selected tool, matching the tool's JSON schema
                         }]
                     }\
-                    """
+                    """,
                 ),
                 "To use a tool, just respond with the JSON matching the schema. Nothing else. Do not add any additional notes or explanations",
                 "After you use a tool, the next message you get will contain the result of the tool call.",

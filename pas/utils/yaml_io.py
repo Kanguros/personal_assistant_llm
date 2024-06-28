@@ -16,7 +16,9 @@ def read_yaml_file(file_path: Path | None) -> dict[str, Any] | None:
 
 
 def write_yaml_file(
-    file_path: Path | None, data: dict[str, Any] | None, **kwargs
+    file_path: Path | None,
+    data: dict[str, Any] | None,
+    **kwargs,
 ) -> None:
     if file_path is not None and data is not None:
         logger.debug(f"Writing {file_path}")

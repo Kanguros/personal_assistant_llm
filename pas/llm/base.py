@@ -54,7 +54,8 @@ class Message(BaseModel):
 
     def to_dict(self) -> dict[str, Any]:
         _dict = self.model_dump(
-            exclude_none=True, exclude={"metrics", "tool_call_name", "internal_id"}
+            exclude_none=True,
+            exclude={"metrics", "tool_call_name", "internal_id"},
         )
         # Manually add the content field if it is None
         if self.content is None:
@@ -226,7 +227,7 @@ class LLM(BaseModel):
                     if name not in self.functions:
                         self.functions[name] = func
                         self.tools.append(
-                            {"type": "function", "function": func.to_dict()}
+                            {"type": "function", "function": func.to_dict()},
                         )
                         logger.debug(f"Function {name} from {tool.name} added to LLM.")
 
@@ -243,7 +244,7 @@ class LLM(BaseModel):
                         func = Function.from_callable(tool)
                         self.functions[func.name] = func
                         self.tools.append(
-                            {"type": "function", "function": func.to_dict()}
+                            {"type": "function", "function": func.to_dict()},
                         )
                         logger.debug(f"Function {func.name} added to LLM.")
                 except Exception as e:
@@ -255,7 +256,9 @@ class LLM(BaseModel):
         self.tool_choice = "none"
 
     def run_function_calls(
-        self, function_calls: list[FunctionCall], role: str = "tool"
+        self,
+        function_calls: list[FunctionCall],
+        role: str = "tool",
     ) -> list[Message]:
         function_call_results: list[Message] = []
         for function_call in function_calls:
@@ -279,7 +282,7 @@ class LLM(BaseModel):
             if function_call.function.name not in self.metrics["tool_call_times"]:
                 self.metrics["tool_call_times"][function_call.function.name] = []
             self.metrics["tool_call_times"][function_call.function.name].append(
-                _function_call_timer.elapsed
+                _function_call_timer.elapsed,
             )
             function_call_results.append(_function_call_result)
             self.function_call_stack.append(function_call)

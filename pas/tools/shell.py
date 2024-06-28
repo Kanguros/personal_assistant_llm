@@ -29,7 +29,7 @@ class ShellTools(Toolkit):
             logger.info(f"Running shell command: {args}")
             if self.base_dir:
                 args = ["cd", str(self.base_dir), ";", *args]
-            result = subprocess.run(args, capture_output=True, text=True)
+            result = subprocess.run(args, capture_output=True, text=True, check=False)
             logger.debug(f"Result: {result}")
             logger.debug(f"Return code: {result.returncode}")
             if result.returncode != 0:

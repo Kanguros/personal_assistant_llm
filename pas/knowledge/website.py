@@ -20,7 +20,8 @@ class WebsiteKnowledgeBase(AssistantKnowledge):
     def set_reader(self) -> "WebsiteKnowledgeBase":
         if self.reader is None:
             self.reader = WebsiteReader(
-                max_depth=self.max_depth, max_links=self.max_links
+                max_depth=self.max_depth,
+                max_links=self.max_links,
             )
         return self  # type: ignore
 
@@ -37,7 +38,10 @@ class WebsiteKnowledgeBase(AssistantKnowledge):
                 yield self.reader.read(url=_url)
 
     def load(
-        self, recreate: bool = False, upsert: bool = True, skip_existing: bool = True
+        self,
+        recreate: bool = False,
+        upsert: bool = True,
+        skip_existing: bool = True,
     ) -> None:
         """Load the website contents to the vector db"""
 

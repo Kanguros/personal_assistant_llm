@@ -38,7 +38,7 @@ def get_json_schema_for_arg(t: Any) -> Any | None:
             json_schema = {"type": "object", "properties": {}}
         elif type_origin == Union:
             json_schema = {
-                "type": [get_json_type_for_py_type(arg.__name__) for arg in type_args]
+                "type": [get_json_type_for_py_type(arg.__name__) for arg in type_args],
             }
     else:
         json_schema = {"type": get_json_type_for_py_type(t.__name__)}

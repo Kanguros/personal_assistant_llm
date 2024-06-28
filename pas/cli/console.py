@@ -21,11 +21,6 @@ info_style = Style()
 warn_style = Style(color="magenta")
 
 
-######################################################
-## Print functions
-######################################################
-
-
 def print_heading(msg: str) -> None:
     console.print(msg, style=heading_style)
 

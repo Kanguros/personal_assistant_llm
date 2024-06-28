@@ -7,7 +7,7 @@ try:
     import duckdb
 except ImportError:
     raise ImportError(
-        "`duckdb` not installed. Please install using `pip install duckdb`."
+        "`duckdb` not installed. Please install using `pip install duckdb`.",
     ) from None
 
 
@@ -184,7 +184,10 @@ class DuckDbTools(Toolkit):
         return table
 
     def create_table_from_path(
-        self, path: str, table: str | None = None, replace: bool = False
+        self,
+        path: str,
+        table: str | None = None,
+        replace: bool = False,
     ) -> str:
         """Creates a table from a path
 
@@ -208,7 +211,10 @@ class DuckDbTools(Toolkit):
         return table
 
     def export_table_to_path(
-        self, table: str, format: str | None = "PARQUET", path: str | None = None
+        self,
+        table: str,
+        format: str | None = "PARQUET",
+        path: str | None = None,
     ) -> str:
         """Save a table in a desired format (default: parquet)
         If the path is provided, the table will be saved under that path.
@@ -236,7 +242,9 @@ class DuckDbTools(Toolkit):
         return result
 
     def load_local_path_to_table(
-        self, path: str, table: str | None = None
+        self,
+        path: str,
+        table: str | None = None,
     ) -> tuple[str, str]:
         """Load a local file into duckdb
 
@@ -270,7 +278,10 @@ class DuckDbTools(Toolkit):
         return table, create_statement
 
     def load_local_csv_to_table(
-        self, path: str, table: str | None = None, delimiter: str | None = None
+        self,
+        path: str,
+        table: str | None = None,
+        delimiter: str | None = None,
     ) -> tuple[str, str]:
         """Load a local CSV file into duckdb
 
@@ -309,7 +320,9 @@ class DuckDbTools(Toolkit):
         return table, create_statement
 
     def load_s3_path_to_table(
-        self, path: str, table: str | None = None
+        self,
+        path: str,
+        table: str | None = None,
     ) -> tuple[str, str]:
         """Load a file from S3 into duckdb
 
@@ -343,7 +356,10 @@ class DuckDbTools(Toolkit):
         return table, create_statement
 
     def load_s3_csv_to_table(
-        self, path: str, table: str | None = None, delimiter: str | None = None
+        self,
+        path: str,
+        table: str | None = None,
+        delimiter: str | None = None,
     ) -> tuple[str, str]:
         """Load a CSV file from S3 into duckdb
 
@@ -381,7 +397,10 @@ class DuckDbTools(Toolkit):
         return table, create_statement
 
     def create_fts_index(
-        self, table: str, unique_key: str, input_values: list[str]
+        self,
+        table: str,
+        unique_key: str,
+        input_values: list[str],
     ) -> str:
         """Create a full text search index on a table
 

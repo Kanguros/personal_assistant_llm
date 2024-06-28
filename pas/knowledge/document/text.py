@@ -29,7 +29,7 @@ class TextReader(Reader):
                     name=file_name,
                     id=file_name,
                     content=file_contents,
-                )
+                ),
             ]
             if self.chunk:
                 chunked_documents = []

@@ -34,7 +34,7 @@ class DocxReader(Reader):
                     name=doc_name,
                     id=doc_name,
                     content=doc_content.decode("utf-8"),
-                )
+                ),
             ]
             if self.chunk:
                 chunked_documents = []

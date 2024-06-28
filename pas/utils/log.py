@@ -18,7 +18,7 @@ def get_logger(logger_name: str) -> logging.Logger:
         logging.Formatter(
             fmt="%(message)s",
             datefmt="[%X]",
-        )
+        ),
     )
 
     _logger = logging.getLogger(logger_name)

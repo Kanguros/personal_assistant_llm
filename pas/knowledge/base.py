@@ -39,7 +39,7 @@ class AssistantKnowledge(BaseModel):
 
             _num_documents = num_documents or self.num_documents
             logger.debug(
-                f"Getting {_num_documents} relevant documents for query: {query}"
+                f"Getting {_num_documents} relevant documents for query: {query}",
             )
             return self.vector_db.search(query=query, limit=_num_documents)
         except Exception as e:
@@ -47,7 +47,10 @@ class AssistantKnowledge(BaseModel):
             return []
 
     def load(
-        self, recreate: bool = False, upsert: bool = False, skip_existing: bool = True
+        self,
+        recreate: bool = False,
+        upsert: bool = False,
+        skip_existing: bool = True,
     ) -> None:
         """Load the knowledge base to the vector db
 
@@ -139,7 +142,10 @@ class AssistantKnowledge(BaseModel):
             logger.info("No new documents to load")
 
     def load_document(
-        self, document: Document, upsert: bool = False, skip_existing: bool = True
+        self,
+        document: Document,
+        upsert: bool = False,
+        skip_existing: bool = True,
     ) -> None:
         """Load a document to the knowledge base
 
@@ -149,11 +155,16 @@ class AssistantKnowledge(BaseModel):
             skip_existing (bool): If True, skips documents which already exist in the vector db. Defaults to True.
         """
         self.load_documents(
-            documents=[document], upsert=upsert, skip_existing=skip_existing
+            documents=[document],
+            upsert=upsert,
+            skip_existing=skip_existing,
         )
 
     def load_dict(
-        self, document: dict[str, Any], upsert: bool = False, skip_existing: bool = True
+        self,
+        document: dict[str, Any],
+        upsert: bool = False,
+        skip_existing: bool = True,
     ) -> None:
         """Load a dictionary representation of a document to the knowledge base
 
@@ -169,7 +180,10 @@ class AssistantKnowledge(BaseModel):
         )
 
     def load_json(
-        self, document: str, upsert: bool = False, skip_existing: bool = True
+        self,
+        document: str,
+        upsert: bool = False,
+        skip_existing: bool = True,
     ) -> None:
         """Load a json representation of a document to the knowledge base
 
@@ -185,7 +199,10 @@ class AssistantKnowledge(BaseModel):
         )
 
     def load_text(
-        self, text: str, upsert: bool = False, skip_existing: bool = True
+        self,
+        text: str,
+        upsert: bool = False,
+        skip_existing: bool = True,
     ) -> None:
         """Load a text to the knowledge base
 

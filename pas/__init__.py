@@ -65,7 +65,8 @@ class ChromaDb(VectorDb):
         if not self.exists():
             logger.debug(f"Creating collection: {self.collection}")
             self._collection = self.client.create_collection(
-                name=self.collection, metadata={"hnsw:space": self.distance.value}
+                name=self.collection,
+                metadata={"hnsw:space": self.distance.value},
             )
 
     def doc_exists(self, document: Document) -> bool:
@@ -78,7 +79,7 @@ class ChromaDb(VectorDb):
         if self.client:
             try:
                 collection: Collection = self.client.get_collection(
-                    name=self.collection
+                    name=self.collection,
                 )
                 collection_data: GetResult = collection.get(include=["documents"])
                 if collection_data.get("documents"):
@@ -96,7 +97,7 @@ class ChromaDb(VectorDb):
         if self.client:
             try:
                 collections: Collection = self.client.get_collection(
-                    name=self.collection
+                    name=self.collection,
                 )
                 for collection in collections:
                     if name in collection:
@@ -188,7 +189,11 @@ class ChromaDb(VectorDb):
         try:
             # Use zip to iterate over multiple lists simultaneously
             for id_, distance, metadata, document in zip(
-                ids, distances, metadatas, documents
+                ids,
+                distances,
+                metadatas,
+                documents,
+                strict=False,
             ):
                 search_results.append(
                     Document(
@@ -199,7 +204,7 @@ class ChromaDb(VectorDb):
                         embeddings=embeddings,
                         uris=uris,
                         data=data,
-                    )
+                    ),
                 )
         except Exception as e:
             logger.error(f"Error building search results: {e}")
@@ -226,7 +231,7 @@ class ChromaDb(VectorDb):
         if self.exists():
             try:
                 collection: Collection = self.client.get_collection(
-                    name=self.collection
+                    name=self.collection,
                 )
                 return collection.count()
             except Exception as e:

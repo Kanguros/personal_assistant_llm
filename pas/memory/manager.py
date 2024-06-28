@@ -48,9 +48,10 @@ class MemoryManager(BaseModel):
                     MemoryRow(
                         user_id=self.user_id,
                         memory=Memory(
-                            memory=memory, input=self.input_message
+                            memory=memory,
+                            input=self.input_message,
                         ).to_dict(),
-                    )
+                    ),
                 )
             return "Memory added successfully"
         except Exception as e:
@@ -87,9 +88,10 @@ class MemoryManager(BaseModel):
                         id=id,
                         user_id=self.user_id,
                         memory=Memory(
-                            memory=memory, input=self.input_message
+                            memory=memory,
+                            input=self.input_message,
                         ).to_dict(),
-                    )
+                    ),
                 )
             return "Memory updated successfully"
         except Exception as e:
@@ -137,10 +139,10 @@ class MemoryManager(BaseModel):
                         [
                             f"  - id: {m.id} | memory: {m.memory}"
                             for m in existing_memories
-                        ]
+                        ],
                     )
                     + "\n</existing_memories>",
-                ]
+                ],
             )
         return "\n".join(system_prompt_lines)
 

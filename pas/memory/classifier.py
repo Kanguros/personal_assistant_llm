@@ -44,7 +44,7 @@ class MemoryClassifier(BaseModel):
                     "<existing_memories>\n"
                     + "\n".join([f"  - {m.memory}" for m in self.existing_memories])
                     + "\n</existing_memories>",
-                ]
+                ],
             )
         return "\n".join(system_prompt_lines)
 

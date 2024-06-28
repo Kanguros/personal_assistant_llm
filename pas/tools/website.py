@@ -12,7 +12,8 @@ class WebsiteTools(Toolkit):
         self.knowledge_base: WebsiteKnowledgeBase | None = knowledge_base
 
         if self.knowledge_base is not None and isinstance(
-            self.knowledge_base, WebsiteKnowledgeBase
+            self.knowledge_base,
+            WebsiteKnowledgeBase,
         ):
             self.register(self.add_website_to_knowledge_base)
         else:

@@ -99,7 +99,7 @@ class PDFImageReader(Reader):
                     id=f"{doc_name}_{page_number}",
                     meta_data={"page": page_number},
                     content=content,
-                )
+                ),
             )
 
         if self.chunk:

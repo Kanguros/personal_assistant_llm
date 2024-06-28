@@ -92,7 +92,7 @@ class Calculator(Toolkit):
         if b == 0:
             logger.error("Attempt to divide by zero")
             return json.dumps(
-                {"operation": "division", "error": "Division by zero is undefined"}
+                {"operation": "division", "error": "Division by zero is undefined"},
             )
         try:
             result = a / b
@@ -130,7 +130,7 @@ class Calculator(Toolkit):
                 {
                     "operation": "factorial",
                     "error": "Factorial of a negative number is undefined",
-                }
+                },
             )
         result = math.factorial(n)
         logger.info(f"Calculating factorial of {n} to get {result}")
@@ -167,7 +167,7 @@ class Calculator(Toolkit):
                 {
                     "operation": "square_root",
                     "error": "Square root of a negative number is undefined",
-                }
+                },
             )
 
         result = math.sqrt(n)

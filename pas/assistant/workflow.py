@@ -84,7 +84,8 @@ class Workflow(BaseModel):
             if len(executed_tasks) > 0:
                 previous_task_outputs = []
                 for previous_task_idx, previous_task in enumerate(
-                    executed_tasks, start=1
+                    executed_tasks,
+                    start=1,
                 ):
                     previous_task_output = previous_task.get_task_output_as_str()
                     if previous_task_output is not None:
@@ -93,12 +94,12 @@ class Workflow(BaseModel):
                                 previous_task_idx,
                                 previous_task.description,
                                 previous_task_output,
-                            )
+                            ),
                         )
 
                 if len(previous_task_outputs) > 0:
                     task_input.append(
-                        "\nHere are previous tasks and and their results:\n---"
+                        "\nHere are previous tasks and and their results:\n---",
                     )
                     for (
                         previous_task_idx,
@@ -106,7 +107,7 @@ class Workflow(BaseModel):
                         previous_task_output,
                     ) in previous_task_outputs:
                         task_input.append(
-                            f"Task {previous_task_idx}: {previous_task_description}"
+                            f"Task {previous_task_idx}: {previous_task_description}",
                         )
                         task_input.append(previous_task_output)
                     task_input.append("---")
@@ -116,13 +117,17 @@ class Workflow(BaseModel):
             input_for_current_task = "\n".join(task_input)
             if stream and task.streamable:
                 for chunk in task.run(
-                    message=input_for_current_task, stream=True, **kwargs
+                    message=input_for_current_task,
+                    stream=True,
+                    **kwargs,
                 ):
                     task_output += chunk if isinstance(chunk, str) else ""
                     yield chunk if isinstance(chunk, str) else ""
             else:
                 task_output = task.run(
-                    message=input_for_current_task, stream=False, **kwargs
+                    message=input_for_current_task,
+                    stream=False,
+                    **kwargs,
                 )  # type: ignore
 
             executed_tasks.append(task)
@@ -196,7 +201,8 @@ class Workflow(BaseModel):
                         table.add_column("Message")
                         table.add_column(get_text_from_message(message))
                     table.add_row(
-                        f"Response\n({response_timer.elapsed:.1f}s)", _response
+                        f"Response\n({response_timer.elapsed:.1f}s)",
+                        _response,
                     )  # type: ignore
                     live_log.update(table)
                 response_timer.stop()

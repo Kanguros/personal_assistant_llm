@@ -78,7 +78,7 @@ class Reader(BaseModel):
                     name=document.name,
                     meta_data=meta_data,
                     content=chunk,
-                )
+                ),
             )
             chunk_number += 1
             start = end

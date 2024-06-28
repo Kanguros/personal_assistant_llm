@@ -31,7 +31,7 @@ class Config(BaseModel):
 
 def load_config(ctx: Context, param: CallbackParam, value: str):
     if ctx.resilient_parsing:
-        return
+        return None
     if CONFIG_PATH.exists():
         logger.debug(f"Loading config from {CONFIG_PATH}")
         file_data = read_yaml_file(CONFIG_PATH)
@@ -42,9 +42,9 @@ def load_config(ctx: Context, param: CallbackParam, value: str):
 
 def set_debug(ctx: Context, param: CallbackParam, value: str):
     if ctx.resilient_parsing:
-        return
+        return None
     if not value:
-        return
+        return None
     return set_log_level_to_debug("DEBUG")
 
 
