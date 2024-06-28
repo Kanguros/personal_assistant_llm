@@ -5,7 +5,7 @@ from pas.knowledge.embedder.ollama import OllamaEmbedder
 from pas.knowledge import AssistantKnowledge
 from pas.llm.ollama import Hermes
 from pas.storage.assistant.postgres import PgAssistantStorage
-from pas.vectordb.pgvector import PgVector2
+from pas.knowledge.vectordb import PgVector2
 
 knowledge_base = AssistantKnowledge(
     vector_db=PgVector2(

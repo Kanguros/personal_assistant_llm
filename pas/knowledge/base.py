@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict
 from pas.knowledge.document import Document
 from pas.knowledge.document.reader import Reader
 from pas.utils.log import logger
-from pas.vectordb import VectorDb
+from pas.knowledge.vectordb import VectorDb
 
 
 class AssistantKnowledge(BaseModel):

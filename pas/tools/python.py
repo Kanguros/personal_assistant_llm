@@ -89,8 +89,7 @@ class PythonTools(Toolkit):
                     return f"Variable {variable_to_return} not found"
                 logger.debug(f"Variable {variable_to_return} value: {variable_value}")
                 return str(variable_value)
-            else:
-                return f"successfully ran {file_path!s}"
+            return f"successfully ran {file_path!s}"
         except Exception as e:
             logger.error(f"Error saving and running code: {e}")
             return f"Error saving and running code: {e}"
@@ -124,8 +123,7 @@ class PythonTools(Toolkit):
                     return f"Variable {variable_to_return} not found"
                 logger.debug(f"Variable {variable_to_return} value: {variable_value}")
                 return str(variable_value)
-            else:
-                return f"successfully ran {file_path!s}"
+            return f"successfully ran {file_path!s}"
         except Exception as e:
             logger.error(f"Error running file: {e}")
             return f"Error running file: {e}"
@@ -181,8 +179,7 @@ class PythonTools(Toolkit):
                     return f"Variable {variable_to_return} not found"
                 logger.debug(f"Variable {variable_to_return} value: {variable_value}")
                 return str(variable_value)
-            else:
-                return "successfully ran python code"
+            return "successfully ran python code"
         except Exception as e:
             logger.error(f"Error running python code: {e}")
             return f"Error running python code: {e}"

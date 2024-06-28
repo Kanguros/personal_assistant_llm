@@ -13,7 +13,7 @@ from pas.tools.duckduckgo import DuckDuckGo
 from pas.tools.exa import ExaTools
 from pas.tools.file import FileTools
 from pas.tools.yfinance import YFinanceTools
-from pas.vectordb.pgvector import PgVector2
+from pas.knowledge.vectordb import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 cwd = Path(__file__).parent.resolve()

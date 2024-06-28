@@ -55,6 +55,10 @@ textract = "^1.6.5"
 pypdf = "^4.2.0"
 
 
+[tool.poetry.scripts]
+pas = "pas.cli.main:app"
+
+
 
 [build-system]
 requires = ["poetry-core"]
@@ -123,6 +127,9 @@ ignore = [
     "PLW2901",  #  `for` loop variable `` overwritten by assignment target
     "N818", # Exception name `{name}` should be named with an Error suffix
     "N805",  # First argument of a method should be named `self`
+    "C408",  # Unnecessary `dict` call (rewrite as a literal)
+    "SIM102",  # Use a single `if` statement instead of nested `if` statements
+    "B008",  # Do not perform function call `{name}` in argument defaults
 
 ]
 fixable = ["ALL"]

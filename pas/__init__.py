@@ -9,7 +9,7 @@ from chromadb.api.types import GetResult, QueryResult
 from pas.knowledge.document import Document
 from pas.knowledge.embedder import Embedder
 from pas.utils.log import logger
-from pas.vectordb.base import Distance, VectorDb
+from pas.knowledge.vectordb import Distance, VectorDb
 
 
 class ChromaDb(VectorDb):

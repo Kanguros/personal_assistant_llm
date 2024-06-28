@@ -4,7 +4,7 @@ from pas.knowledge.embedder.ollama import OllamaEmbedder
 from pas.knowledge.pdf import PDFUrlKnowledgeBase
 from pas.llm.ollama import Ollama
 from pas.storage.sqllite import SqlAssistantStorage
-from pas.vectordb.lancedb.lancedb import LanceDb
+from pas.knowledge.vectordb import LanceDb
 
 # Define the database URL where the vector database will be stored
 db_url = "/tmp/lancedb"

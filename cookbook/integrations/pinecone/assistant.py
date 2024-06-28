@@ -5,7 +5,7 @@ from rich.prompt import Prompt
 
 from pas.assistant import Assistant
 from pas.knowledge.pdf import PDFUrlKnowledgeBase
-from pas.vectordb.pineconedb import PineconeDB
+from pas.knowledge.vectordb import PineconeDB
 
 api_key = os.getenv("PINECONE_API_KEY")
 index_name = "thai-recipe-index"

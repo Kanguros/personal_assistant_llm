@@ -285,7 +285,7 @@ from typing import Optional, List
 from pas.assistant import Assistant
 from pas.storage.assistant.postgres import PgAssistantStorage
 from pas.knowledge.pdf import PDFUrlKnowledgeBase
-from pas.vectordb.pgvector import PgVector2
+from pas.knowledge.vectordb import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 

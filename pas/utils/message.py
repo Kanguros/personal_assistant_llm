@@ -11,17 +11,17 @@ def get_text_from_message(message: list | dict | str) -> str:
         if "type" in message[0]:
             for m in message:
                 m_type = m.get("type")
-                if m_type is not None and isinstance(m_type, str):
+                if m_type is not None and isinstance(m_type, str):  # noqa: SIM102
                     m_value = m.get(m_type)
-                    if m_value is not None and isinstance(m_value, str):  # nq: SIM102
+                    if m_value is not None and isinstance(m_value, str):  # noqa: SIM102
                         if m_type == "text":
                             text_messages.append(m_value)
         elif "role" in message[0]:
             for m in message:
                 m_role = m.get("role")
-                if m_role is not None and isinstance(m_role, str):
+                if m_role is not None and isinstance(m_role, str):  # noqa: SIM102
                     m_content = m.get("content")
-                    if m_content is not None and isinstance(m_content, str):
+                    if m_content is not None and isinstance(m_content, str):  # noqa: SIM102
                         if m_role == "user":
                             text_messages.append(m_content)
         if len(text_messages) > 0:

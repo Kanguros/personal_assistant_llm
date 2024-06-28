@@ -3,7 +3,7 @@ from rich.prompt import Prompt
 
 from pas.assistant import Assistant
 from pas.knowledge.pdf import PDFUrlKnowledgeBase
-from pas.vectordb.lancedb.lancedb import LanceDb
+from pas.knowledge.vectordb import LanceDb
 
 # type: ignore
 db_url = "/tmp/lancedb"

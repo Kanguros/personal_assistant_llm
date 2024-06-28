@@ -4,7 +4,7 @@ from pas.assistant import Assistant, AssistantMemory
 from pas.knowledge.pdf import PDFUrlKnowledgeBase
 from pas.memory.db.postgres import PgMemoryDb
 from pas.storage.assistant.postgres import PgAssistantStorage
-from pas.vectordb.pgvector import PgVector2
+from pas.knowledge.vectordb import PgVector2
 
 cli_app = typer.Typer(pretty_exceptions_show_locals=False)
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"

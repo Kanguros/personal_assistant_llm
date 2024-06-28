@@ -2,7 +2,7 @@ from resources import vector_db  # type: ignore
 
 from pas.assistant import Assistant
 from pas.knowledge.pdf import PDFUrlKnowledgeBase
-from pas.vectordb.pgvector import PgVector2
+from pas.knowledge.vectordb import PgVector2
 
 # The PDFUrlKnowledgeBase reads PDFs from urls and loads
 # the `ai.recipes` table when`knowledge_base.load()` is called.

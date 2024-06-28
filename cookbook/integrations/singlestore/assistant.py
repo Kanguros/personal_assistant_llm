@@ -5,7 +5,7 @@ from sqlalchemy.engine import create_engine
 
 from pas.assistant import Assistant
 from pas.knowledge.pdf import PDFUrlKnowledgeBase
-from pas.vectordb.singlestore import S2VectorDb
+from pas.knowledge.vectordb import S2VectorDb
 
 USERNAME = getenv("SINGLESTORE_USERNAME")
 PASSWORD = getenv("SINGLESTORE_PASSWORD")

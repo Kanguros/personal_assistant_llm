@@ -4,7 +4,7 @@ from pas.knowledge import AssistantKnowledge
 from pas.llm.openai import OpenAIChat
 from pas.storage.assistant.postgres import PgAssistantStorage
 from pas.tools.duckduckgo import DuckDuckGo
-from pas.vectordb.pgvector import PgVector2
+from pas.knowledge.vectordb import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 

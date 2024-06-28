@@ -4,7 +4,7 @@ from resources import vector_db  # type: ignore
 from pas.assistant import Assistant
 from pas.knowledge.pdf import PDFUrlKnowledgeBase
 from pas.storage.assistant.postgres import PgAssistantStorage
-from pas.vectordb.pgvector import PgVector2
+from pas.knowledge.vectordb import PgVector2
 
 db_url = vector_db.get_db_connection_local()
 knowledge_base = PDFUrlKnowledgeBase(

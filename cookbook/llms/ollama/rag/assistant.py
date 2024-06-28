@@ -3,7 +3,7 @@ from pas.knowledge.embedder.ollama import OllamaEmbedder
 from pas.knowledge import AssistantKnowledge
 from pas.llm.ollama import Ollama
 from pas.storage.assistant.postgres import PgAssistantStorage
-from pas.vectordb.pgvector import PgVector2
+from pas.knowledge.vectordb import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 

@@ -13,7 +13,7 @@ from pas.llm.ollama import Ollama
 from pas.llm.openai import OpenAIChat
 from pas.storage.assistant.singlestore import S2AssistantStorage  # noqa
 from pas.utils.log import logger
-from pas.vectordb.singlestore import S2VectorDb
+from pas.knowledge.vectordb import S2VectorDb
 
 # ************** Create SingleStore Database Engine **************
 # -*- SingleStore Configuration -*-

@@ -5,7 +5,7 @@ from rich.prompt import Prompt
 
 from pas.assistant import Assistant
 from pas.knowledge.pdf import PDFUrlKnowledgeBase
-from pas.vectordb.qdrant import Qdrant
+from pas.knowledge.vectordb import Qdrant
 
 api_key = os.getenv("QDRANT_API_KEY")
 qdrant_url = os.getenv("QDRANT_URL")

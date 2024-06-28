@@ -6,7 +6,7 @@ from pas.knowledge import AssistantKnowledge
 from pas.llm.groq import Groq
 from pas.storage.assistant.postgres import PgAssistantStorage
 from pas.utils.log import logger
-from pas.vectordb.pgvector import PgVector2
+from pas.knowledge.vectordb import PgVector2
 
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 
