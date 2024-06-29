@@ -493,7 +493,6 @@ class Assistant(BaseModel):
                     raise Exception("Failed to create new assistant run in storage")
                 logger.debug(f"-*- Created assistant run: {self.db_row.run_id}")
                 self.from_database_row(row=self.db_row)
-                self._api_log_assistant_run()
         return self.run_id
 
     def get_json_output_prompt(self) -> str:
@@ -1046,7 +1045,6 @@ class Assistant(BaseModel):
             "llm_response": llm_response,
             "llm_response_type": llm_response_type,
         }
-        self._api_log_assistant_event(event_type="run", event_data=event_data)
 
         logger.debug(f"*********** Assistant Run End: {self.run_id} ***********")
 
@@ -1239,31 +1237,11 @@ class Assistant(BaseModel):
         # -*- Save run to storage
         self.write_to_storage()
 
-        # -*- Send run event for monitoring
-        # Response type for this run
-        llm_response_type = "text"
-        if self.output_model is not None:
-            llm_response_type = "json"
-        elif self.markdown:
-            llm_response_type = "markdown"
         functions = {}
         if self.llm is not None and self.llm.functions is not None:
             for _f_name, _func in self.llm.functions.items():
                 if isinstance(_func, Function):
                     functions[_f_name] = _func.to_dict()
-        event_data = {
-            "run_type": "assistant",
-            "user_message": message,
-            "response": llm_response,
-            "response_format": llm_response_type,
-            "messages": llm_messages,
-            "metrics": self.llm.metrics if self.llm else None,
-            "functions": functions,
-            # To be removed
-            "llm_response": llm_response,
-            "llm_response_type": llm_response_type,
-        }
-        self._api_log_assistant_event(event_type="run", event_data=event_data)
 
         logger.debug(f"*********** Run End: {self.run_id} ***********")
 
@@ -1346,8 +1324,6 @@ class Assistant(BaseModel):
         self.name = name
         # -*- Save run to storage
         self.write_to_storage()
-        # -*- Log assistant run
-        self._api_log_assistant_run()
 
     def rename_run(self, name: str) -> None:
         """Rename the current run"""
@@ -1357,8 +1333,7 @@ class Assistant(BaseModel):
         self.run_name = name
         # -*- Save run to storage
         self.write_to_storage()
-        # -*- Log assistant run
-        self._api_log_assistant_run()
+
 
     def generate_name(self) -> str:
         """Generate a name for the run using the first 6 messages of the chat history"""
@@ -1406,8 +1381,7 @@ class Assistant(BaseModel):
         self.run_name = generated_name
         # -*- Save run to storage
         self.write_to_storage()
-        # -*- Log assistant run
-        self._api_log_assistant_run()
+
 
     ###########################################################################
     # Default Tools
@@ -1559,7 +1533,7 @@ class Assistant(BaseModel):
         from rich.status import Status
         from rich.table import Table
 
-        from pas.cli.console import console
+        from pas.utils.console import console
 
         if markdown:
             self.markdown = True
@@ -1643,7 +1617,7 @@ class Assistant(BaseModel):
         from rich.status import Status
         from rich.table import Table
 
-        from pas.cli.console import console
+        from pas.utils.console import console
 
         if markdown:
             self.markdown = True

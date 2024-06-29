@@ -56,7 +56,7 @@ pypdf = "^4.2.0"
 
 
 [tool.poetry.scripts]
-pas = "pas.cli.main:app"
+pas = "pas_cli.main:app"
 
 
 

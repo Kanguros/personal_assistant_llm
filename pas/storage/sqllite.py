@@ -42,7 +42,9 @@ class SqlAssistantStorage(AssistantStorage):
         if _engine is None and db_url is not None:
             _engine = create_engine(db_url)
         elif _engine is None and db_file is not None:
-            _engine = create_engine(f"sqlite:///{db_file}")
+            engine_db_file = f"sqlite:///{db_file}"
+            logger.debug(f"{engine_db_file=}")
+            _engine = create_engine(engine_db_file)
         else:
             _engine = create_engine("sqlite://")
 

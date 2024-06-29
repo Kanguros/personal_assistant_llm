@@ -7,9 +7,7 @@ from typer import Context, CallbackParam
 from pas.utils.log import logger, set_log_level_to_debug
 
 
-class Panel(str, Enum):
-    OPTIONS = "Options"
-    OUTPUT = "Output Options"
+
 
 
 console = Console()
@@ -74,14 +72,3 @@ def confirm_yes_no(question, default: str = "yes") -> bool:
     logger.error(f"{choice} invalid")
     return False
 
-
-def set_log_level(ctx: Context, param: CallbackParam, value: str):
-    if ctx.resilient_parsing:
-        return
-    if not value:
-        return
-    if param.name == "verbose":
-        set_log_level_to_debug("DEBUG")
-    elif param.name == "quiet":
-        set_log_level_to_debug("ERROR")
-    return

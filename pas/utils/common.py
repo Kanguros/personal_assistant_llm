@@ -28,6 +28,3 @@ def is_empty(val: Any) -> bool:
         return True
     return False
 
-
-def get_image_str(repo: str, tag: str) -> str:
-    return f"{repo}:{tag}"
