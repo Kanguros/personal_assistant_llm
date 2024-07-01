@@ -20,7 +20,7 @@ CONFIG_FILE_NAME = "config.yaml"
 """Default name of the configuration file."""
 CONFIG_DEFAULT_PATH = APP_DIR / CONFIG_FILE_NAME
 """Default configuration path."""
-CONFIG_PATH = os.getenv(CONFIG_ENV_NAME, CONFIG_DEFAULT_PATH)
+CONFIG_PATH = Path(os.getenv(CONFIG_ENV_NAME, CONFIG_DEFAULT_PATH))
 
 
 class Config(BaseModel):
@@ -37,18 +37,12 @@ class Config(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     @classmethod
-    def from_file(cls, file_path: Optional[str] = None) -> "Config":
-        logger.debug(f"Loading config from: {file_path}")
+    def from_file(cls, file_path: str) -> "Config":
+        file_path = Path(file_path)
         config_kwargs = {}
-        if file_path and Path(file_path).exists():
-            config_kwargs = read_yaml_file(Path(file_path))
-        else:
-            logger.debug(
-                f"No config file found. Using default path: {CONFIG_DEFAULT_PATH}"
-            )
-            file_path = CONFIG_DEFAULT_PATH
-            if file_path.exists():
-                config_kwargs = read_yaml_file(file_path)
+        if file_path.exists():
+            logger.debug(f"Loading config from: {file_path}")
+            config_kwargs = read_yaml_file(file_path)
 
         file_path.parent.mkdir(exist_ok=True)
         return cls(**config_kwargs, file_path=file_path, dir_path=file_path.parent)

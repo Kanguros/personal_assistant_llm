@@ -2,6 +2,7 @@ from click import UsageError
 from typer import Argument, Context, Option, Typer
 
 from pas.utils.log import logger
+from pas_cli.assistant.default_assistant import HelpfulAssistant
 from .config import APP_NAME, CONFIG_PATH
 from .utils import get_assistant_from_config, load_config
 from .utils import set_log_level, Panel
@@ -44,15 +45,15 @@ def main(
         is_eager=True,
         rich_help_panel=Panel.OPTIONS,
     ),
-    config=Option(
-        str(CONFIG_PATH),
-        "--config",
-        "-c",
-        # hidden=True,
-        callback=load_config,
-        expose_value=True,
-        rich_help_panel=Panel.OPTIONS,
-    ),
+    # config=Option(
+    #     str(CONFIG_PATH),
+    #     "--config",
+    #     "-c",
+    #     hidden=True,
+    #     callback=load_config,
+    #     expose_value=True,
+    #     rich_help_panel=Panel.OPTIONS,
+    # ),
 ) -> None:
     """
     Welcome to your own Personal Assistant!
@@ -66,6 +67,7 @@ def main(
         raise UsageError("Cannot combine subcommand with prompt!")
 
     logger.info("Welcome to Personal Assistant!")
+    config = HelpfulAssistant()
     assistant = get_assistant_from_config(config)
     assistant.print_response(prompt, stream=stream)
 

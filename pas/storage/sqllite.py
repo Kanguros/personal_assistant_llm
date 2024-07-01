@@ -42,19 +42,16 @@ class SqlAssistantStorage(AssistantStorage):
         if _engine is None and db_url is not None:
             _engine = create_engine(db_url)
         elif _engine is None and db_file is not None:
-            engine_db_file = f"sqlite:///{db_file}"
-            logger.debug(f"{engine_db_file=}")
-            _engine = create_engine(engine_db_file)
+            _engine = create_engine(f"sqlite:///{db_file}")
         else:
             _engine = create_engine("sqlite://")
 
         if _engine is None:
             raise ValueError("Must provide either db_url, db_file or db_engine")
+        self.db_engine: Engine = _engine
 
         # Database attributes
         self.table_name: str = table_name
-        self.db_url: str | None = db_url
-        self.db_engine: Engine = _engine
         self.metadata: MetaData = MetaData()
 
         # Database session
@@ -62,6 +59,7 @@ class SqlAssistantStorage(AssistantStorage):
 
         # Database table for storage
         self.table: Table = self.get_table()
+        self.create()
 
     def get_table(self) -> Table:
         return Table(
