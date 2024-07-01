@@ -1,8 +1,8 @@
-
 # Personal CLI Assistants
 
 **Personal CLI Assistants** is a command-line application derived from the `phidata` Python library. This project
-simplifies and customizes the original library to create a versatile personal assistant powered by large language models. 
+simplifies and customizes the original library to create a versatile personal assistant powered by large language
+models.
 
 ## Table of Contents
 
@@ -72,7 +72,6 @@ pas --config custom_config.yaml "What's the weather like today?"
 
 If you encounter issues, ensure that all dependencies are installed correctly. Check the configuration file for any
 errors. For detailed logs, run the CLI with the `--verbose` option.
-
 
 ## Development
 
