@@ -1021,7 +1021,6 @@ class Assistant(BaseModel):
             except Exception as e:
                 logger.warning(f"Failed to save output to file: {e}")
 
-
         logger.debug(f"*********** Assistant Run End: {self.run_id} ***********")
 
         # -*- Yield final response if not streaming
@@ -1067,7 +1066,7 @@ class Assistant(BaseModel):
                 logger.warning(f"Failed to convert response to output model: {e}")
 
             return self.output or json_resp
-        elif stream and self.streamable:
+        if stream and self.streamable:
             return self._run(
                 message=message,
                 messages=messages,
@@ -1262,7 +1261,7 @@ class Assistant(BaseModel):
                 logger.warning(f"Failed to convert response to output model: {e}")
 
             return self.output or json_resp
-        elif stream and self.streamable:
+        if stream and self.streamable:
             resp = self._arun(
                 message=message,
                 messages=messages,
@@ -1306,6 +1305,7 @@ class Assistant(BaseModel):
 
     def generate_name(self) -> str:
         """Generate a name for the run using the first 6 messages of the chat history"""
+        MAX_NAME_LENGTH = 15
         if self.llm is None:
             raise Exception("LLM not set")
 
@@ -1335,7 +1335,7 @@ class Assistant(BaseModel):
         user_message = Message(role="user", content=_conv)
         generate_name_messages = [system_message, user_message]
         generated_name = self.llm.response(messages=generate_name_messages)
-        if len(generated_name.split()) > 15:
+        if len(generated_name.split()) > MAX_NAME_LENGTH:
             logger.error("Generated name is too long. Trying again.")
             return self.generate_name()
         return generated_name.replace('"', "").strip()

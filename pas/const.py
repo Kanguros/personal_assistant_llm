@@ -20,7 +20,7 @@ DEPENDENCY_GROUP_WEBTOOLS = "webtool"
 DEPENDENCY_GROUP_FILES = "files"
 DEPENDENCY_GROUP_OPENAI = "openai"
 
-IMPORT_ERROR = ( # noqa: E731
+IMPORT_ERROR = (  # noqa: E731
     lambda package,
     group: f"The `{package}` package is not installed. Please install it via `poetry install --with={group}`"
 )

@@ -227,7 +227,7 @@ class DuckDbTools(Toolkit):
         :param path: Path to export to
         :return: None
         """
-        if format is None:  # noqa: A001
+        if format is None:
             format = "PARQUET"
 
         logger.debug(f"Exporting Table {table} as {format.upper()} to path {path}")
