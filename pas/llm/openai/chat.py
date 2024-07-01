@@ -36,6 +36,7 @@ except ImportError:
     logger.error(IMPORT_ERROR("openai", DEPENDENCY_GROUP_OPENAI))
     raise
 
+
 class OpenAIChat(LLM):
     name: str = "OpenAIChat"
     model: str = "gpt-4o"

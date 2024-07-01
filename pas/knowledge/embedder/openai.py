@@ -12,6 +12,7 @@ except ImportError:
     logger.error(IMPORT_ERROR("openai", DEPENDENCY_GROUP_OPENAI))
     raise
 
+
 class OpenAIEmbedder(Embedder):
     model: str = "text-embedding-ada-002"
     dimensions: int = 1536

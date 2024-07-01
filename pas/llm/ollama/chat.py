@@ -129,7 +129,7 @@ class Ollama(LLM):
             if response_content is not None:
                 _tool_call_content = response_content.strip()
                 if _tool_call_content.startswith("{") and _tool_call_content.endswith(
-                        "}",
+                    "}",
                 ):
                     _tool_call_content_json = json.loads(_tool_call_content)
                     if "tool_calls" in _tool_call_content_json:
@@ -263,8 +263,8 @@ class Ollama(LLM):
             # Strip out tool calls from the response
             # If the response is a tool call, it will start with a {
             if (
-                    not response_is_tool_call
-                    and assistant_message_content.strip().startswith("{")
+                not response_is_tool_call
+                and assistant_message_content.strip().startswith("{")
             ):
                 response_is_tool_call = True
 
@@ -312,7 +312,7 @@ class Ollama(LLM):
             if response_is_tool_call and assistant_message_content != "":
                 _tool_call_content = assistant_message_content.strip()
                 if _tool_call_content.startswith("{") and _tool_call_content.endswith(
-                        "}",
+                    "}",
                 ):
                     _tool_call_content_json = json.loads(_tool_call_content)
                     if "tool_calls" in _tool_call_content_json:

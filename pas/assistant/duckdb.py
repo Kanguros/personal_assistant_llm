@@ -16,6 +16,7 @@ except ImportError:
     logger.error(IMPORT_ERROR("duckdb", DEPENDENCY_GROUP_WEBTOOLS))
     raise
 
+
 class DuckDbAssistant(Assistant):
     name: str = "DuckDbAssistant"
     semantic_model: str | None = None

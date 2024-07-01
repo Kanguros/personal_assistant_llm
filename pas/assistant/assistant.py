@@ -1021,30 +1021,6 @@ class Assistant(BaseModel):
             except Exception as e:
                 logger.warning(f"Failed to save output to file: {e}")
 
-        # -*- Send run event for monitoring
-        # Response type for this run
-        llm_response_type = "text"
-        if self.output_model is not None:
-            llm_response_type = "json"
-        elif self.markdown:
-            llm_response_type = "markdown"
-        functions = {}
-        if self.llm is not None and self.llm.functions is not None:
-            for _f_name, _func in self.llm.functions.items():
-                if isinstance(_func, Function):
-                    functions[_f_name] = _func.to_dict()
-        event_data = {
-            "run_type": "assistant",
-            "user_message": message,
-            "response": llm_response,
-            "response_format": llm_response_type,
-            "messages": llm_messages,
-            "metrics": self.llm.metrics if self.llm else None,
-            "functions": functions,
-            # To be removed
-            "llm_response": llm_response,
-            "llm_response_type": llm_response_type,
-        }
 
         logger.debug(f"*********** Assistant Run End: {self.run_id} ***********")
 
@@ -1236,12 +1212,6 @@ class Assistant(BaseModel):
 
         # -*- Save run to storage
         self.write_to_storage()
-
-        functions = {}
-        if self.llm is not None and self.llm.functions is not None:
-            for _f_name, _func in self.llm.functions.items():
-                if isinstance(_func, Function):
-                    functions[_f_name] = _func.to_dict()
 
         logger.debug(f"*********** Run End: {self.run_id} ***********")
 

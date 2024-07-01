@@ -130,6 +130,7 @@ ignore = [
     "B008",  # Do not perform function call `{name}` in argument defaults
     "RET504",  #  Unnecessary assignment to `{name}` before `return` statement
     "SIM108",  # Use ternary operator `path = f"{table}.{format}" if path is None else f"{path}/{table}.{format}"` instead of `if`-`else`-block
+    "ISC001"
 
 ]
 fixable = ["ALL"]
