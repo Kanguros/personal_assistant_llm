@@ -7,9 +7,10 @@ from pas.utils.log import logger
 try:
     from duckduckgo_search import DDGS
 except ImportError:
-    raise ImportError(
-        "`duckduckgo-search` not installed. Please install using `pip install duckduckgo-search`",
-    )
+    from pas.const import DEPENDENCY_GROUP_WEBTOOLS, IMPORT_ERROR
+
+    logger.error(IMPORT_ERROR("duckduckgo_search", DEPENDENCY_GROUP_WEBTOOLS))
+    raise
 
 
 class DuckDuckGo(Toolkit):

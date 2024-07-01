@@ -31,9 +31,10 @@ try:
     )
     from openai.types.completion_usage import CompletionUsage
 except ImportError:
-    logger.error("`openai` not installed")
-    raise
+    from pas.const import DEPENDENCY_GROUP_OPENAI, IMPORT_ERROR
 
+    logger.error(IMPORT_ERROR("openai", DEPENDENCY_GROUP_OPENAI))
+    raise
 
 class OpenAIChat(LLM):
     name: str = "OpenAIChat"

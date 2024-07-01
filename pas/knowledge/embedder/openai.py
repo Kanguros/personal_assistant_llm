@@ -7,8 +7,10 @@ try:
     from openai import OpenAI as OpenAIClient
     from openai.types.create_embedding_response import CreateEmbeddingResponse
 except ImportError:
-    raise ImportError("`openai` not installed")
+    from pas.const import DEPENDENCY_GROUP_OPENAI, IMPORT_ERROR
 
+    logger.error(IMPORT_ERROR("openai", DEPENDENCY_GROUP_OPENAI))
+    raise
 
 class OpenAIEmbedder(Embedder):
     model: str = "text-embedding-ada-002"

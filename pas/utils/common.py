@@ -27,4 +27,3 @@ def is_empty(val: Any) -> bool:
     if val is None or len(val) == 0 or val == "":
         return True
     return False
-

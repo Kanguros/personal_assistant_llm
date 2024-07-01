@@ -3,17 +3,13 @@ from collections.abc import Iterator, Mapping
 from textwrap import dedent
 from typing import Any
 
+from ollama import Client as OllamaClient
+
 from pas.llm.base import LLM, Message
 from pas.tools.function import FunctionCall
 from pas.utils.log import logger
 from pas.utils.timer import Timer
 from pas.utils.tools import get_function_call_for_tool_call
-
-try:
-    from ollama import Client as OllamaClient
-except ImportError:
-    logger.error("`ollama` not installed")
-    raise
 
 
 class Ollama(LLM):
@@ -133,7 +129,7 @@ class Ollama(LLM):
             if response_content is not None:
                 _tool_call_content = response_content.strip()
                 if _tool_call_content.startswith("{") and _tool_call_content.endswith(
-                    "}",
+                        "}",
                 ):
                     _tool_call_content_json = json.loads(_tool_call_content)
                     if "tool_calls" in _tool_call_content_json:
@@ -267,8 +263,8 @@ class Ollama(LLM):
             # Strip out tool calls from the response
             # If the response is a tool call, it will start with a {
             if (
-                not response_is_tool_call
-                and assistant_message_content.strip().startswith("{")
+                    not response_is_tool_call
+                    and assistant_message_content.strip().startswith("{")
             ):
                 response_is_tool_call = True
 
@@ -316,7 +312,7 @@ class Ollama(LLM):
             if response_is_tool_call and assistant_message_content != "":
                 _tool_call_content = assistant_message_content.strip()
                 if _tool_call_content.startswith("{") and _tool_call_content.endswith(
-                    "}",
+                        "}",
                 ):
                     _tool_call_content_json = json.loads(_tool_call_content)
                     if "tool_calls" in _tool_call_content_json:

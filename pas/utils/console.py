@@ -1,13 +1,7 @@
-from enum import Enum
-
 from rich.console import Console
 from rich.style import Style
-from typer import Context, CallbackParam
 
-from pas.utils.log import logger, set_log_level_to_debug
-
-
-
+from pas.utils.log import logger
 
 
 console = Console()
@@ -71,4 +65,3 @@ def confirm_yes_no(question, default: str = "yes") -> bool:
         return inp_to_result_map[choice]
     logger.error(f"{choice} invalid")
     return False
-

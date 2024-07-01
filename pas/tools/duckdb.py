@@ -6,10 +6,10 @@ from pas.utils.log import logger
 try:
     import duckdb
 except ImportError:
-    raise ImportError(
-        "`duckdb` not installed. Please install using `pip install duckdb`.",
-    ) from None
+    from pas.const import DEPENDENCY_GROUP_WEBTOOLS, IMPORT_ERROR
 
+    logger.error(IMPORT_ERROR("duckdb", DEPENDENCY_GROUP_WEBTOOLS))
+    raise
 
 class DuckDbTools(Toolkit):
     def __init__(

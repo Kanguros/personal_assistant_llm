@@ -1334,7 +1334,6 @@ class Assistant(BaseModel):
         # -*- Save run to storage
         self.write_to_storage()
 
-
     def generate_name(self) -> str:
         """Generate a name for the run using the first 6 messages of the chat history"""
         if self.llm is None:
@@ -1381,7 +1380,6 @@ class Assistant(BaseModel):
         self.run_name = generated_name
         # -*- Save run to storage
         self.write_to_storage()
-
 
     ###########################################################################
     # Default Tools

@@ -11,9 +11,10 @@ from pas.utils.log import logger
 try:
     from bs4 import BeautifulSoup
 except ImportError:
-    raise ImportError(
-        "The `bs4` package is not installed. Please install it via `pip install beautifulsoup4`.",
-    )
+    from pas.const import DEPENDENCY_GROUP_WEBTOOLS, IMPORT_ERROR
+
+    logger.error(IMPORT_ERROR("bs4", DEPENDENCY_GROUP_WEBTOOLS))
+    raise
 
 
 class WebsiteReader(Reader):

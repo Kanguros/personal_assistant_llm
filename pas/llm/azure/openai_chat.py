@@ -7,7 +7,9 @@ from pas.utils.log import logger
 try:
     from openai import AzureOpenAI as AzureOpenAIClient
 except ImportError:
-    logger.error("`azure openai` not installed")
+    from pas.const import DEPENDENCY_GROUP_OPENAI, IMPORT_ERROR
+
+    logger.error(IMPORT_ERROR("openai", DEPENDENCY_GROUP_OPENAI))
     raise
 
 

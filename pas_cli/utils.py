@@ -38,14 +38,14 @@ def find_assistant():
     package_dir = Path(__file__).parent
     assistants_dir = package_dir
 
+
 def get_assistant_from_config(config: Config) -> Assistant:
     llm = Ollama(model=config.model)
     storage = None
     if config.add_storage:
         db_file = str(config.dir_path / "storage_runs.db")
         logger.debug(f"Defining Storage {db_file=}")
-        storage = SqlAssistantStorage(table_name="runs",
-                                      db_file=db_file)
+        storage = SqlAssistantStorage(table_name="runs", db_file=db_file)
 
     return Assistant(
         name=config.name,
@@ -53,5 +53,5 @@ def get_assistant_from_config(config: Config) -> Assistant:
         instructions=config.instructions,
         llm=llm,
         markdown=config.markdown,
-        storage=storage
+        storage=storage,
     )

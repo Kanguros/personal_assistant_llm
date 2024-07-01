@@ -43,7 +43,9 @@ class Config(BaseModel):
         if file_path and Path(file_path).exists():
             config_kwargs = read_yaml_file(Path(file_path))
         else:
-            logger.debug(f"No config file found. Using default path: {CONFIG_DEFAULT_PATH}")
+            logger.debug(
+                f"No config file found. Using default path: {CONFIG_DEFAULT_PATH}"
+            )
             file_path = CONFIG_DEFAULT_PATH
             if file_path.exists():
                 config_kwargs = read_yaml_file(file_path)
