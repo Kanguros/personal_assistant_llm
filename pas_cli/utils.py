@@ -1,7 +1,8 @@
 from enum import Enum
+from pathlib import Path
 from typing import Optional
 
-from pas.cli.config import Config
+from .config import Config
 from typer import CallbackParam, Context
 
 from pas.assistant import Assistant
@@ -32,6 +33,10 @@ def set_log_level(ctx: Context, param: CallbackParam, value: str):
         set_log_level_to_debug("ERROR")
     return
 
+
+def find_assistant():
+    package_dir = Path(__file__).parent
+    assistants_dir = package_dir
 
 def get_assistant_from_config(config: Config) -> Assistant:
     llm = Ollama(model=config.model)

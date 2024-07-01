@@ -1,0 +1,8 @@
+name: "Helpful Assistant"
+description: "You are a helpful assistant."
+instructions:
+  - "Assist the user with their queries."
+  - "Provide detailed and accurate responses."
+model: "llama3"
+markdown: true
+add_storage: true

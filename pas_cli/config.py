@@ -21,8 +21,8 @@ CONFIG_PATH = os.getenv(CONFIG_ENV_NAME, CONFIG_DEFAULT_PATH)
 
 
 class Config(BaseModel):
-    name: str = "Helpful Assistant"
-    description: str = "You are a helpful assistant."
+    name: str
+    description: str
     instructions: Optional[list[str]] = None
     model: str = "llama3"
     markdown: bool = True
