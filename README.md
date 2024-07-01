@@ -2,41 +2,41 @@
 # Personal CLI Assistants
 
 **Personal CLI Assistants** is a command-line application derived from the `phidata` Python library. This project
-simplifies and customizes the original library to create a versatile personal assistant powered by language models. 
+simplifies and customizes the original library to create a versatile personal assistant powered by large language models. 
 
 ## Table of Contents
 
+- [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Features](#features)
 - [Configuration](#configuration)
 - [Examples](#examples)
-- [Troubleshooting](#troubleshooting)
+- [Development](#development)
+
+## Features
+
+- **Custom Assistants**: Define your own assistants to accomplish specific tasks.
+- **SQLite Storage**: Uses SQLite by default for assistant memory and storage.
+- **ChromaDB Vector Database**: Utilizes ChromaDB for vector database storage.
+- **Configuration Files**: Load configurations from YAML files.
 
 ## Installation
 
 To install, clone the repository and install the required dependencies:
 
 ```bash
-git clone https://github.com/yourusername/phidata-cli.git
-cd phidata-cli
-pip install -r requirements.txt
+git clone https://github.com/Kanguros/personal_assistant_llm
+cd personal_assistant_llm
+poetry install
 ```
 
 ## Usage
 
-To use the PHIDATA CLI, run the following command:
+Run the following command:
 
 ```bash
 pas [OPTIONS] [PROMPT]
 ```
-
-## Features
-
-- **Custom Assistants**: Input your own prompts to interact with the assistant.
-- **SQLite Storage**: Uses SQLite by default for assistant memory and storage.
-- **ChromaDB Vector Database**: Utilizes ChromaDB for vector database storage.
-- **Configuration Files**: Load configurations from YAML files.
 
 ## Configuration
 
@@ -70,7 +70,16 @@ Run the assistant with a custom configuration:
 pas --config custom_config.yaml "What's the weather like today?"
 ```
 
-## Troubleshooting
-
 If you encounter issues, ensure that all dependencies are installed correctly. Check the configuration file for any
 errors. For detailed logs, run the CLI with the `--verbose` option.
+
+
+## Development
+
+```shell
+pre-commit install --install-hooks
+poetry install --with=dev --with=webtool --with=openai --with=files
+```
+
+## Background
+
